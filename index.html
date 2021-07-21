@@ -1,57 +1,123 @@
-<html>
-<head>
-<meta charset="utf-8">
-<title>Karo Host For PS4 505 & 672 & 702 & 75X</title>
-<style type="text/css">
-body {
-  background-color: #1A1920;  
-  background-repeat:no-repeat;
-  height:100%;
- }
- button {
-            background:rgba(0,0,0,0.5);
-		    box-shadow: 0 5px 20px 0 white;
-            border: 2px solid black;
-            border-radius: 10px;
-            width: 170px;
-            height: 40px;            
-            text-align: center;
-            padding: 6px;
-            margin: 6px;
-}
-button:hover {
-            box-shadow: 0 5px 50px 0 white;
-            background-color: #0F0F53;
-            color: white;
-            border-radius: 10px;
-}
-#clock{
- float:right;
- margin-right:2.25%;
- margin-top: 18px;
- font-weight:bold;
- font-size:28px;
-  color: white;
-}
-#date {
- float:left;
- margin-left:1.25%;
- font-weight:bold;
- margin-top: 18px;
- font-size:28px;
- color: white;
+<html manifest="offlinexmb.manifest">
+	<style>
+        .switch {
+		  position: relative;
+		  display: inline-block;
+		  width: 60px;
+		  height: 34px;
+		}
+
+		.switch input { 
+		  opacity: 0;
+		  width: 0;
+		  height: 0;
+		}
+
+		.slider {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #2196F3;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+		
+		.slider.new {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #585858;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		.slider:before {
+		  position: absolute;
+		  content: "";
+		  height: 26px;
+		  width: 26px;
+		  left: 4px;
+		  bottom: 4px;
+		  background-color: white;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		input:checked + .slider {
+		  background-color: #2196F3;
+		}
+
+		input:focus + .slider {
+		  box-shadow: 0 0 1px #2196F3;
+		}
+
+		input:checked + .slider:before {
+		  -webkit-transform: translateX(26px);
+		  -ms-transform: translateX(26px);
+		  transform: translateX(26px);
+		}
+
+		/* Rounded sliders */
+		.slider.round {
+		  border-radius: 34px;
+		}
+
+		.slider.round:before {
+		  border-radius: 50%;
+		}
+		.button {
+		  background:rgba(0,0,0,0.5);
+		  box-shadow: 0 5px 20px 0 white;
+		  border: 2px solid black;
+		  border-radius: 10px;
+		  color: white;
+		  text-decoration: none;
+		  width: 200px;
+          height: 40px;
+		  display:inline-table;
+		  font-family: system-ui;
+		  text-align: center;
+		}
+
+		.button:focus,
+		.button:hover {
+		  color: White;
+		  box-shadow: 0 5px 50px 0 white;
+		  background-color: #0F0F53;
+          border-radius: 10px;
+		}
+
+		.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
  .content {
   width:80%;
+  height:9%;
   margin-left:7.5%;
   background:rgba(0,0,0,0.5);
   color:white;
-  margin-top:1%;
+  margin-top:2%;
   font-size:25px;
   text-align:center;
   border-radius:30px;
-  padding:20px;
-  line-height:35px;
+  padding-top:10px;
+  line-height:8px;
  }
  .title {
   font-size:40px;
@@ -136,49 +202,126 @@ button:hover {
    box-sizing:border-box;
    color:white;
   }
-  .pointer {cursor: pointer;}
-</style>
-<script>
-    function showdate() {
-  var dt = new Date();
-    Hour= dt.getHours();
-  Minute= dt.getMinutes();
-     Day=dt.getDate();
-   Month=dt.getMonth()+1;
-   Year=dt.getFullYear();
-if (Minute < 10) { Minute = "0" + Minute; };
-if (Hour < 10) { Hour = "0" + Hour; };
-document.getElementById("date").innerHTML = (Day+"/"+Month+"/"+Year);
-document.getElementById("clock").innerHTML = (Hour+":"+Minute);
-  }
-  
-  setInterval(showdate,0);
-</script>
-</head>
-<body class="bg-darker">
-<div id="container"  style="">
-<br><span id="date" ></span><span id="clock" ></span><h1 style='font-size:25px;text-align:center;color:yellow;'>Karo Host For PS4 505 & 672 & 702 & 75X</h1>
-<h1 id=msgs2 style='font-size:25px;text-align:center;color:white;'>Status</h1><br>
-<div style="text-align:center"  id="MyItems">
-<a href="binloader/index.html"><button style='width: 200px;height: 40px;font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Binloader For 505 & 672 & 702 & 755'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Binloader </B></button></a><br>
-<a href="505N/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='New Karo Host For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>5.05N</B></button></a>
-<a href="505/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>5.05 old</B></button></a><br>
-<a href="672/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72 </B></button></a>
-<a href="672A/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72A </B></button></a>
-<a href="672N/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host New Exploit and Loader For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72N </B></button></a><br>
-<a href="702N/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo New Host Auto Exploit For 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02N</B></button></a>
-<a href="702d/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit For 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02d</B></button></a>
-<a href="702/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02 old</B></button></a>
-<a href="702L/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 702 Lite version'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02 Lite</B></button></a><br>
-<a href="755/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit For 75X'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55</B></button></a>
-<a href="755A/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host old and new For 75X'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55A</B></button></a>
-<a href="755old/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host old For 75X'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55 old</B></button></a>
-<a href="755L/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 75X Lite version'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55 Lite</B></button></a><br>
-<div class="content" >
- 	<div class="text" >
- 	 <br><span class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <span class="hue" >Karo Sharifi</span>
- 	</div>
- </div>
-</div>
-</body>
+/* Modal Content */
+.modal-content {
+  font-family: BFARNAZ;
+  font-size: 18px;
+  position: relative;
+  background-color: #dddddd;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+.titleheadx {
+		  background-color: #1A1920;  
+		  border-radius: 5px;
+		  color: white;
+		  padding: .5em;
+		  text-decoration: none;
+		  text-align: center;
+		  margin-top: 17%;
+		  margin-bottom: -10px;
+		  font-family: system-ui;
+}
+
+.titlehead {
+		  background-color: #1A1920;  
+		  color: white;
+		  padding: .5em;
+		  text-align: center;
+		  margin-top: 0%;
+		  font-family: system-ui;
+		  font-size:30px;
+		  text-shadow: 4px 4px 4px black;
+}
+
+		.bg {
+		  /* The image used */
+		  background-color:#1A1920;
+		  font-family: system-ui;
+		  /* Center and scale the image nicely */
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+		}
+
+       #Progress {
+		  color: white;
+		}
+
+       #Progressx {
+		  color: white;
+		}
+
+.pointer {cursor: pointer;}
+	</style>
+	<body onload="go()" class="bg">
+		<script>
+		var fw = (navigator.userAgent.substring(navigator.userAgent.indexOf('5.0 (') + 19, navigator.userAgent.indexOf(') Apple'))).replace('.', '');;
+		    if(window.applicationCache.status==2){localStorage.is755XCached=true;}
+			window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";localStorage.is755XCached=false;};
+			window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
+			window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";localStorage.is755XCached=true;setTimeout(function(){document.getElementById("progressx").innerHTML="Turn Off the Internet & Reopen the Page !!"; }, 1500);};
+		</script>
+		<script>
+		function print(){}
+
+		var scriptCode = '';
+
+		function preloadScripts(lst)
+		{	
+			scriptCode = '';
+			for(var i = 0; i < lst.length; i++)
+			{
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', lst[i], false);
+				xhr.send('');
+				scriptCode += xhr.responseText + '\n';
+			}
+		}
+		
+		window.midExploit = function()
+		{
+			preloadScripts(['exploit.js']);
+		}
+
+		window.postExploit = function()
+		{
+			setTimeout(function()
+			{	
+				eval.call(window, scriptCode);
+				done();
+			}, 100);
+
+		};
+		
+		window.postPayload = function()
+		{
+			setTimeout(function()
+			{	
+				eval.call(window, scriptCode);
+				//done();
+			}, 100);
+
+		};
+
+		</script>
+		<script src="utils.js"></script>
+		<script src="int64.js"></script>
+		<script src="ps4.js"></script>
+        <h1 id="progressx" class="titleheadx">Loading ...</h1><br>
+        <table id="load" align="center" style="width:1400px;margin-top:0px;"></table>
+		<button style="opacity:0" id="input1" onfocus="handle2()"></button>
+		<button style="opacity:0" id="input2"></button>
+		<button style="opacity:0" id="input3" onfocus="handle2()"></button>
+		<select style="opacity:0" id="select1">
+			<option value="value1">Value1</option>
+		</select>
+	</body>
 </html>
