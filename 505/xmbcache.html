@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+<title>Self Host Cache</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="stylesheet prefetch" href="exploit.css">
+<style>.cache{
+color:white;
+font-size:1.1em;
+margin-top: 2em;
+font-family: BFARNAZ;
+}
+</style>
+<div id="status" class="cache"></div>
+<script>
+function ondownloading(){changeText("<div class=cache>...در حال ذخیره سازی، لطفا صبر کنید<br></div>");}
+function oncached(){changeText("<div class=done>بلوباکس با موفقیت ذخیره شد <br><div class=ib>PRESS</div><div id=PSBUTTON></div><div class=ib>TO EXIT</div></div>");window.parent.document.getElementById('Ttitle').innerHTML='ذخیره شد Self-Host';window.parent.document.getElementById('Tsubtitle').innerHTML='!با تشکر'; window.parent.pop();}
+function onupdateready(){changeText("<div class=cache>ذخیره سازی بروز رسانی شد</div>");}
+function onnoupdate(){changeText("<div class=cache>بروز رسانی جدیدی در دسترس نیست</div>");}
+function onerror(){changeText("<div class=cache>خطا در ذخیره سازی</div>");}
+function changeText(text){var display = document.getElementById('status'); display.innerHTML = ""; display.innerHTML = text;}
+</script>
+</head>
+<body>
+<iframe id="ifrm" src="xmbinstaller.html" style="border:none;"></iframe>
+</body>
+</html>

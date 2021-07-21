@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Remote Play v2.0</title>
+<link rel="stylesheet prefetch" href="exploit.css">
+</head>
+<body>
+<div id=loader class=loader><div class=ib2>Remote Play v2.0</div><div class=ib2>&nbsp;L</div><div class=loaderO></div><div class=ib2>ADING...</div></div>
+<div id=done class=done style=display:none>Remote Play v2.0 LOADED<br><div class=ib>PRESS</div><div id=PSBUTTON></div><div class=ib>TO EXIT</div></div>
+<div id=fail class=info style=display:none>Remote Play v2.0 FAILED</div>
+<script>var SetHEN = 'yes';
+var bin="PS4ren.bin";function getScript(source,callback){var gs=document.createElement('script');gs.src=source;gs.onload=callback;gs.async=false;document.body.appendChild(gs);}function loadScript(){getScript("exploit.js",function(){setTimeout(exploit,1500);});}loadScript();
+</script>
+</html>
