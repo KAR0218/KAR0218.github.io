@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.8.1 Self-Host 
+# v2.8.2 Self-Host 
 
 app2usb.js
 backup.js
@@ -25,6 +25,7 @@ oldjb1.js
 oldjb2.js
 oldjb3.js
 oldjb4.js
+oldjb5.js
 kernelclock.js
 kerneldumper.js
 linux1G.js

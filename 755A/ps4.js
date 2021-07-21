@@ -139,7 +139,10 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Running Old Jailbreak 3.. Please wait!!";
 		preloadScripts(['oldjb3.js']);
 	}else if(pld == "exploit_old4"){
-		document.getElementById("progress").innerHTML="Running Old Jailbreak .. Please wait!!";
+		document.getElementById("progress").innerHTML="Running Old Jailbreak 4.. Please wait!!";
+		preloadScripts(['oldjb4.js']);
+	}else if(pld == "exploit_old5"){
+		document.getElementById("progress").innerHTML="Running Old Jailbreak 5.. Please wait!!";
 		preloadScripts(['oldjb4.js']);
 	}else if(pld == "binloader"){
 		document.getElementById("progress").innerHTML="Awaiting Payload.. Send Payload to port 9021..";
