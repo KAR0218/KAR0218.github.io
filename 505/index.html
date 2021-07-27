@@ -25,8 +25,8 @@ overflow: hidden;
             
             border: 2px solid black;
             border-radius: 10px;
-			width: 175px;
-            height: 35px;            
+			width: 250px;
+            height: 45px;            
             text-align: center;
             padding: 1px;
             margin: 1px;
@@ -155,7 +155,7 @@ header div{
   text-align:center;
   border-radius:30px;
   padding:20px;
-  line-height:10px;
+  line-height:20px;
  }
  .title {
   font-size:40px;
@@ -179,54 +179,112 @@ header div{
 </head>
 <body style='background-color:#1A1920'>
 <script src="cal.js"></script>
-<div style="text-align:center">
-<!-- <button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 1.6'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen16(); return false"><b>&nbsp;&nbsp;Hen v1.6&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 1.7'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen17(); return false"><b>&nbsp;&nbsp;Hen v1.7&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 1.8'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen18(); return false"><b>&nbsp;&nbsp;Hen v1.8&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.4'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen214(); return false"><b>&nbsp;&nbsp;Hen v2.1.4&nbsp;&nbsp; </button>-->
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.2'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen212(); return false"><b>&nbsp;&nbsp;Hen v2.1.2&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.3'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen213(); return false"><b>&nbsp;&nbsp;Hen v2.1.3&nbsp;&nbsp; </button>
-<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.0 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen1(); return false"><b>&nbsp;&nbsp;GoldHenV1.0&nbsp;&nbsp; </button>
-<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.1 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen(); return false"><b>&nbsp;&nbsp;GoldHenV1.1&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.4b Spoof to 9.99 by Karo'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen214b(); return false"><b>&nbsp;&nbsp;Hen v2.1.4b&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='hen+mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_mirahen(); return false"><b>&nbsp;&nbsp;MiraHen18&nbsp;&nbsp; </button>
-<button style='font-size:22px;text-align:center;background-color:red;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Orbis Toolbox Loader Alfa 1167'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_orbis(); return false"><b>&nbsp;&nbsp;Orbis.Toolbox&nbsp;&nbsp; </button>
+<div id=all style="text-align:center">
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='Goldhen & Hen & Mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="allhens(); return false"> HEN Group </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All tools payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alltools(); return false"> Tools Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Restore & Backup payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="allrestore(); return false"> Restore Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Dump payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alldump(); return false"> Dump Group </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Trainer payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alltrainer(); return false"> Trainer Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Linux payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alllinux(); return false"> Linux Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Mods Gtav & RDR2 payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="allmods(); return false"> Gtav & RDR2 Mods Group </button>
+<br><br>
+</div>
+<div id=tools style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
 <br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='binloader port 9020'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_binloader(); return false"> Bin Loader </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='FTP server'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ftp(); return false">&nbsp; FTP &nbsp;</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='FTP server with RW'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ftprw(); return false"> FTP RW </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Disable Update'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_updatesdisable(); return false"> Disable Updates </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Enable Update'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_updatesenable(); return false"> Enable Updates </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Change License Hen to Mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rif(); return false"> Rif Renamer </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Fan Controller'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_fanthresh(); return false"> Fan Controller</button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Active Remote Play'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ren(); return false"> Remoteplay </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Install Game from Lan'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_infinix(); return false"> Infinix </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='To-DEX'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_todex(); return false"> ToDex </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='APP2USB'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_app2usb(); return false"> App2USB </button>
+<br><br>
+<button style='font-size:22px;text-align:center;background-color:red;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Orbis Toolbox Loader Alfa 1167'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_orbis(); return false"><b>&nbsp;&nbsp;Orbis.Toolbox&nbsp;&nbsp; </button>
+</div>
+<div id=dump style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Kernel Dumper'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_kdumper(); return false"> Kernel Dumper </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Dumper for Games'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_dumper(); return false"> Dumper </button>
+</div>
+<div id=restore style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Backup Trophy'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_trpb(); return false"> Trp Backup </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Restore Trophy'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_trpr(); return false"> Trp Restore </button>
 <br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='DB Backup'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_dbBackup(); return false"> DB Backup </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='DB Restore'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_dbRestore(); return false"> DB Restore </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='APP2USB'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_app2usb(); return false"> App2USB </button>
-<button style='font-size:20px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='WebRTE for Games Cheat'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_webrte(); return false"> WebRTE </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Dumper for Games'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_dumper(); return false"> Dumper </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='To-DEX'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_todex(); return false"> ToDex </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Save Data mounter v1.0'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ps4debug(); return false"> PS4debug </button>
 <br><br>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Lotus -> + []'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtav(); return false"> GTA Lotus 1.04 </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Hold R1 then press []'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtav2(); return false"> GTA v ap 2 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Save Games'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_saveb(); return false"> Save Backup </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Restore Save Games'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_saver(); return false"> Save Restore </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Save Mount'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_savem(); return false"> Save Mount</button>
+</div>
+<div id=trainer style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button style='font-size:20px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='WebRTE for Games Cheat'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_webrte(); return false"> WebRTE </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Save Data mounter v1.0'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ps4debug(); return false"> PS4debug </button>
+</div>
+<div id=linux style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Linux Loader Baikal'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_linuxbaikal(); return false"> Linux Baikal </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Linux Loader 1GB'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_linux1g(); return false"> Linux 1Gb </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Linux Loader 2GB'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_linux2g(); return false"> Linux 2Gb </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Linux Loader 3GB'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_linux3g(); return false"> Linux 3Gb </button>
+</div>
+<div id=gtav style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
 <br><br>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Kernel Dumper'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_kdumper(); return false"> Kernel Dumper </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Change License Hen to Mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rif(); return false"> Rif Renamer </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Active Remote Play'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ren(); return false"> Remoteplay </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Install Game from Lan'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_infinix(); return false"> Infinix </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Restore Save Games'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_saver(); return false"> Save Restore </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Save Mount'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_savem(); return false"> Save Mount</button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Fan Controller'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_fanthresh(); return false"> Fan Controller</button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Lotus -> + []'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtav(); return false"> GTA Lotus 1.04 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Hold R1 then press []'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtav2(); return false"> GTAV ap 2 </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode ArabicGuy 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtava100(); return false"> ArabicGuy 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode GTAV Intense 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavi100(); return false"> GTAV Intense 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode GTAV Intense 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavi127(); return false"> GTAV Intense 1.27 </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Lamance 1,00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavl100(); return false"> GTAV Lamance 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Lamance 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavl127(); return false"> GTAV Lamance 1.27 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Not Another 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavna100(); return false"> GTAV Not Another 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Not Another 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavna127(); return false"> GTAV Not Another 1.27 </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Not Your Dopes 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavnyd127(); return false"> Not Your Dopes 1.27 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Psych0s 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavp100(); return false"> GTAV Psych0s 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode WildeModz 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavwm100(); return false"> GTAV WildeModz 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode WildeModz 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavwm127(); return false"> GTAV WildeModz 1.27 </button>
 <br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Red dead redemption 2 mod  menu V1.13 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rdr113(); return false"> RDR2 V1.13 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Red dead redemption 2 mod  menu V1.19 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rdr119(); return false"> RDR2 V1.19 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Red dead redemption 2 mod  menu V1.24 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rdr124(); return false"> RDR2 V1.24 </button>
+ </div>
+ <div id=hens style="text-align:center;display:none">
+ <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+ <!-- <button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 1.6'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen16(); return false"><b>&nbsp;&nbsp;Hen v1.6&nbsp;&nbsp; </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 1.7'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen17(); return false"><b>&nbsp;&nbsp;Hen v1.7&nbsp;&nbsp; </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 1.8'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen18(); return false"><b>&nbsp;&nbsp;Hen v1.8&nbsp;&nbsp; </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.4'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen214(); return false"><b>&nbsp;&nbsp;Hen v2.1.4&nbsp;&nbsp; </button>-->
+
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.0 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen1(); return false"><b>&nbsp;&nbsp;GoldHenV1.0&nbsp;&nbsp; </button>
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.1 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen(); return false"><b>&nbsp;&nbsp;GoldHenV1.1&nbsp;&nbsp; </button>
+<br><br>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.2'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen212(); return false"><b>&nbsp;&nbsp;Hen v2.1.2&nbsp;&nbsp; </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.3'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen213(); return false"><b>&nbsp;&nbsp;Hen v2.1.3&nbsp;&nbsp; </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.4b Spoof to 9.99 by Karo'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen214b(); return false"><b>&nbsp;&nbsp;Hen v2.1.4b&nbsp;&nbsp; </button>
+<br><br>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='hen+mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_mirahen(); return false"><b>&nbsp;&nbsp;MiraHen18&nbsp;&nbsp; </button>
+</div>
 <br><br>
 <div class="content" >
  	 <br><span class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <a class="hue" style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Karo Sharifi</a>
@@ -235,7 +293,7 @@ header div{
 
 <br><br><br><br><br><br>
 <br>
-</div>
+
 <script>
 function load_hen16(){
   var link = document.createElement('a');
@@ -460,6 +518,84 @@ function load_gtav2(){
         link.target = 'exp-loader';
         link.click();
 		}
+function load_gtava100(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtava100.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavi100(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavi100.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavi127(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavi127.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavl100(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavl100.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavl127(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavl127.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavna100(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavna100.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavna127(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavna127.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavnyd127(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavnyd127.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavp100(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavp100.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavwm100(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavwm100.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtavwm127(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtavwm127.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+
 function load_ren(){
   var link = document.createElement('a');
         document.body.appendChild(link);
@@ -536,6 +672,45 @@ function load_rdr124(){
         link.href = 'RDR2v124.html';
         link.target = 'exp-loader';
         link.click();
+		}
+
+function allhens(){
+all.style.display = "none";
+hens.style.display = "block";
+		}
+function allrestore(){
+all.style.display = "none";
+restore.style.display = "block";
+		}
+function alltools(){
+all.style.display = "none"
+tools.style.display = "block";
+		}
+function alltrainer(){
+all.style.display = "none";
+trainer.style.display = "block";
+		}
+function alldump(){
+all.style.display = "none";
+dump.style.display = "block";
+		}
+function alllinux(){
+all.style.display = "none";
+linux.style.display = "block";
+		}
+function allmods(){
+all.style.display = "none";
+gtav.style.display = "block";
+		}
+function backall(){
+all.style.display = "block";
+hens.style.display = "none";
+restore.style.display = "none";
+tools.style.display = "none";
+trainer.style.display = "none";
+dump.style.display = "none";
+linux.style.display = "none";
+gtav.style.display = "none";
 		}
 </script>
 </div>
