@@ -1,21 +1,32 @@
 CACHE MANIFEST 
-# v1.01 Self-Host 
+# v1.04 Self-Host 
 
 disableupdates.js
 dumper.js
 enableupdates.js
 exploit.js
 ftp.js
+goldhen1v750.js
+goldhen1v751.js
 goldhen1v755.js
+goldhen750.js
+goldhen751.js
 goldhen755.js
+goldhenb750.js
+goldhenb751.js
 goldhenb755.js
 index.html
 int64.js
 jb.js
 loader.js
 preloader.js
+preloader750.js
+preloader751.js
 preloaderx.js
 ps4.js
 ps4debug.js
 utils.js
 webrte755.js
+
+NETWORK:
+*
