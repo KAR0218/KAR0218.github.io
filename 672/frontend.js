@@ -34,7 +34,7 @@ function makeUI()
     var root = document.createElement('div');
     root.style.position = 'absolute';
     root.style.top =  100;
-    root.style.left = 510;
+    root.style.left = 400;
     root.style.width = root.style.height = '50%';
     root.style.zIndex = 1000;
     root.style.background = '#1A1920';
@@ -45,6 +45,16 @@ function makeUI()
     italic.appendChild(document.createTextNode('Click the username to generate a random ID'));
     var tbl = document.createElement('table');
     root.appendChild(tbl);
+    var tr = document.createElement('tr');
+    tbl.appendChild(tr);
+    var colspan2 = document.createElement('th');
+    colspan2.setAttribute('colspan', 2);
+    tr.appendChild(colspan2);
+    var tdBase64 = document.createElement('th');
+    tr.appendChild(tdBase64);
+    tdBase64.appendChild(document.createTextNode('Base64 ID (for Chiaki)'));
+    var tdButton = document.createElement('th');
+    tr.appendChild(tdButton);
     var fields = [];
     for(var i = 0; i < 16; i++)
     {
@@ -56,12 +66,17 @@ function makeUI()
         tr.appendChild(tdId);
         var id = document.createElement('input');
         tdId.appendChild(id);
+        var tdBase64 = document.createElement('td');
+        tr.appendChild(tdBase64);
+        var base64 = document.createElement('input');
+        base64.readOnly = true;
+        tdBase64.appendChild(base64);
         var tdButton = document.createElement('td');
         tr.appendChild(tdButton);
         var button = document.createElement('button');
         tdButton.appendChild(button);
         button.appendChild(document.createTextNode('Set & Activate'));
-        fields.push({username: username, id: id, button: button});
+        fields.push({username: username, id: id, base64: base64, button: button});
     }
     document.body.appendChild(root);
     return fields;
@@ -92,20 +107,35 @@ function fetchAccount(i)
         italic.appendChild(document.createTextNode('Account does not exist'));
         ui[i].id.value = '';
         ui[i].id.readOnly = true;
+        ui[i].base64.value = '';
         ui[i].button.disabled = true;
         return;
     }
-    var string_id = '';
-    for(var j = 7; j >= 0; j--)
+    else
     {
-        var digit = mailbox.account_id[j];
-        string_id += "0123456789ABCDEF"[digit >> 4];
-        string_id += "0123456789ABCDEF"[digit & 15];
+        var string_id = '';
+        for(var j = 7; j >= 0; j--)
+        {
+            var digit = mailbox.account_id[j];
+            string_id += "0123456789ABCDEF"[digit >> 4];
+            string_id += "0123456789ABCDEF"[digit & 15];
+        }
+        var b64_id = '';
+        var b64_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        for(var j = 0; j < 8; j += 3)
+        {
+            b64_id += b64_alphabet[mailbox.account_id[j] >> 2];
+            b64_id += b64_alphabet[(mailbox.account_id[j] << 4 | mailbox.account_id[j+1] >> 4) & 63];
+            b64_id += b64_alphabet[(mailbox.account_id[j+1] << 2 | mailbox.account_id[j+2] >> 6) & 63];
+            b64_id += b64_alphabet[mailbox.account_id[j+2] & 63];
+        }
+        b64_id = b64_id.substr(0, 11) + '=';
+        ui[i].username.appendChild(document.createTextNode(mailbox.account_name));
+        ui[i].id.value = string_id;
+        ui[i].id.readOnly = false;
+        ui[i].base64.value = b64_id;
+        ui[i].button.disabled = false;
     }
-    ui[i].username.appendChild(document.createTextNode(mailbox.account_name));
-    ui[i].id.value = string_id;
-    ui[i].id.readOnly = false;
-    ui[i].button.disabled = false;
 }
 
 function fetchAccounts()
