@@ -1,5 +1,5 @@
-<html manifest="offlinexmb.manifest">
-	<style>
+<html>
+<style>
         .switch {
 		  position: relative;
 		  display: inline-block;
@@ -225,15 +225,14 @@
 		  padding: .5em;
 		  text-decoration: none;
 		  text-align: center;
-		  margin-top: 17%;
-		  margin-bottom: -10px;
+		  margin-top: 16%;
+		  font-size:30px;
 		  font-family: system-ui;
 }
 
 .titlehead {
 		  background-color: #1A1920;  
 		  color: white;
-		  padding: .5em;
 		  text-align: center;
 		  margin-top: 0%;
 		  font-family: system-ui;
@@ -243,7 +242,7 @@
 
 		.bg {
 		  /* The image used */
-		  background-color:#1A1920;
+		  background-color: #1A1920;
 		  font-family: system-ui;
 		  /* Center and scale the image nicely */
 		  background-position: center;
@@ -255,21 +254,71 @@
 		  color: white;
 		}
 
-       #Progressx {
+       #load {
 		  color: white;
 		}
 
 .pointer {cursor: pointer;}
-	</style>
-	<body class="bg">
+</style>
+	<body onload="go()" class="bg">
 		<script>
-		    if(window.applicationCache.status==2){localStorage.is755NCached=true;}
-			window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";localStorage.is755NCached=false;};
-			window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
-			window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";localStorage.is755NCached=true;setTimeout(function(){document.getElementById("progressx").innerHTML="Turn Off the Internet & Reopen the Page !!"; }, 1500);};
-			window.applicationCache.onnoupdate=function(){window.location.replace("lndex.html");};
-        	window.applicationCache.onerror=function(){window.location.replace("lndex.html");};
-		</script>
-        <h1 id="progressx" class="titleheadx"></h1><br>
+var fw = (navigator.userAgent.substring(navigator.userAgent.indexOf('5.0 (') + 19, navigator.userAgent.indexOf(') Apple'))).replace('.', '');;
+        </script>
+        <script>
+		function print(){}
+
+		var scriptCode = '';
+
+		function preloadScripts(lst)
+		{	
+			scriptCode = '';
+			for(var i = 0; i < lst.length; i++)
+			{
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', lst[i], false);
+				xhr.send('');
+				scriptCode += xhr.responseText + '\n';
+			}
+		}
+		
+		window.midExploit = function()
+		{
+			preloadScripts(['exploit.js']);
+		}
+
+		window.postExploit = function()
+		{
+			setTimeout(function()
+			{	
+				eval.call(window, scriptCode);
+				done();
+			}, 100);
+
+		};
+		
+		window.postPayload = function()
+		{
+			setTimeout(function()
+			{	
+				eval.call(window, scriptCode);
+				//done();
+			}, 100);
+
+		};
+
+</script>
+<script src="utils.js"></script>
+<script src="int64.js"></script>
+<script src="ps4.js"></script>
+<script src="utils.js"></script>
+<script src="int64.js"></script>
+<script src="ps4.js"></script>
+<button id="input1" onfocus="handle2()"></button>
+<button id="input2"></button>
+<button id="input3" onfocus="handle2()"></button>
+<select id="select1">
+<option value="value1">Value1</option>
+</select>
+<table id="load" align="center" style="width:1400px;margin-top:0px;"></table>
 	</body>
 </html>

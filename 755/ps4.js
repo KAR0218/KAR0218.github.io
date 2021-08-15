@@ -443,8 +443,6 @@ function sprayStringImpl(start, end) {
 }
 
 function go() {
-		if(localStorage.is755XCached){
-		/* Init spray */
 		sprayHTMLTextArea();
 
 		if(window.midExploit)
@@ -453,5 +451,4 @@ function go() {
 		g_input = input1;
 		/* Shape heap layout for obj. reuse */
 		prepareUAF();
-	}
 }

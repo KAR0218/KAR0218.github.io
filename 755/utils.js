@@ -4,7 +4,10 @@ function die(msg) {
 }
 
 function debug_log(msg) {
-	document.getElementById("progressx").innerHTML=msg;
+    var element = document.getElementById("load");
+	element.innerHTML=msg;
+    element.classList.add("titleheadx");
+    element.style.marginTop = "16%";
 }
 
 // The following functions are taken from https://github.com/saelo/jscpwn/:
