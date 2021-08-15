@@ -134,10 +134,10 @@ function toggle_payload(pld){
 		preloadScripts(['oldjb1.js']);
 	}else if(pld == "exploit_old2"){
 		document.getElementById("progress").innerHTML="Running Old Jailbreak 2.. Please wait!!";
-		preloadScripts(['oldjb2.js']);
+		preloadScripts(['oldjb4.js']);
 	}else if(pld == "exploit_old3"){
 		document.getElementById("progress").innerHTML="Running Old Jailbreak 3.. Please wait!!";
-		preloadScripts(['oldjb3.js']);
+		preloadScripts(['oldjb4.js']);
 	}else if(pld == "exploit_old4"){
 		document.getElementById("progress").innerHTML="Running Old Jailbreak 4.. Please wait!!";
 		preloadScripts(['oldjb4.js']);
@@ -189,7 +189,7 @@ function toggle_payload(pld){
 		preloadScripts(['preloader.js', 'app2usb.js', 'loader.js']);
 	}else if(pld == "orbis"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
-		preloadScripts(['jb.js', 'preloader.js', 'Orbis-Toolbox-755.js', 'loader.js']);
+		preloadScripts(['preloader.js', 'Orbis-Toolbox-755.js', 'loader.js']);
 	}else if(pld == "webrte"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		preloadScripts(['preloader.js', 'webrte755.js', 'loader.js']);
@@ -241,10 +241,28 @@ function toggle_payload(pld){
 	}else if(pld == "ps4debug"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		preloadScripts(['preloader.js', 'ps4debug.js', 'loader.js']);
-	}
-	else if(pld == "web"){
+	}else if(pld == "web"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		preloadScripts(['preloader.js', 'payload.js', 'loader.js', 'frontend.js']);
+	}else if(pld == "fan"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts(['preloader.js', 'fanThreshold.js', 'loader.js']);
+		localStorage.setItem('fanthreshold', tempC.value);
+	}else if(pld == "gtava1"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts['preloader.js', 'gtava1.js', 'loader.js'];
+	}else if(pld == "gtava2"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts['preloader.js', 'gtava2.js', 'loader.js'];
+	}else if(pld == "gtava3"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts['preloader.js', 'gtava3.js', 'loader.js'];
+	}else if(pld == "gtavl"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts['preloader.js', 'gtavl.js', 'loader.js'];
+	}else if(pld == "gtavbq"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts['preloader.js', 'gtavbq133.js', 'loader.js'];
 	}
 	if(window.postPayload)
 		window.postPayload();
@@ -579,8 +597,6 @@ function sprayStringImpl(start, end) {
 }
 
 function go() {
-		if(localStorage.is755anCached){
-		/* Init spray */
 		sprayHTMLTextArea();
 
 		if(window.midExploit)
@@ -589,5 +605,4 @@ function go() {
 		g_input = input1;
 		/* Shape heap layout for obj. reuse */
 		prepareUAF();
-	}
 }

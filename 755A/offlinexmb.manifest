@@ -1,46 +1,13 @@
 CACHE MANIFEST 
-# v2.8.2 Self-Host 
+# v1.0.0 Self-Host 
 
-app2usb.js
-backup.js
-disableaslr.js
-disableupdates.js
-dumper.js
-enablebrowser.js
-enableupdates.js
-exploit.js
-frontend.js
-payload.js
-ftp.js
-goldhen1v755.js
-goldhen755.js
-goldhenb755.js
-historyblocker.js
-hen213b.js
-idu.js
 index.html
-int64.js
-jb.js
-oldjb1.js
-oldjb2.js
-oldjb3.js
-oldjb4.js
-oldjb5.js
-kernelclock.js
-kerneldumper.js
-linux1G.js
-linux3G.js
-loader.js
-mira755.js
-mira2b.js
-mdumper.js
-Orbis-Toolbox-755.js
-preloader.js
-preloaderx.js
-ps4.js
-ps4debug.js
-restore.js
-rifrenamer.js
-todex.js
-utils.js
-webrte755.js
+03.06.2021.html
+21.07.2021.html
+20.05.2021.html
+27.05.2021.html
+17.03.2021.html
+29.04.2021.html
+
+NETWORK:
+*
