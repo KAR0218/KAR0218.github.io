@@ -1,0 +1,146 @@
+<html manifest="offlinexmb.manifest">
+<title>Karo host GoldHEN 755 FW</title>
+<meta charset="utf-8">
+	<style>
+        .switch {
+		  position: relative;
+		  display: inline-block;
+		  width: 60px;
+		  height: 34px;
+		}
+
+		.switch input { 
+		  opacity: 0;
+		  width: 0;
+		  height: 0;
+		}
+
+		.slider {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #2196F3;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+		
+		.slider.new {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #585858;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		.slider:before {
+		  position: absolute;
+		  content: "";
+		  height: 26px;
+		  width: 26px;
+		  left: 4px;
+		  bottom: 4px;
+		  background-color: white;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		input:checked + .slider {
+		  background-color: #2196F3;
+		}
+
+		input:focus + .slider {
+		  box-shadow: 0 0 1px #2196F3;
+		}
+
+		input:checked + .slider:before {
+		  -webkit-transform: translateX(26px);
+		  -ms-transform: translateX(26px);
+		  transform: translateX(26px);
+		}
+
+		/* Rounded sliders */
+		.slider.round {
+		  border-radius: 34px;
+		}
+
+		.slider.round:before {
+		  border-radius: 50%;
+		}
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ .text {
+  padding-bottom:50px;
+ }
+  .back {
+   font-size:25px;
+   margin-top:10px;
+   display:block;
+   line-height:55px;
+   width:20%;
+   text-decoration:none;
+   height:50px;
+   background:white;
+   color:black;
+   border-radius:15px;
+  }
+  .back:hover{
+   border:2px solid white;
+   background:transparent;
+   box-sizing:border-box;
+   color:white;
+  }
+.titleheadx {
+		  background-color: #1A1920;  
+		  border-radius: 5px;
+		  color: white;
+		  padding: .5em;
+		  text-decoration: none;
+		  text-align: center;
+		  margin-top: 17%;
+		  margin-bottom: -10px;
+		  font-family: system-ui;
+}
+
+		.bg {
+		  /* The image used */
+		  background-color:#1A1920;
+		  font-family: system-ui;
+		  /* Center and scale the image nicely */
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+		}
+
+       #Progress {
+		  color: white;
+		}
+
+       #Progressx {
+		  color: white;
+		}
+	</style>
+	<body onload="go()" class="bg">
+	    <script>
+		    if(window.applicationCache.status==2){localStorage.isgoldCached=true;}
+			window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";localStorage.isgoldCached=false;};
+			window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
+			window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";localStorage.isgoldCached=true;setTimeout(function(){document.getElementById("progressx").innerHTML="Reopen the Page !!"; }, 1500);};
+			window.applicationCache.onnoupdate=function(){window.location.replace("lndex.html");};
+        	window.applicationCache.onerror=function(){window.location.replace("lndex.html");};
+		</script>
+        <h1 id="progressx" class="titleheadx" style="font-size:35px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;display:'none'">Loading ...</h1>
+	</body>
+</html>
