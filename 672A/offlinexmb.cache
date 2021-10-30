@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.7.1 Self-Host 
+# v2.7.4 Self-Host 
 
 avatar.bin
 cache.bin
@@ -55,3 +55,6 @@ WebRTE.bin
 Orbis-Toolbox-672.bin
 BeefQueefMod672-132.bin
 BeefQueefMod672-133.bin
+
+NETWORK:
+*
