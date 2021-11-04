@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.5.7 Self-Host 
+# v2.5.9 Self-Host 
 
 702.js
 app2usb.bin
@@ -31,9 +31,9 @@ loader.js
 loaderx.js
 mira2b.bin
 Orbis-Toolbox-702.bin
-Oysters-FREE-1.13.bin
-Oysters-FREE-1.19.bin
-Oysters-FREE-1.24.bin
+rdr113.bin
+rdr119.bin
+rdr124.bin
 payload.js
 preloader.js
 ps4.js

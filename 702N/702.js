@@ -928,15 +928,15 @@ function toggle_payload(pld){
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "rdr113"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
-		PLfile = 'Oysters-Free-1.13.bin';
+		PLfile = 'rdr113.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "rdr119"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
-		PLfile = 'Oysters-Free-1.19.bin';
+		PLfile = 'rdr119.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "rdr124"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
-		PLfile = 'Oysters-Free-1.24.bin';
+		PLfile = 'rdr124.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}
 	if(window.postPayload)
