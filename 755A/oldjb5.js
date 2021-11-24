@@ -161636,6 +161636,7 @@ if(main_ret == 179 || main_ret == 0){
 			'<a id="goldhen1" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v1.0 by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
 			'<a id="goldhenb" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v1.1b3 by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'goldhenb\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1b3</a>&nbsp;'+
 			'<a id="goldhen" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v1.1 by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>&nbsp;'+
+			'<a id="goldhen2b" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v2.0b by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
