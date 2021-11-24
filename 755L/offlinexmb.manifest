@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.5.6 Self-Host 
+# v2.5.7 Self-Host 
 
 disableupdates.bin
 dumper.bin
@@ -15,6 +15,9 @@ goldhen755.bin
 goldhenb750.bin
 goldhenb751.bin
 goldhenb755.bin
+goldhen2b750.bin
+goldhen2b751.bin
+goldhen2b755.bin
 index.html
 int64.js
 jb.js
