@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.8.1 Self-Host 
+# v2.8.4 Self-Host 
 
 index.html
 Style.css
@@ -28,6 +28,8 @@ payloads\goldhen.html
 payloads\goldhen1.html
 payloads\goldhen702.js
 payloads\goldhen702v1.js
+payloads\goldhen2b.html
+payloads\goldhen702v2b.js
 payloads\GTA-V-Lamance_7.02-1.32.js
 payloads\gta1.html
 payloads\gta2.html
@@ -79,3 +81,6 @@ payloads\utils.js
 payloads\utilsm.js
 payloads\webrte.html
 payloads\webrte.js
+
+NETWORK:
+*
