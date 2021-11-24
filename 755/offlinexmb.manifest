@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.5.6 Self-Host 
+# v2.5.8 Self-Host 
 
 app2usb.bin
 backup.bin
@@ -21,6 +21,9 @@ goldhen755.bin
 goldhenb750.bin
 goldhenb751.bin
 goldhenb755.bin
+goldhen2b750.bin
+goldhen2b751.bin
+goldhen2b755.bin
 gtava1.bin
 gtava2.bin
 gtava3.bin
