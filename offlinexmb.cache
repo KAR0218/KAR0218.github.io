@@ -1,0 +1,10 @@
+CACHE MANIFEST 
+# v2.5.9 Self-Host 
+
+index.html
+int64.js
+payloads.js
+ps4.js
+rop.js
+userland.js
+utils.js
