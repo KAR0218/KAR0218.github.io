@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.8.4 Self-Host 
+# v2.8.6 Self-Host 
 
 avatar.bin
 cache.bin
@@ -11,6 +11,7 @@ payload.js
 FTP_RW.bin
 goldhen672.bin
 goldhen672v1.bin
+goldhen2b672.bin
 gtava100.bin
 gtava127.bin
 gtava132.bin
