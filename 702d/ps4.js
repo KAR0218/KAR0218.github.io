@@ -140,6 +140,7 @@ document.getElementById("myProgress").remove();
 			'<a href="#" id="henb" class="button pointer" onMouseOver="progress.innerHTML=\'Hen 213b by Karo for PS4 7.02 Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.02 FW\'" onclick="toggle_payload(\'henb\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">HEN 2.1.3 b</a>&nbsp;'+
 			'<a href="#" id="goldhenv1" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v1.0 by SISTR0 for PS4 7.02 Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.02 FW\'" onclick="toggle_payload(\'goldhenv1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A">GoldHenV1.0</a>&nbsp;'+
 			'<a href="#" id="goldhen" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v1.1 by SISTR0 for PS4 7.02 Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.02 FW\'" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A">GoldHenV1.1</a>&nbsp;'+
+			'<a href="#" id="goldhen2b" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v2.0b by SISTR0 for PS4 7.02 Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.02 FW\'" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A">GoldHenV2b</a>&nbsp;'+
 			'<a href="#" id="spoof" class="button pointer" onMouseOver="progress.innerHTML=\'spoof for PS4 7.02 Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.02 FW\'" onclick="toggle_payload(\'spoof\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Spoof 9.99</a>&nbsp;'+
 			'<a href="#" id="binloader" class="button pointer" onMouseOver="progress.innerHTML=\'Binloader for PS4 7.02 Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.02 FW\'" onclick="toggle_payload(\'binloader\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Bin Loader</a>&nbsp;'+
 			'</td>'+
@@ -590,7 +591,7 @@ function sprayStringImpl(start, end) {
 }
 
 function go() {
-	if(localStorage.is702dCached){
+	if(localStorage.is702d2Cached){
 		/* Init spray */
 		sprayHTMLTextArea();
 		g_input = input1;
