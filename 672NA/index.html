@@ -186,6 +186,17 @@ try {
 	}
 }    
 
+function gold2b() {
+progress.innerHTML="<div>Loading GoldHen 1.1 ...</div>";
+start_exploit();
+start_exploit();
+try {
+	  stagegold2b();
+	} catch (e) {
+		alert(e);
+	}
+}
+
 function webrte() {
     progress.innerHTML="<div>Loading WebRTE ...</div>";
     start_exploit();
@@ -272,6 +283,7 @@ function preweb(){
 <div align="center">
 <a  class="button pointer"  onclick="gold1(); return false" style="font-size:24px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>
 <a  class="button pointer"  onclick="gold(); return false" style="font-size:24px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>
+<a  class="button pointer"  onclick="gold2b(); return false" style="font-size:24px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>
 <a  class="button pointer" onclick="ps4debug(); return false" style="font-size:24px;text-align:center;text-shadow: 4px 4px 4px black;color:white">PS4DEBUG</a>
 <a  class="button pointer" onclick="webrte(); return false" style="font-size:24px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white">WebRTE</a>
 </div>
@@ -349,6 +361,7 @@ tempC.value=79;
   <script src="./expl.js"></script>
   <script src="./exploit.js"></script>
   <script src="./goldhen.js"></script>
+  <script src="./goldhen2b.js"></script>
   <script src="./goldhen1.js"></script> 
 <script src="./ps4debug.js"></script>
   <script src="./webrte.js"></script>
