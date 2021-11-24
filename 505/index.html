@@ -278,6 +278,7 @@ header div{
 
 <button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.0 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen1(); return false"><b>&nbsp;&nbsp;GoldHenV1.0&nbsp;&nbsp; </button>
 <button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.1 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen(); return false"><b>&nbsp;&nbsp;GoldHenV1.1&nbsp;&nbsp; </button>
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v2.0b by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen2b(); return false"><b>&nbsp;&nbsp;GoldHenV2.0b&nbsp;&nbsp; </button>
 <br><br>
 <button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.2'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen212(); return false"><b>&nbsp;&nbsp;Hen v2.1.2&nbsp;&nbsp; </button>
 <button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Hen 2.1.3'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_hen213(); return false"><b>&nbsp;&nbsp;Hen v2.1.3&nbsp;&nbsp; </button>
@@ -313,6 +314,13 @@ function load_goldhen1(){
   var link = document.createElement('a');
         document.body.appendChild(link);
         link.href = 'goldhen1.html';
+        link.target = 'exp-loader';
+        link.click();
+}
+function load_goldhen2b(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'goldhen2.html';
         link.target = 'exp-loader';
         link.click();
 }

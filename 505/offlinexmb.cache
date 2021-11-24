@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.6.3 Self-Host 
+# v2.6.6 Self-Host 
 
 1gblinux.html
 2gblinux.html
@@ -25,6 +25,7 @@ FTP.bin
 FTPRW.bin
 ftprw.html
 goldhen.html
+goldhen2.html
 goldhen1.html
 goldhen505.bin
 goldhen505v1.bin
@@ -48,6 +49,8 @@ HenVR18.bin
 index.html
 infinix.bin
 infinix.html
+kclock.html
+kclock.bin
 kdamper.bin
 kdamper.html
 Linux1GB.bin
