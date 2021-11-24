@@ -827,6 +827,10 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Loading GoldHenv1.0.. Please wait..";
 		PLfile = 'goldhen1.bin';
 		preloadScripts(['jb.js', 'loader.js']);
+	}else if(pld == "goldhen2b"){
+		document.getElementById("progress").innerHTML="Loading GoldHenv2.0b.. Please wait..";
+		PLfile = 'goldhen2b702.bin';
+		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "ps4debug"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		PLfile = 'ps4debug.bin';
@@ -862,6 +866,7 @@ function done(){
 			'<br><br><br><br><br><a href="#" id="hen213b" class="button" onclick="toggle_payload(\'hen213b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Hen213b</a>&nbsp;'+
 			'<a href="#" id="goldhen1" class="button" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
 			'<a href="#" id="goldhen" class="button" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>&nbsp;'+
+			'<a href="#" id="goldhen2b" class="button" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
