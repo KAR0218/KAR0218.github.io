@@ -1,0 +1,92 @@
+<html manifest="offlinexmb.cache">
+<head>
+<meta charset="utf-8">
+<title>Karo Host 7.02 fw</title>
+<link rel="stylesheet prefetch" href="Style.css">
+    <script>
+        document.cookie = 'kex=1';
+    </script>
+<script>
+function DLProgress(e){
+	parent.ScrOverlay.style.display="block";parent.MyItems.style.display="none";
+	Percent=(Math.round(e.loaded / e.total * 100));
+	parent.cacheUPDtxt.innerHTML="Installing Offline Cache: " + Percent + "%";
+	parent.CacheBar.style.width=Percent + '%';
+}
+function DisplayCacheProgress(){
+	setTimeout(function(){parent.cacheUPDtxt.innerHTML="Cache Installed Successfully.Turn off Internet & Reopen the Browser!!";},1000);}
+	window.applicationCache.addEventListener("progress",DLProgress,false);
+	window.applicationCache.oncached=function(e){DisplayCacheProgress();};
+	window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
+	window.applicationCache.onerror=function(e){parent.cacheUPDtxt.innerHTML="Error Installing Cache";
+};
+</script>
+<script>
+    function showdate() {
+  var dt = new Date();
+    Hour= dt.getHours();
+  Minute= dt.getMinutes();
+     Day=dt.getDate();
+   Month=dt.getMonth()+1;
+   Year=dt.getFullYear();
+if (Minute < 10) { Minute = "0" + Minute; };
+if (Hour < 10) { Hour = "0" + Hour; };
+document.getElementById("date").innerHTML = (Day+"/"+Month+"/"+Year);
+document.getElementById("clock").innerHTML = (Hour+":"+Minute);
+  }
+  
+  setInterval(showdate,0);
+</script>
+</head>
+<body class="bg-darker" style='background-color:#1A1920'>
+<div id=ScrOverlay class=cacheUPDbg><pre id=cacheUPDtxt class=cacheUPD></pre>
+<div id=CacheProgress><div id=CacheBar></div></div></div>
+<br><span id="date" ></span><span id="clock" ></span><h1 style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host 7.02 fw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+<br>
+<h1 id=msgs2 style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1>
+<br>
+<div style="text-align:center"  id="MyItems">
+<a href="payloads/hen.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='HEN 2.1.3 by ChendoChap for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Hen </B></button></a>
+<a href="payloads/hen213b.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='HEN 2.1.3b by Karo Spoof to 9.99 and fixed RestMode for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Hen213b </B></button></a>
+<a href="payloads/goldhen1.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.0 by Sistro fixed RestMode for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV1.0</B></button></a>
+<a href="payloads/goldhen.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.1 by Sistro fixed RestMode for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV1.1</B></button></a>
+<a href="payloads/goldhen2b.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v2.0b by Sistro fixed RestMode for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV2b</B></button></a>
+<a href="payloads/mira.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Mira 2 Beta by Karo Spoof to 9.99 and Comlete fixed RestMode for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Mira2b </B></button></a>
+<a href="payloads/spoof.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Spoof to 9.99FW for PS4 7.02 Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Spoof</B></button></a>
+<br><br>
+<a href="payloads/binloader.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Loads a bin file sent to the PS4 IP address on port 9020'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Bin Loader </B></button></a>
+<a href="payloads/ftp.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A full access FTP server for the PS4'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> FTP </B></button></a>
+<a href="payloads/dumper.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Dumper Game </B></button></a>
+<a href="payloads/orbis.html"><button style='font-size:20px;background-color:red;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Orbis Toolbox Loader Alfa 1167'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Orbis Toolbox </B></button></a>
+<a href="payloads/kclock.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Change clock kernel'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Kernel Clock </B></button></a>
+<a href="payloads/app2usb.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Move installed games to an external USB drive'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> App2USB </B></button></a>
+<a href="payloads/todex.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='unlocks some debug features available on testkit'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> ToDex </B></button></a>
+<br><br>
+<a href="payloads/backup.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Create a backup of important database files ans User Data'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> DB Backup </B></button></a>
+<a href="payloads/restore.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> DB Restore </B></button></a>
+<a href="payloads/hblocker.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> History Blocker </B></button></a>
+<a href="payloads/dupdates.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B>Disable Update</B></button></a>
+<a href="payloads/eupdates.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Enable Update </B></button></a>
+<a href="payloads/ebrowser.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Enable Browser'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Enable Browser </B></button></a>
+<br><br>
+<a href="payloads/gtan1.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods Native Caller 1.00'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV M1 1.00 </B></button></a>
+<a href="payloads/gtan2.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods Native Caller 1.27'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV M1 1.27 </B></button></a>
+<a href="payloads/gtan3.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods Native Caller 1.32'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV M1 1.32 </B></button></a>
+<a href="payloads/gta1.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods ArabicGuy for Base(R1+L1)'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV M2 1.00 </B></button></a>
+<a href="payloads/gta2.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods ArabicGuy for 1.27(==> + [])'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV M2 1.27 </B></button></a>
+<a href="payloads/gta3.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods ArabicGuy for 1.32(==> + [])'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV M2 1.32 </B></button></a>
+<br><br>
+<a href="payloads/gtal.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods ArabicGuy for 1.32(==> + [])'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV L 1.32 </B></button></a>
+<a href="payloads/ps4debug.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Save Data Mounter'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> PS4Debug </B></button></a>
+<a href="payloads/linux1.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Linux 1GB VRAM Loader'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Linux 1GB </B></button></a>
+<a href="payloads/webrte.html"><button style='font-size:20px;background-color:blue;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A large collection of trainers for your PS4 games from Ps4trainer.com'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> WebRTE </B></button></a>
+<a href="payloads/linux3.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Linux 3GB VRAM Loader'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Linux 3GB </B></button></a>
+<a href="payloads/fix.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ce-30391-6_fix'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> CE-30391-6_fix </B></button></a>
+<a href="payloads/web.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Web Activator'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Web_activator </B></button></a>
+ <br><br><br><div class="content" >
+ 	<div class="text" >
+ 	 <br><span style='text-shadow: 4px 4px 4px black;' class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <span style='text-shadow: 4px 4px 4px black;' class="hue" >Karo Sharifi</span>
+ 	 <br><br><br><span style='text-shadow: 4px 4px 4px black;' class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style='font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Sleirsgoevy , ChendoChap , SiSTRo ... </a>
+	 </div></div>
+</body>
+</html>

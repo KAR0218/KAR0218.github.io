@@ -1,0 +1,53 @@
+<html>
+<body onload="go()" style='background-color:#343a40'>
+<script>
+function print(){}
+
+var scriptCode = '';
+
+function preloadScripts(lst)
+{
+    for(var i = 0; i < lst.length; i++)
+    {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', lst[i], false);
+        xhr.send('');
+        scriptCode += xhr.responseText + '\n';
+    }
+}
+
+function done()
+{
+    if(main_ret == 0 || main_ret == 179)
+    {
+    }
+    else
+        alert("You're all set!");
+}
+
+window.midExploit = function()
+{
+        preloadScripts(['jb.js', 'preloader.js', 'payload.js', 'loader.js', 'frontend.js'], go);
+}
+
+window.postExploit = function()
+{
+    document.cookie = 'kex=0';
+    setTimeout(function() //update the screen one last time...
+    {
+        eval.call(window, scriptCode);
+        done();
+    }, 100);
+};
+</script>
+<script src="utilsm.js"></script>
+<script src="int64m.js"></script>
+<script src="ps4m.js"></script>
+<button id="input1" onfocus="handle2()"></button>
+<button id="input2"></button>
+<button id="input3" onfocus="handle2()"></button>
+<select id="select1">
+<option value="value1">Value1</option>
+</select>
+</body>
+</html>
