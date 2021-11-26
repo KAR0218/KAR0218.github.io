@@ -1,0 +1,258 @@
+<html manifest="offlinexmb.cache">
+<head>
+    <style>
+    html, body{
+margin:auto;
+font-family:sans-serif;
+font-size:20px;
+font-weight:lighter;
+text-align:left;
+color:#FFFFFF;
+background-size:cover;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+ .content {
+  width:80%;
+  height:15%;
+  margin-left:7.5%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  margin-top:1%;
+  font-size:25px;
+  text-align:center;
+  border-radius:30px;
+  padding:20px;
+  line-height:12px;
+ }
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ .yellow {
+  color:yellow;
+ }
+ .hue {
+  color:yellow;
+  padding:10px;
+  border-radius:10px;
+  animation:hue 5s linear infinite;
+  -webkit-animation: hue 5s linear infinite;
+  box-shadow: 0px 0px 50px yellow;
+  color:white;
+  background:rgba(255,255,0,0.4);
+ }
+ .hue:hover{
+  color:yellow;
+  background:transparent;
+ }
+ @keyframes hue{
+ 0%{
+ filter:hue-rotate(0deg);
+ -webkit-filter:hue-rotate(0deg);
+ }
+ 10%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 20%{
+ box-shadow: 1px 1px 50px yellow;
+ }
+ 30%{
+ box-shadow: 1px 0px 50px yellow;
+ }
+ 40%{
+  box-shadow: 1px -1px 50px yellow;
+ }
+ 50%{
+ box-shadow: 0px -1px 50px yellow;
+ }
+ 60%{
+ box-shadow: -1px -1px 50px yellow;
+ }
+ 70%{
+ box-shadow: -1px 0px 50px yellow;
+ }
+ 80%{
+ box-shadow: -1px 1px 50px yellow;
+ }
+ 90%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 100%{
+ filter:hue-rotate(360deg);
+ -webkit-filter:hue-rotate(360deg);
+ }
+ }
+ .text {
+  padding-bottom:50px;
+ }
+  .back {
+   font-size:25px;
+   margin-top:10px;
+   display:block;
+   line-height:55px;
+   width:20%;
+   text-decoration:none;
+   height:50px;
+   background:white;
+   color:black;
+   border-radius:15px;
+  }
+  .back:hover{
+   border:2px solid white;
+   background:transparent;
+   box-sizing:border-box;
+   color:white;
+  }
+/* Modal Content */
+.modal-content {
+  font-family: BFARNAZ;
+  font-size: 18px;
+  position: relative;
+  background-color: #dddddd;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+button {
+            background:rgba(0,0,0,0.5);
+			box-shadow: 0 5px 20px 0 white;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 173px;
+            height: 40px;            
+            text-align: center;
+}
+button:hover {
+            box-shadow: 0 5px 50px 0 white;
+            color: white;
+            border-radius: 10px;
+			background-color: #0F0F53;
+}
+
+hr {
+padding:0;
+margin:0;
+opacity:0.7;
+}
+
+#msgs2 {
+ font-weight:bold;
+ text-shadow: 4px 4px 4px black;
+
+ font-size:17px;
+}
+.pointer {cursor: pointer;}
+
+
+    </style>
+<meta charset="utf-8">
+<title>Karo Host 7.5X fw</title>
+    <script>
+        document.cookie = 'kex=1';
+    </script>
+<script>
+  window.applicationCache.ondownloading=function(){document.getElementById("msgs2").innerHTML="Caching Started!!"};
+  window.applicationCache.onprogress=function(a){document.getElementById("msgs2").innerHTML="Caching Status: "+(Math.round(100*(a.loaded/a.total)))+"% Completed"};
+  window.applicationCache.oncached=function(){document.getElementById("msgs2").innerHTML="Cached Successfully!!";setTimeout(function(){document.getElementById("msgs2").innerHTML="Turn off internet"; }, 1500);};
+</script>
+</head>
+<body style='background-color:#1A1920'>
+<br><h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host 7.5X fw</h1>
+<h1 id=msgs2 style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1>
+<div style="text-align:center"  id="MyItems">
+<br>
+<a href="payload.html#f=mira.js"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Mira for PS4 7.5X Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Mira </B></button></a>
+<a href="payload.html#f=mira2b.js"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Mira2b spoof to 9.99 and fix rest mode by Karo for PS4 7.5X Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Mira2b </B></button></a>
+<a href="payload.html#f=hen213b.js"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Hen v2.1.3b by SISTR0, Spoof to 9.99 & Ported to PS4 7.5X Fw by Karo'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Hen213b </B></button></a>
+<a href="goldhen1.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.0 by SISTR0 for PS4 7.5X Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV1.0</B></button></a>
+<a href="goldhenb.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.1b3 by SISTR0 for PS4 7.5X Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV1.1b3</B></button></a>
+<a href="goldhen.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.1 by SISTR0 for PS4 7.5X Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV1.1</B></button></a>
+<a href="goldhen2b.html"><button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v2.0b by SISTR0 for PS4 7.5X Fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>GoldHenV2b</B></button></a>
+<a href="payload.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Loads a bin file sent to the PS4 IP address on port 9021'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Bin Loader </B></button></a>
+<br><br>
+<a href="payload.html#f=ftp.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A full access FTP server for the PS4'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> FTP </B></button></a>
+<a href="payload.html#f=dumper.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Dumper Game </B></button></a>
+<a href="payload.html#f=kclock.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Change clock kernel'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Kernel Clock </B></button></a>
+<a href="payload.html#f=app2usb.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Move installed games to an external USB drive'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> App2USB </B></button></a>
+<a href="payload.html#f=todex.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='unlocks some debug features available on testkit'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> ToDex </B></button></a>
+<a href="payload.html#f=idu.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Disable IDU Mode'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Exit IDU </B></button></a>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Fan Speed Control'"; onmouseout="msgs2.innerHTML='Status'" onclick=load_fan() type="button"><B> Fan Threshold </B></button><select id="tempC" class="yellow" style='font-size:20px;text-align:center;color:black;box-shadow: 0 5px 20px 0 white;' ></select>&#176;C
+<br><br>
+<a href="payload.html#f=Orbis-Toolbox-755.js"><button style='font-size:20px;text-align:center;background-color:red;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Orbis Toolbox Loader Alfa 1167 for PS4 7.5X fw'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Orbis Toolbox </B></button></a>
+<a href="payload.html#f=backup.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Create a backup of important database files ans User Data'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> DB Backup </B></button></a>
+<a href="payload.html#f=restore.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> DB Restore </B></button></a>
+<a href="payload.html#f=hblocker.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> History Blocker </B></button></a>
+<a href="payload.html#f=dupdates.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B>Disable Update</B></button></a>
+<a href="payload.html#f=eupdates.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Enable Update </B></button></a>
+<a href="payload.html#f=linux1G.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Linux Loader 1G'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Linux 1G </B></button></a>
+<a href="payload.html#f=linux3G.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Linux Loader 3G'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Linux 3G </B></button></a>
+<br><br>
+<a href="payload.html#f=daslr.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='disable aslr'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> disable aslr </B></button></a>
+<a href="payload.html#f=kdumper.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='kernel dumper'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> kernel dumper </B></button></a>
+<a href="payload.html#f=rif.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Rif Renamer'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> rif renamer </B></button></a>
+<a href="payload.html#f=webrte755.js"><button style='font-size:20px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='WebRTE for PS4 7.5X fw'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> WebRTE </B></button></a>
+<a href="web.html"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='web activator for PS4 7.5X fw'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> web_activator </B></button></a>
+<a href="payload.html#f=mdumper.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='module dumper'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> module dumper </B></button></a>
+<a href="payload.html#f=ebrowser.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Enable Browser'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> Enable Browser </B></button></a>
+<a href="payload.html#f=ps4debug.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ps4debug'"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> ps4debug </B></button></a>
+<br><br>
+
+<a href="payload.html#f=gtava1.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV ArabicGuy 1.00 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV A1 </B></button></a>
+<a href="payload.html#f=gtava12.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV ArabicGuy 1.27 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV A2 </B></button></a>
+<a href="payload.html#f=gtava3.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV ArabicGuy 1.32 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV A3 </B></button></a>
+<!--<a href="payload.html#f=gtavn1.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Native Caller 1.00 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV N1 </B></button></a>
+<a href="payload.html#f=gtavn2.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Native Caller 1.27 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV N2 </B></button></a>
+<a href="payload.html#f=gtavn3.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Native Caller 1.32 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV N3 </B></button></a>-->
+<a href="payload.html#f=gtavl.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Lamance 1.32 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV L </B></button></a>
+<a href="payload.html#f=gtavbq133.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV BeefQueefMod 1.33 for 75X '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> GTAV BQ </B></button></a>
+<a href="payload.html#f=Oysters-Free-1.13.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.1 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> RDR2 V1.13 </B></button></a>
+<a href="payload.html#f=Oysters-Free-1.19.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.1 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> RDR2 V1.19 </B></button></a>
+<a href="payload.html#f=Oysters-Free-1.24.js"><button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.1 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="msgs2.innerHTML='Status'" type="button"><B> RDR2 V1.24 </B></button></a>
+<br><br><div class="content" >
+ 	<div class="text" >
+ 	 <br><span style='text-shadow: 4px 4px 4px black;' class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <a class="hue" style='font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Karo Sharifi</a>
+ 	 <br><br><br><br><span style='text-shadow: 4px 4px 4px black;' class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style='font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Sleirsgoevy , Al Azif , ChendoChap , SiSTRo , ... </a>
+	 </div></div>
+<script>
+    for(var i=50; i<=75; i=i+5){
+    var select = document.getElementById("tempC");
+    var option = document.createElement("OPTION");
+	select.options.add(option);
+	option.text = i;
+	option.value = i;
+}
+tempC.value=60;
+
+function load_fan(){
+
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = "payload.html#f=fan"+tempC.value+".js";
+        link.click();
+}
+</script>	 
+</div>
+</body>
+</html>
