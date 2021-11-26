@@ -1,0 +1,36 @@
+CACHE MANIFEST 
+# v2.5.7 Self-Host 
+
+disableupdates.bin
+dumper.bin
+enableupdates.bin
+exploit.js
+ftp.bin
+goldhen1v750.bin
+goldhen1v751.bin
+goldhen1v755.bin
+goldhen750.bin
+goldhen751.bin
+goldhen755.bin
+goldhenb750.bin
+goldhenb751.bin
+goldhenb755.bin
+goldhen2b750.bin
+goldhen2b751.bin
+goldhen2b755.bin
+index.html
+int64.js
+jb.js
+lndex.html
+loader.js
+loaderx.js
+loaderxh.js
+offlinexmb.manifest
+preloader.js
+ps4.js
+ps4debug.bin
+utils.js
+webrte755.bin
+
+NETWORK:
+*
