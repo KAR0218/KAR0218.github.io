@@ -188,13 +188,8 @@ try {
 
 function gold2b() {
 progress.innerHTML="<div>Loading GoldHen 2.0b ...</div>";
-start_exploit();
-start_exploit();
-try {
-	  stagegold2b();
-	} catch (e) {
-		alert(e);
-	}
+var script = document.createElement('script');script.src = "goldhen2b.js";document.getElementsByTagName('head')[0].appendChild(script);
+var script = document.createElement('script');script.src = "binloader.js";document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function webrte() {
