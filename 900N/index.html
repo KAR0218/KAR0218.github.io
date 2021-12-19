@@ -403,6 +403,7 @@ function load_WebRTE(){
 function load_fan(){
     var script = document.createElement('script');script.src = "fan-threshold.js";localStorage.setItem('fanthreshold', tempC.value);document.getElementsByTagName('head')[0].appendChild(script);
     progress.innerHTML="Payload loading... please wait";
+    out_jb = "AllPL";
     setTimeout(poc,1500);
 }
 
