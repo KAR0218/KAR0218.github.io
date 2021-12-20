@@ -382,6 +382,12 @@ function load_GTABQ2(){
     out_jb = "AllPL";     load_poc();
 }
 
+function load_Oysters100(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Oysters1.00.bin";
+    out_jb = "AllPL";     load_poc();
+}
+	
 function load_Oysters113(){
     progress.innerHTML="Payload loading... please wait";
     PLfile = "Oysters1.13.bin";
@@ -466,8 +472,8 @@ function Mloader(){
 <button id="button-Payload" onMouseOver="progress.innerHTML='Create a backup of important database files ans User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_BackupDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Backup </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RestoreDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Restore </button>
 <br><br>
-<button id="button-Payload" onMouseOver="progress.innerHTML='WebRTE for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_WebRTE()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > WebRTE </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Ps4debug </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='WebRTE for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_WebRTE()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:blue' > WebRTE </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:green' > Ps4debug </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Rif Renamer'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RIFRenamer()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Rif renamer </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='permanentuart'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_permanentuart()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > permanent uart </button>
 <!--<button id="button-Payload" onMouseOver="progress.innerHTML='Linux Loader 1G'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Linux()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Linux 1G </button>
@@ -478,11 +484,12 @@ function Mloader(){
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.33 by rfoodxmodz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A133 </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.33 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.34 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ2 </button>
-<!--<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Lamance 1.32 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAL()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV L </button>
+<!--<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Lamance 1.32 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAL()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV L </button>-->
 <br><br>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.1 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > RDR2 V1.13 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.1 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > RDR2 V1.19 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.1 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > RDR2 V1.24 </button>-->
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.3 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.3 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.3 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.3 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
 <br><br>
 <div class="content" >
  	    <div class="text" >
