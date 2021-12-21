@@ -1,4 +1,4 @@
-<html manifest="Cache.manifest">
+<html manifest="xxxCache.manifest">
 <head>
 <style>
     html, body{
@@ -214,6 +214,16 @@ if (xhr.readyState == 4){
 function allset() {
 window.progress.innerHTML="Payload loaded";
 alert("Payload Loaded. Click OK after error memory");
+}
+
+function Binset() {
+window.progress.innerHTML="Payload Loaded. Send payloads to port 9020";
+alert("Payload Loaded. Send payloads to port 9020");
+}
+
+function Mset() {
+window.progress.innerHTML="Payload Loaded. Send payloads to port 9021";
+alert("Payload Loaded. Send payloads to port 9021");
 }
 
 function goldhen(){
@@ -435,8 +445,14 @@ function Mira(){
 function Mloader(){
     progress.innerHTML="Payload loading... please wait";
     PLfile = "MiraLoader.bin";
-    out_jb = "GoldPL";
+    out_jb = "MLD";
     load_poc();
+}
+
+function Bloader(){
+    progress.innerHTML="Payload loading... please wait";
+    out_jb = "BinLD";
+    setTimeout(poc,1500);
 }
 </script>
 <script src="int64.js"></script>
@@ -448,6 +464,7 @@ function Mloader(){
 <h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host New 9.00 fw</h1>
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1><br>
 <div style="text-align:center"  id="MyItems">
+<button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Mira loader Port 9021 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > MiraLoader </button>
 <!--<a href="jb.html#p0=mira.js&p1=mira2.js"><button  onMouseOver="progress.innerHTML='Mira Orbis for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Mira</button></a>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Mira Orbis for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mira()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Mira </button>-->
