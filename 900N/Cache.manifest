@@ -1,10 +1,23 @@
 CACHE MANIFEST 
-# v1.0.7 Self-Host
+# v1.1.0 Self-Host
 CACHE: 
 app-dumper.bin
 app2usb.bin
 backupdb.bin
 disableaslr.bin
+netcat.js
+jb.html
+int64b.js
+ropb.js
+kexploitb.js
+exploit.js
+malloc.js
+ropb2.js
+syscalls.js
+syscalls2.js
+kexploit-launcher.js
+relocator.js
+payload.html
 disableupdates.bin
 enablebrowser.bin
 enableupdates.bin
@@ -18,18 +31,21 @@ index.html
 int64.js
 kerneldumper.bin
 kexploit.js
-LinuxLoader.bin
-LinuxLoader-3gb.bin
+LinuxLoader.js
+LinuxLoader2gb.js
+LinuxLoader3gb.js
+LinuxLoader4gb.js
+LinuxLoader5gb.js
 mdumper.bin
-Mira.elf
 MiraLoader.bin
+mira.js
+permanentuart.bin
+restoredb.bin
+rifrenamer.bin
 Oysters1.00.bin
 Oysters1.13.bin
 Oysters1.19.bin
 Oysters1.24.bin
-permanentuart.bin
-restoredb.bin
-rifrenamer.bin
 rop.js
 ToDex.bin
 gtava1.bin
