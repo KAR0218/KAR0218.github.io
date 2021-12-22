@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v1.1.4 Self-Host
+# v1.1.5 Self-Host
 CACHE: 
 app-dumper.bin
 app2usb.bin
@@ -39,6 +39,8 @@ LinuxLoader5gb.js
 mdumper.bin
 MiraLoader.bin
 mira.js
+mira2.js
+Orbis-Toolbox-900.bin
 permanentuart.bin
 restoredb.bin
 rifrenamer.bin
@@ -56,6 +58,9 @@ BeefQueefMod134.bin
 webkit.js
 WebRTE.bin
 ps4debug.bin
+web.html
+frontend.js
+payload.js
 
 NETWORK: 
 * 
