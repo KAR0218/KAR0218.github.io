@@ -1,0 +1,544 @@
+<html manifest="Cache.manifest">
+<head>
+<style>
+    html, body{
+margin:auto;
+font-family:sans-serif;
+font-size:20px;
+font-weight:lighter;
+text-align:left;
+color:#FFFFFF;
+background-size:cover;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+ .content {
+  width:80%;
+  height:15%;
+  margin-left:7.5%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  margin-top:1%;
+  font-size:25px;
+  text-align:center;
+  border-radius:30px;
+  padding:20px;
+  line-height:12px;
+ }
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ .yellow {
+  color:yellow;
+ }
+ .hue {
+  color:yellow;
+  padding:10px;
+  border-radius:10px;
+  animation:hue 5s linear infinite;
+  -webkit-animation: hue 5s linear infinite;
+  box-shadow: 0px 0px 50px yellow;
+  color:white;
+  background:rgba(255,255,0,0.4);
+ }
+ .hue:hover{
+  color:yellow;
+  background:transparent;
+ }
+ @keyframes hue{
+ 0%{
+ filter:hue-rotate(0deg);
+ -webkit-filter:hue-rotate(0deg);
+ }
+ 10%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 20%{
+ box-shadow: 1px 1px 50px yellow;
+ }
+ 30%{
+ box-shadow: 1px 0px 50px yellow;
+ }
+ 40%{
+  box-shadow: 1px -1px 50px yellow;
+ }
+ 50%{
+ box-shadow: 0px -1px 50px yellow;
+ }
+ 60%{
+ box-shadow: -1px -1px 50px yellow;
+ }
+ 70%{
+ box-shadow: -1px 0px 50px yellow;
+ }
+ 80%{
+ box-shadow: -1px 1px 50px yellow;
+ }
+ 90%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 100%{
+ filter:hue-rotate(360deg);
+ -webkit-filter:hue-rotate(360deg);
+ }
+ }
+ .text {
+  padding-bottom:50px;
+ }
+  .back {
+   font-size:25px;
+   margin-top:10px;
+   display:block;
+   line-height:55px;
+   width:20%;
+   text-decoration:none;
+   height:50px;
+   background:white;
+   color:black;
+   border-radius:15px;
+  }
+  .back:hover{
+   border:2px solid white;
+   background:transparent;
+   box-sizing:border-box;
+   color:white;
+  }
+ #psip {
+  text-align: center;
+  margin-left: 38%;
+  margin-right: auto;
+  width:15%;
+  display:flex;
+  position: absolute;
+  
+  background: rgba(0, 0, 0, 0.500);
+  border-radius: 2em;
+  border: none;
+  padding: 0.8em;
+  
+  color: #ffffff;
+  padding-left: 1.5em;
+  
+  outline: none;
+  box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
+  backdrop-filter: blur(5px);
+}
+/* Modal Content */
+.modal-content {
+  font-family: BFARNAZ;
+  font-size: 18px;
+  position: relative;
+  background-color: #dddddd;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+button {
+            background:rgba(0,0,0,0.5);
+			box-shadow: 0 5px 20px 0 white;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 173px;
+            height: 40px;            
+            text-align: center;
+}
+button:hover {
+            box-shadow: 0 5px 50px 0 white;
+            color: white;
+            border-radius: 10px;
+			background-color: #0F0F53;
+}
+
+hr {
+padding:0;
+margin:0;
+opacity:0.7;
+}
+
+#progress {
+ font-weight:bold;
+ text-shadow: 4px 4px 4px black;
+
+ font-size:17px;
+}
+.pointer {cursor: pointer;}
+
+
+    </style>
+<meta charset="utf-8">
+<title>Karo Host New 9.00 fw</title>
+		<script>
+			window.applicationCache.ondownloading=function(){document.getElementById("progress").innerHTML="Page Caching Started!!";};
+			window.applicationCache.onprogress=function(a){document.getElementById("progress").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
+			window.applicationCache.oncached=function(){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Turn Off the Internet & Reopen the Page !!"; }, 1500);};
+		</script>
+<script>
+function load_poc(){
+var xhr = new XMLHttpRequest();
+xhr.responseType = "arraybuffer";
+xhr.open("GET",PLfile,true);
+xhr.send();
+xhr.onreadystatechange=function(){
+if (xhr.readyState == 4){
+  var tmp0 = new Uint8Array(xhr.response.byteLength);
+  tmp0.set(new Uint8Array(xhr.response), 0);
+  var payload = new Uint32Array(tmp0);
+  PLS = payload;
+  setTimeout(poc, 1500); 
+  }
+};
+}
+
+function allset() {
+window.progress.innerHTML="Payload loaded";
+alert("Payload Loaded. Click OK after error memory");
+}
+
+function Binset() {
+window.progress.innerHTML="Payload Loaded. Send payloads to port 9020";
+alert("Payload Loaded. Send payloads to port 9020");
+}
+
+function Mset() {
+window.progress.innerHTML="Payload Loaded. Send payloads to port 9021";
+alert("Payload Loaded. Send payloads to port 9021");
+}
+
+function goldhen(){
+    progress.innerHTML="Goldhen loading... please wait";
+    PLfile = "goldhen2b.bin";
+    out_jb = "GoldPL";
+    load_poc();
+}
+
+function goldhen2(){
+    progress.innerHTML="Goldhen 2.0b2 loading... please wait";
+    PLfile = "goldhen2b2.bin";
+    out_jb = "GoldPL";
+    load_poc();
+}
+
+function load_PS4Debug(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "ps4debug.bin";
+    out_jb = "AllPL";
+    load_poc();
+}
+
+function load_permanentuart(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "permanentuart.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_App2USB(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "app2usb.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_BackupDB(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "backupdb.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_AppDumper(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "app-dumper.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_KernelDumper(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "kerneldumper.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_ModuleDumper(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "mdumper.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_RestoreDB(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "restoredb.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DisableASLR(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "disableaslr.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DisableUpdates(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "disableupdates.bin";
+    out_jb = "AllPL";
+    load_poc();
+}
+
+function load_EnableUpdates(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "enbaleupdates.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_EnableBrowser(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "enbalebrowser.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_ExitIDU(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "exitidu.bin";
+    out_jb = "AllPL";     load_poc();
+}
+  
+function load_FTP(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "ftp.bin";
+    out_jb = "AllPL";     load_poc();
+}
+  
+function load_HistoryBlocker(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "historyblocker.bin";
+    out_jb = "AllPL";     load_poc();
+}
+  
+function load_RIFRenamer(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "rifrenamer.bin";
+    out_jb = "AllPL";     load_poc();
+}
+  
+function load_Orbis(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Orbis-Toolbox-900.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_Linux(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "LinuxLoader.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_Linux3gb(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "LinuxLoader-3gb.bin";
+    out_jb = "AllPL";     load_poc();  
+}
+
+function load_GTAAr1(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "gtava1.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_GTAAr2(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "gtava2.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_GTAAr3(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "gtava3.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_GTAL(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "gtavl.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_GTABQ(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "BeefQueefMod.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_GTABQ2(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "BeefQueefMod134.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_GTABQ3(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "BeefQueefMod138.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_Oysters100(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Oysters1.00.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_Oysters113(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Oysters1.13.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_Oysters119(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Oysters1.19.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+function load_Oysters124(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Oysters1.24.bin";
+    out_jb = "RDRS";     load_poc();
+}
+
+
+function load_ToDex(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "ToDex.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_WebRTE(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "WebRTE.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_fan(){
+    var script = document.createElement('script');script.src = "fan-threshold.js";localStorage.setItem('fanthreshold', tempC.value);document.getElementsByTagName('head')[0].appendChild(script);
+    progress.innerHTML="Payload loading... please wait";
+    out_jb = "AllPL";
+    setTimeout(poc,1500);
+}
+
+function Mira(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "Mira.elf";
+    out_jb = "AllPL";     load_poc();
+}
+
+function Mloader(){
+    progress.innerHTML="Payload loading... please wait";
+    PLfile = "MiraLoader.bin";
+    out_jb = "MLD";
+    load_poc();
+}
+
+function Bloader(){
+    progress.innerHTML="Payload loading... please wait";
+    out_jb = "BinLD";
+    setTimeout(poc,1500);
+}
+</script>
+<script src="int64.js"></script>
+<script src="rop.js"></script>
+<script src="kexploit.js"></script>
+<script src="webkit.js"></script>
+</head>
+<body style='background-color:#1A1920'>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host New 9.00 fw</h1>
+<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1><br>
+<div style="text-align:center"  id="MyItems">
+<button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Mira loader Port 9021 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > MiraLoader </button>
+<a href="jb.html#p0=mira.js&p1=mira2.js"><button  onMouseOver="progress.innerHTML='Mira Orbis for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Mira</button></a>
+<!--<button id="button-Payload" onMouseOver="progress.innerHTML='Mira Orbis for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mira()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Mira </button>-->
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.0b by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2b </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.0b2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2b2 </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='A full access FTP server for the PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_FTP()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > FTP </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Move installed games to an external USB drive'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_App2USB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > App2USB </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='unlocks some debug features available on testkit'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDex()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Disable IDU Mode'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ExitIDU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Exit IDU </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='disable aslr'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableASLR()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Disable Aslr </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Enable Browser'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableBrowser()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Browser </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_HistoryBlocker()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > History Blocker </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='WebRTE for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_WebRTE()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:blue;color:white' > WebRTE </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:green;color:white' > Ps4debug </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Orbis Toolbox Loader Alfa 1190 for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Orbis()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:red;color:white' > Orbis Toolbox </button>
+<a href="web.html"><button  onMouseOver="progress.innerHTML='Web Activator by Sleirsgoevy'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:#76411D;color:white'>Web Activator</button></a>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_AppDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='kernel dumper'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_KernelDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Kernel Dumper </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='module dumper'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ModuleDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Module Dumper </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableUpdates()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' >Disable Updates</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableUpdates()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Update </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Create a backup of important database files ans User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_BackupDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Backup </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RestoreDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Restore </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Rif Renamer'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RIFRenamer()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Rif renamer </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='permanentuart'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_permanentuart()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > permanent uart </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Set the desired temperature that the PS4 fan starts'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_fan()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Fan Controll </button><select style='font-size:20px;text-align:center;color:black' id="tempC"></select><a style='font-size:17px;text-align:center;color:white;'>&#176;C</a>
+<!--<button id="button-Payload" onMouseOver="progress.innerHTML='LinuxLoader 1G'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Linux()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Linux 1G </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='LinuxLoader 3G'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Linux3gb()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Linux 3G </button>-->
+<br><br>
+<a href="payload.html#p0=mira.js&p1=LinuxLoader.js"><button  onMouseOver="progress.innerHTML='LinuxLoader 1gb  - by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 1GB</button></a>
+<a href="payload.html#p0=mira.js&p1=LinuxLoader2gb.js"><button  onMouseOver="progress.innerHTML='LinuxLoader 2gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 2GB</button></a>
+<a href="payload.html#p0=mira.js&p1=LinuxLoader3gb.js"><button  onMouseOver="progress.innerHTML='LinuxLoader 3gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 3GB</button></a>
+<a href="payload.html#p0=mira.js&p1=LinuxLoader4gb.js"><button  onMouseOver="progress.innerHTML='LinuxLoader 4gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 4GB</button></a>
+<a href="payload.html#p0=mira.js&p1=LinuxLoader5gb.js"><button  onMouseOver="progress.innerHTML='LinuxLoader 5gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 5GB</button></a>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.27 by rfoodxmodz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr1()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A127 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.32 by rfoodxmodz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A132 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.33 by rfoodxmodz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A133 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.33 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.34 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ2 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.38 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ3 </button>
+<!--<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Lamance 1.32 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAL()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV L </button>-->
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
+<br>
+<div class="content" >
+ 	    <div class="text" >
+ 	        <br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>
+ 	        <br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo ,Specter ,Znullptr ... </a>
+	    </div>
+</div>
+</div>
+<script>
+for(var i=40; i<=79; i++){
+    var select = document.getElementById("tempC");
+    var option = document.createElement("OPTION");
+	select.options.add(option);
+	option.text = i;
+	option.value = i;
+}
+tempC.value=60;
+</script>
+</body>
+
+</html>
