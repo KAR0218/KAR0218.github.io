@@ -254,10 +254,13 @@ header div{
 <div id=gtav style="text-align:center;display:none">
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
 <br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode ArabicGuy 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtava100(); return false"> ArabicGuy 1.00 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode ArabicGuy 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtava127(); return false"> ArabicGuy 1.27 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode ArabicGuy 1.32'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtava132(); return false"> ArabicGuy 1.32 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode ArabicGuy 1.33'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtava133(); return false"> ArabicGuy 1.33 </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Lotus -> + []'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtav(); return false"> GTA Lotus 1.04 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode Hold R1 then press []'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtav2(); return false"> GTAV ap 2 </button>
-<br><br>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode ArabicGuy 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtava100(); return false"> ArabicGuy 1.00 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode GTAV Intense 1.00'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavi100(); return false"> GTAV Intense 1.00 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Gtav Mode GTAV Intense 1.27'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_gtavi127(); return false"> GTAV Intense 1.27 </button>
 <br><br>
@@ -504,6 +507,27 @@ function load_gtava100(){
         link.target = 'exp-loader';
         link.click();
 		}
+function load_gtava127(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtava127.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtava132(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtava132.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_gtava133(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'gtava133.html';
+        link.target = 'exp-loader';
+        link.click();
+		}		
 function load_gtavi100(){
   var link = document.createElement('a');
         document.body.appendChild(link);
