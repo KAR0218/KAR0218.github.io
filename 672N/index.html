@@ -192,6 +192,12 @@ var script = document.createElement('script');script.src = "goldhen2b.js";docume
 var script = document.createElement('script');script.src = "binloader.js";document.getElementsByTagName('head')[0].appendChild(script);
 }
 
+function gold2b2() {
+progress.innerHTML="<div>Loading GoldHen 2.0b2 ...</div>";
+var script = document.createElement('script');script.src = "goldhen2b2672.js";document.getElementsByTagName('head')[0].appendChild(script);
+var script = document.createElement('script');script.src = "binloader.js";document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 function webrte() {
     progress.innerHTML="<div>Loading WebRTE ...</div>";
     start_exploit();
@@ -246,6 +252,7 @@ function awaitpl() {
 <a  class="button pointer"  onclick="gold1(); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>
 <a  class="button pointer"  onclick="gold(); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>
 <a  class="button pointer"  onclick="gold2b(); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>
+<a  class="button pointer"  onclick="gold2b2(); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b2</a>
 <br><br>
 <a  class="button pointer" onclick="ps4debug(); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">PS4DEBUG</a>
 <a  class="button pointer" onclick="webrte(); return false" style="font-size:25px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white">WebRTE</a>
