@@ -1,0 +1,228 @@
+<html>
+<head>
+<style>
+    html, body{
+margin:auto;
+font-family:sans-serif;
+font-size:20px;
+font-weight:lighter;
+text-align:left;
+color:#FFFFFF;
+background-size:cover;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+ .content {
+  width:80%;
+  height:15%;
+  margin-left:7.5%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  margin-top:1%;
+  font-size:25px;
+  text-align:center;
+  border-radius:30px;
+  padding:20px;
+  line-height:12px;
+ }
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ .yellow {
+  color:yellow;
+ }
+ .hue {
+  color:yellow;
+  padding:10px;
+  border-radius:10px;
+  animation:hue 5s linear infinite;
+  -webkit-animation: hue 5s linear infinite;
+  box-shadow: 0px 0px 50px yellow;
+  color:white;
+  background:rgba(255,255,0,0.4);
+ }
+ .hue:hover{
+  color:yellow;
+  background:transparent;
+ }
+ @keyframes hue{
+ 0%{
+ filter:hue-rotate(0deg);
+ -webkit-filter:hue-rotate(0deg);
+ }
+ 10%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 20%{
+ box-shadow: 1px 1px 50px yellow;
+ }
+ 30%{
+ box-shadow: 1px 0px 50px yellow;
+ }
+ 40%{
+  box-shadow: 1px -1px 50px yellow;
+ }
+ 50%{
+ box-shadow: 0px -1px 50px yellow;
+ }
+ 60%{
+ box-shadow: -1px -1px 50px yellow;
+ }
+ 70%{
+ box-shadow: -1px 0px 50px yellow;
+ }
+ 80%{
+ box-shadow: -1px 1px 50px yellow;
+ }
+ 90%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 100%{
+ filter:hue-rotate(360deg);
+ -webkit-filter:hue-rotate(360deg);
+ }
+ }
+ .text {
+  padding-bottom:50px;
+ }
+  .back {
+   font-size:25px;
+   margin-top:10px;
+   display:block;
+   line-height:55px;
+   width:20%;
+   text-decoration:none;
+   height:50px;
+   background:white;
+   color:black;
+   border-radius:15px;
+  }
+  .back:hover{
+   border:2px solid white;
+   background:transparent;
+   box-sizing:border-box;
+   color:white;
+  }
+ #psip {
+  text-align: center;
+  margin-left: 38%;
+  margin-right: auto;
+  width:15%;
+  display:flex;
+  position: absolute;
+  
+  background: rgba(0, 0, 0, 0.500);
+  border-radius: 2em;
+  border: none;
+  padding: 0.8em;
+  
+  color: #ffffff;
+  padding-left: 1.5em;
+  
+  outline: none;
+  box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
+  backdrop-filter: blur(5px);
+}
+/* Modal Content */
+.modal-content {
+  font-family: BFARNAZ;
+  font-size: 18px;
+  position: relative;
+  background-color: #dddddd;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+button {
+            background:rgba(0,0,0,0.5);
+			box-shadow: 0 5px 20px 0 white;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 173px;
+            height: 40px;            
+            text-align: center;
+}
+button:hover {
+            box-shadow: 0 5px 50px 0 white;
+            color: white;
+            border-radius: 10px;
+			background-color: #0F0F53;
+}
+
+hr {
+padding:0;
+margin:0;
+opacity:0.7;
+}
+
+#progress {
+ font-weight:bold;
+ text-shadow: 4px 4px 4px black;
+
+ font-size:17px;
+}
+.pointer {cursor: pointer;}
+
+
+    </style>
+<meta charset="utf-8">
+<title>Karo PS4Trainer Restore 9.00 FW</title>
+<script>
+function allset() {
+window.progress.innerHTML="Payload loaded";
+}
+
+PLfile = "restore900usb.bin";
+</script>
+<script src="int64.js"></script>
+<script src="rop.js"></script>
+<script src="kexploitusb.js"></script>
+<script src="webkit.js"></script>
+</head>
+<body style='background-color:#1A1920'>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo PS4Trainer Restore 9.00 FW</h1><br><br><br><br><br><br><br><br>
+<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Restoring....</h1><br>
+<br><br><br><br><br><br>
+<div class="content" >
+ 	    <div class="text" >
+ 	        <br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>
+ 	        <br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo ,Specter ,Znullptr ... </a>
+	    </div>
+</div>
+<script>
+var xhr = new XMLHttpRequest();
+xhr.responseType = "arraybuffer";
+xhr.open("GET",PLfile,true);
+xhr.send();
+xhr.onreadystatechange=function(){
+if (xhr.readyState == 4){
+  PLS = xhr.response;
+  setTimeout(poc, 1500); 
+  }
+};
+</script>
+</body>
+
+</html>
