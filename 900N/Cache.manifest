@@ -13,7 +13,13 @@ enablebrowser.bin
 enableupdates.bin
 exitidu.bin
 exploit.js
-fan-threshold.js
+fan50.bin
+fan55.bin
+fan60.bin
+fan65.bin
+fan70.bin
+fan75.bin
+fan80.bin
 frontend.js
 ftp.bin
 goldhen2b.bin
@@ -29,11 +35,8 @@ historyblocker.bin
 index.html
 int64.js
 int64b.js
-jb.html
 kerneldumper.bin
-kexploit-launcher.js
 kexploit.js
-kexploitb.js
 LinuxLoader.js
 LinuxLoader2gb.js
 LinuxLoader3gb.js
@@ -43,7 +46,6 @@ malloc.js
 mdumper.bin
 mira.js
 mira2.js
-Mira.elf
 MiraLoader.bin
 LushModz-1.0-9.00.bin
 netcat.js
@@ -52,7 +54,6 @@ Oysters1.00.bin
 Oysters1.13.bin
 Oysters1.19.bin
 Oysters1.24.bin
-payload.html
 payload.js
 permanentuart.bin
 ps4debug.bin
@@ -60,7 +61,6 @@ relocator.js
 restoredb.bin
 rifrenamer.bin
 rop.js
-ropb.js
 ropb2.js
 syscalls.js
 syscalls2.js
