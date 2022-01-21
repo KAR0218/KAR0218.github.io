@@ -334,6 +334,12 @@ function load_PS4Debug(){
     out_jb = "AllPL";
     load_poc();
 }
+	
+function load_App2USB(){
+    progress.innerHTML="app2usb loading... please wait"; LoadedMSG="app2usb Loaded";
+    PLfile = "app2usb.bin";
+    out_jb = "AllPL";     load_poc();
+}
 
 function load_AppDumper(){
     progress.innerHTML="AppDumper loading... please wait"; LoadedMSG="AppDumper Loaded";
@@ -400,6 +406,7 @@ function Bloader(){
 <button id="button-Payload" onMouseOver="progress.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableUpdates()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Update </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_AppDumper()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
 <br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Move installed games to an external USB drive'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_App2USB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > App2USB </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Mira loader Port 9021 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mloader()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > MiraLoader </button>
 </div>
