@@ -334,7 +334,7 @@ function load_PS4Debug(){
     out_jb = "AllPL";
     load_poc();
 }
-	
+
 function load_App2USB(){
     progress.innerHTML="app2usb loading... please wait"; LoadedMSG="app2usb Loaded";
     PLfile = "app2usb.bin";
@@ -384,6 +384,12 @@ function Bloader(){
     out_jb = "BinLD";
     LoaderPL();
 }
+
+function load_ToDex(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    PLfile = "ToDex.bin";
+    out_jb = "AllPL";     load_poc();
+}
 </script>
 <script src="int64.js"></script>
 <script src="rop.js"></script>
@@ -402,6 +408,7 @@ function Bloader(){
 <button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;background-color:green;color:white' > Ps4debug </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Orbis Toolbox Loader Alfa 1190 for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Orbis()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;background-color:red;color:white' > Orbis Toolbox </button>
 <br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='unlocks some debug features available on testkit'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDex()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableUpdates()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' >Disable Updates</button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableUpdates()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Update </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_AppDumper()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
