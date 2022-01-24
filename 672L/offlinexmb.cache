@@ -1,0 +1,28 @@
+CACHE MANIFEST 
+# v2.5.5 Self-Host 
+
+exp_loader.js
+goldhen2b2672.bin
+hen213.bin
+hen213b.bin
+index.html
+jb.js
+Orbis-Toolbox-672.bin
+pls_loader.js
+pl_app2usb.bin
+pl_DumperG.bin
+pl_DumperGU.bin
+pl_DumperM.bin
+pl_DumperU.bin
+pl_FTP.bin
+pl_historyBlocker.bin
+pl_loader.js
+pl_ps4debug.bin
+pl_ToDEX.bin
+pl_updatesDisable.bin
+pl_updatesEnable.bin
+Style.css
+WebRTE.bin
+
+NETWORK:
+*
