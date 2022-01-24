@@ -85,7 +85,7 @@ window.failCounter.innerHTML=localStorage.failcount;
 function load_hen(x) {
 PLfile=x;
 msgs2.innerHTML="Jailbreaking... please wait"; LoadedMSG="Payload Loaded";
-var script = document.createElement('script');script.src ="exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
+setTimeout(function(){var script = document.createElement('script');script.src ="exp_loader.js";document.getElementsByTagName('head')[0].appendChild(script);},3000);
 setTimeout(jailbreak,500);
 }
 function load_binloader(){
