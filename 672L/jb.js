@@ -8,7 +8,7 @@ var _ = malloc_nogc.pop();
 var _ = malloc_nogc.pop();
 var _ = malloc_nogc.pop();
 if (main_ret == 179 || main_ret == 0){
-window.msgs2.innerHTML= "Jailbreak done, payload Loading... please wait";
+localStorage.passcount = ++localStorage.passcount;window.passCounter.innerHTML=localStorage.passcount;
 }
 else {
 localStorage.failcount = ++localStorage.failcount;window.failCounter.innerHTML=localStorage.failcount;
