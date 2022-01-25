@@ -7,16 +7,15 @@ text-align:left;
 color:#FFFFFF;
 background-size:cover;
 }
- button {
+button {
             
             border: 2px solid black;
             border-radius: 10px;
-            width: 170px;
-            height: 40px;           
+			width: 250px;
+            height: 45px;            
             text-align: center;
             padding: 1px;
             margin: 1px;
-            color: white;
             box-shadow: 0 5px 20px 0 white;
             background:rgba(0,0,0,0.5);
 }
@@ -147,7 +146,7 @@ header div{
   text-align:center;
   border-radius:30px;
   padding:20px;
-  line-height:10px;
+  line-height:13px;
  }
  .title {
   font-size:40px;

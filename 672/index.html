@@ -58,64 +58,110 @@ document.getElementById("clock").innerHTML = (Hour+":"+Minute);
 <h1 id=msgs2 style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1>
 <div style="text-align:center"  id="MyItems">
 <br>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='HEN 2.1.3 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('hen213.bin'); return false">Hen_v2.1.3 </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='HEN 2.1.3 By SiSTRO & Leeful'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('hen213b.bin'); return false">Hen_v2.1.3b </button>
-<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.0 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen672v1.bin'); return false">GoldHenV1.0 </button>
-<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.1 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen672.bin'); return false">GoldHenV1.1 </button>
-<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v2.0b By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen2b672.bin'); return false">GoldHenV2b </button>
+<div id=all style="text-align:center">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A full access FTP server for the PS4'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_FTP.bin'); return false"> FTP </button>
 <button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v2.0b2 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen2b2672.bin'); return false">GoldHenV2b2 </button>
-<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Mira By OrbisTeam'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_mira('mira.elf'); return false">Mira.Orbis </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Loads a bin file sent to the PS4 IP address on port 9021'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_binloader(); return false"> Bin Loader </button>
+<br><br>
+<button style='font-size:20px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A large collection of trainers for your PS4 games'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('WebRTE.bin'); return false"> WebRTE </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white;background-color:green' class="pointer" onMouseOver="msgs2.innerHTML='Save Data Mounter'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_ps4debug.bin'); return false"> PS4debug </button>
 <button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;background-color:red;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Orbis Toolbox Loader Alfa 1190'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Orbis-Toolbox-672.bin'); return false">Orbis Toolbox </button>
 <br><br>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Loads a bin file sent to the PS4 IP address on port 9021'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_binloader(); return false"> Bin Loader </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A full access FTP server for the PS4'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_FTP.bin'); return false"> FTP </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Game only to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperG.bin'); return false"> Dumper Game </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Update Game only to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperU.bin'); return false"> Dumper Update</button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Game+Update to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperGU.bin'); return false"> Dumper G+U </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Game+Update Merged to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperM.bin'); return false"> Dumper G+U M</button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump a copy of your kernel to your USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_kernelDumper.bin'); return false"> Kernel Dumper </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Avatar Dumper Injector v2'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('avatar.bin'); return false"> Avatar.Inject </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All tools payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alltools(); return false"> Tools Group </button>
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;background-color:gray;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='Goldhen & Hen & Mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="allhens(); return false"> HEN Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Restore & Backup payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="allrestore(); return false"> Restore Group </button>
 <br><br>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_historyBlocker.bin'); return false"> History Blocker </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Move installed games to an external USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_app2usb.bin'); return false"> App2USB </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='To install .pkg files without a large enough USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_fakeusb.bin'); return false"> FakeUSB </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump your EAP KEY to a USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl.PS4-EAP-KEY-DUMPER.bin'); return false"> EAP.Key </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Changes the installed games Licence type from FAKE to FREE (AIAzif)'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('rifrenamer.bin'); return false"> Rif.Renamer </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A Linux Loader to run a Linux installation from USB'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_linux.bin'); return false"> Linux.USB </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Linux for baikal version'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('linuxbaikal.bin'); return false"> Linux:Baikal </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Boot Linux from internal HDD'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('linuxhdd.bin'); return false"> Linux.Internal </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Dump payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alldump(); return false"> Dump Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Linux payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="alllinux(); return false"> Linux Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='All Mods Gtav & RDR2 payloads'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="allmods(); return false"> Gtav & RDR2 Mods Group </button>
+</div>
+
+<div id=tools style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
 <br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_updatesDisable.bin'); return false">Disable Update</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_updatesEnable.bin'); return false"> Enable Update </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Create a backup of important database files and User Data'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('DB_SG_Backup.bin'); return false"> DB Backup </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('DB_SG_Restore.bin'); return false"> DB Restore </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_historyBlocker.bin'); return false"> History Blocker </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Move installed games to an external USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_app2usb.bin'); return false"> App2USB </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='To install .pkg files without a large enough USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_fakeusb.bin'); return false"> FakeUSB </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump your EAP KEY to a USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl.PS4-EAP-KEY-DUMPER.bin'); return false"> EAP.Key </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Changes the installed games Licence type from FAKE to FREE (AIAzif)'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('rifrenamer.bin'); return false"> Rif.Renamer </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='unlocks some debug features available on testkit'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_ToDEX.bin'); return false"> ToDex </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='that converts Target ID to 0x81 which is DevKit'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_ToDEV.bin'); return false"> ToDev </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='converts Target ID to 0xA0 which is Arcade or Kratos model'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_ToKratos.bin'); return false"> ToKratos </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Save Data Mounter'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_ps4debug.bin'); return false"> PS4debug </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Avatar Dumper Injector v2'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('avatar.bin'); return false"> Avatar.Inject </button>
 <br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Changes the internal clock of the PS4'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('kernel_clock.bin'); return false"> Kernel Clock</button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Web Activator'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_web(); return false"> Web_activator </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='FW Version Spoof to X.XX '"; onmouseout="msgs2.innerHTML='Status'" onclick="load_SPF(); return false"> Spoofer </button><select style='font-size:20px;text-align:center;color:black' id="fws1"></select><select style='font-size:20px;text-align:center;color:black' id="fws2"></select>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Set the desired temperature that the PS4 fan starts'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_fanthresh(); return false"> Set Fan </button><select style='font-size:20px;text-align:center;color:black' id="tempC"></select><a style='font-size:17px;text-align:center;color:white;'>&#176;C</a>
+</div>
+
+<div id=dump style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Game only to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperG.bin'); return false"> Dumper Game </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Update Game only to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperU.bin'); return false"> Dumper Update</button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Game+Update to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperGU.bin'); return false"> Dumper G+U </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump Game+Update Merged to a USB drive to be able to create fpkg files'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_DumperM.bin'); return false"> Dumper G+U M</button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dump a copy of your kernel to your USB drive'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_kernelDumper.bin'); return false"> Kernel Dumper </button>
+</div>
+
+<div id=restore style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('DB_SG_Restore.bin'); return false"> DB Restore </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Backup Trophy'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Trophy_Backup.bin'); return false"> Trophy Backup</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Restore Trophy'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Trophy_Restore.bin'); return false"> Trophy Restore</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Restore db file for Host Cache from usb'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('cache.bin'); return false"> Restore Cache </button>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Web Activator'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_web(); return false"> Web_activator </button>
+</div>
+
+<div id=linux style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A Linux Loader to run a Linux installation from USB'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('pl_linux.bin'); return false"> Linux.USB </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Linux for baikal version'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('linuxbaikal.bin'); return false"> Linux:Baikal </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Boot Linux from internal HDD'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('linuxhdd.bin'); return false"> Linux.Internal </button>
+</div>
+
+<div id=hens style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.0 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen672v1.bin'); return false">GoldHenV1.0 </button>
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v1.1 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen672.bin'); return false">GoldHenV1.1 </button>
+<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 4px 4px black;color:#CEC52A' class="pointer" onMouseOver="msgs2.innerHTML='GoldHen v2.0b By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('goldhen2b672.bin'); return false">GoldHenV2b </button>
+<br><br>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='HEN 2.1.3 By SiSTRO'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('hen213.bin'); return false">Hen_v2.1.3 </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='HEN 2.1.3 By SiSTRO & Leeful'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_hen('hen213b.bin'); return false">Hen_v2.1.3b </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Mira By OrbisTeam'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_mira('mira.elf'); return false">Mira.Orbis </button>
+</div>
+
+<div id=gtav style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu V1.13 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Oysters-Free-1.13.bin'); return false">RDR2 V1.13</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu V1.19 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Oysters-Free-1.19.bin'); return false">RDR2 V1.19</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu V1.24 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Oysters-Free-1.24.bin'); return false">RDR2 V1.24</button>
 <br><br>
-<button style='font-size:20px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='A large collection of trainers for your PS4 games'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('WebRTE.bin'); return false"> WebRTE </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods for Base(R1+L1)'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('gtava100.bin'); return false">GTAV Ar.1.00</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods for 1.27(==> + [])'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('gtava127.bin'); return false">GTAV.Ar.1.27</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods for 1.32(==> + [])'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('gtava132.bin'); return false">GTAV.Ar.1.32</button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods Lamance for 1.32'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('Lamance132.bin'); return false">GTAV.L.1.32</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods BeefQueefMod for 1.32'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('BeefQueefMod672-132.bin'); return false">GTAV.BQ.1.32</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='GTAV Mods BeefQueefMod for 1.33'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_Pl('BeefQueefMod672-133.bin'); return false">GTAV.BQ.1.33</button>
+</div>
 <br><br>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='FW Version Spoof to X.XX '"; onmouseout="msgs2.innerHTML='Status'" onclick="load_SPF(); return false"> Spoofer </button><select style='font-size:20px;text-align:center;color:black' id="fws1"></select><select style='font-size:20px;text-align:center;color:black' id="fws2"></select>
-<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Set the desired temperature that the PS4 fan starts'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_fanthresh(); return false"> Set Fan </button><select style='font-size:20px;text-align:center;color:black' id="tempC"></select><a style='font-size:17px;text-align:center;color:white;'>&#176;C</a><br><a style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'> The PS4's default temp is 79&#176;C</a>
 <br>
-
-<h1 style='text-align:center;'><a style='font-size:20px;text-align:center;color:#FFD700;'>Designer: <a class="hue" style='font-size:20px;text-align:center;color:white;text-shadow: 4px 4px 4px black;'>Karo Sharifi .<a style='font-size:20px;text-align:center;color:#FFD700;'> Super Special Thanks To :<a style='font-size:20px;text-align:center;color:white;'>Sleirsgoevy ,Leeful , AlAzif , SiSTRo. </a><br></h1><br>
+<div class="content" >
+ 	 <br><span class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <a class="hue" style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Karo Sharifi</a>
+ 	 <br><br><br><br><span class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Sleirsgoevy ,Leeful , AlAzif , SiSTRo. , ... </a>
+ </div>
 </div>
 <script>
 for(var i=1; i<=99; i++){var select1 = document.getElementById("fws1"); var option1 = document.createElement("OPTION"); select1.options.add(option1); option1.text = i; option1.value = i;}
@@ -177,6 +223,40 @@ var script = document.createElement('script');script.src = "pl_loader2.js";docum
 function preweb(){
     var script = document.createElement('script');script.src = "frontend.js";document.getElementsByTagName('head')[0].appendChild(script);
 }
+
+function allhens(){
+all.style.display = "none";
+hens.style.display = "block";
+		}
+function allrestore(){
+all.style.display = "none";
+restore.style.display = "block";
+		}
+function alltools(){
+all.style.display = "none"
+tools.style.display = "block";
+		}
+function alldump(){
+all.style.display = "none";
+dump.style.display = "block";
+		}
+function alllinux(){
+all.style.display = "none";
+linux.style.display = "block";
+		}
+function allmods(){
+all.style.display = "none";
+gtav.style.display = "block";
+		}
+function backall(){
+all.style.display = "block";
+hens.style.display = "none";
+restore.style.display = "none";
+tools.style.display = "none";
+dump.style.display = "none";
+linux.style.display = "none";
+gtav.style.display = "none";
+		}
 </script>
 </body>
 </html>
