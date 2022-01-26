@@ -407,7 +407,7 @@ eval.call(window, loadScript('netcat.js')
 
 function Mira(){
 progress.innerHTML="Mira loading... please wait";
-LoadedMSG="Mira Loaded";
+LoadedMSG="LinuxLoader Loaded";
 setTimeout(function(){
 eval.call(window, loadScript('netcat.js')
 +loadScript('malloc.js')
@@ -572,7 +572,13 @@ function load_GTAL(){
 
 function load_expul(){
     progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
-    PLfile = "LushModz-1.0-9.00.bin.bin";
+    PLfile = "LushModz-1.0-9.00.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_expul2(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    PLfile = "LushModz-3.0-9.00.bin";
     out_jb = "AllPL";     load_poc();
 }
 
@@ -606,7 +612,19 @@ function load_GTAVLTS(){
     out_jb = "AllPL";     load_poc();
 }
 
-function load_Wilde(){
+function load_Wilde32(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    PLfile = "WildeModz-1.32.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_Wilde33(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    PLfile = "WildeModz-1.33.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_Wilde38(){
     progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
     PLfile = "WildeModz-1.38.bin";
     out_jb = "AllPL";     load_poc();
@@ -633,6 +651,12 @@ function load_Oysters119(){
 function load_Oysters124(){
     progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
     PLfile = "Oysters1.24.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_Oysters129(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    PLfile = "Oysters1.29.bin";
     out_jb = "AllPL";     load_poc();
 }
 
@@ -741,13 +765,18 @@ gtav.style.display = "none";
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Menu-Base 1.27 Ported by Karo for 900 ==> + []'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAVMB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV MB127 </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV LTS 1.27 Ported by Karo for 900 ==> + []'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAVLTS()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV LTS127 </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.35 by LushModz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_expul()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV Ex135 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.38 v1.2 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W138 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.38 V3.0 by LushModz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_expul2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV Ex138 </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.32 v1.1 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde32()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W132 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.33 v1.1 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde33()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W133 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.38 v1.3 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde38()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W138 </button>
 <!--<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Lamance 1.32 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAL()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV L </button>-->
 <br><br>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.4 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.00 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.29 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters129()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.29 </button>
 <br><br><br><br><br></div>
 <div class="content" >
  	    <div class="text" >
