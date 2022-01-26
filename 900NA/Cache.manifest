@@ -30,6 +30,8 @@ gtava2.bin
 gtava3.bin
 gtavmb127.bin
 gtavLTS127.bin
+WildeModz-1.32.bin
+WildeModz-1.33.bin
 WildeModz-1.38.bin
 historyblocker.bin
 index.html
@@ -49,12 +51,14 @@ mira.js
 mira2.js
 MiraLoader.bin
 LushModz-1.0-9.00.bin
+LushModz-3.0-9.00.bin
 netcat.js
 Orbis-Toolbox-900.bin
 Oysters1.00.bin
 Oysters1.13.bin
 Oysters1.19.bin
 Oysters1.24.bin
+Oysters1.29.bin
 payload.js
 permanentuart.bin
 ps4debug.bin
@@ -73,4 +77,4 @@ WebRTE.bin
 NETWORK: 
 * 
 
-# Date: 2022-01-18T14:59:00Z:
+# Date: 2022-01-10T14:59:00Z:
