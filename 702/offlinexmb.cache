@@ -5,9 +5,6 @@ index.html
 Style.css
 payloads\app2usb.html
 payloads\app2usb.js
-payloads\ArabicGuy-7.02-1.00.js
-payloads\ArabicGuy-7.02-1.27.js
-payloads\ArabicGuy-7.02-1.32.js
 payloads\backup.html
 payloads\backup.js
 payloads\binloader.html
@@ -30,14 +27,6 @@ payloads\goldhen702.js
 payloads\goldhen702v1.js
 payloads\goldhen2b.html
 payloads\goldhen702v2b.js
-payloads\GTA-V-Lamance_7.02-1.32.js
-payloads\gta1.html
-payloads\gta2.html
-payloads\gta3.html
-payloads\gtal.html
-payloads\gtan1.html
-payloads\gtan2.html
-payloads\gtan3.html
 payloads\hblocker.html
 payloads\hblocker.js
 payloads\hen.html
@@ -47,8 +36,6 @@ payloads\hen213b.js
 payloads\int64.js
 payloads\int64m.js
 payloads\jb.js
-payloads\kclock.html
-payloads\kclock.js
 payloads\linux1.html
 payloads\linux1.js
 payloads\linux3.html
@@ -58,13 +45,8 @@ payloads\orbis.js
 payloads\preloader.js
 payloads\loader.js
 payloads\xloader.js
-payloads\mira.html
-payloads\mira2b.js
 payloads\payload.js
 payloads\frontend.js
-payloads\PS4-GTA-V-NATIVE-CALLER-7.02-1.00.js
-payloads\PS4-GTA-V-NATIVE-CALLER-7.02-1.27.js
-payloads\PS4-GTA-V-NATIVE-CALLER-7.02-1.32.js
 payloads\ps4.js
 payloads\ps4debug.html
 payloads\ps4debug.js
