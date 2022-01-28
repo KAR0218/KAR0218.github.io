@@ -3,12 +3,7 @@ CACHE MANIFEST
 
 702.js
 app2usb.bin
-ar100.bin
-ar127.bin
-ar132.bin
 backup.bin
-bqm132.bin
-bqm133.bin
 disableupdates.bin
 dumper.bin
 enableupdates.bin
@@ -23,18 +18,13 @@ historyblocker.bin
 index.html
 int64.js
 jb.js
-kernelclock.bin
 lam132.bin
 linux1G.bin
 linux3G.bin
 lndex.html
 loader.js
 loaderx.js
-mira2b.bin
 Orbis-Toolbox-702.bin
-rdr113.bin
-rdr119.bin
-rdr124.bin
 payload.js
 preloader.js
 ps4.js
