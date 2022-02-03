@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v2.6.0 Self-Host 
+# v2.6.2 Self-Host 
 
 app2usb.bin
 backup.bin
@@ -24,6 +24,14 @@ goldhenb755.bin
 goldhen2b750.bin
 goldhen2b751.bin
 goldhen2b755.bin
+goldhen21750.bin
+goldhen21751.bin
+goldhen21755.bin
+gtava1.bin
+gtava2.bin
+gtava3.bin
+gtavbq133.bin
+gtavl.bin
 hen213b.bin
 historyblocker.bin
 idu.bin
@@ -39,6 +47,8 @@ loader.js
 loaderx.js
 loaderxh.js
 mdumper.bin
+mira.bin
+mira2b.bin
 Orbis-Toolbox-755.bin
 payload.bin
 preloader.js
