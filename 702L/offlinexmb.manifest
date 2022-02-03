@@ -5,6 +5,7 @@ CACHE MANIFEST
 goldhen.bin
 goldhen1.bin
 goldhen2b702.bin
+goldhen_2.1_702.bin
 hen213b.bin
 index.html
 int64.js
@@ -18,6 +19,7 @@ ps4.js
 ps4debug.bin
 utils.js
 webrte.bin
+disableupdates.bin
 
 NETWORK:
 *
