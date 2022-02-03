@@ -447,6 +447,14 @@ function goldhen2(){
     load_poc();
 }
 
+function goldhen21(){
+    progress.innerHTML="Goldhen 2.1 loading... please wait";
+    LoadedMSG="GoldHEN 2.1 Loaded";
+    PLfile = "goldhen_2.1_900.bin";
+    out_jb = "AllPL";
+    load_poc();
+}
+
 function load_PS4Debug(){
     progress.innerHTML="PS4Debug loading... please wait"; LoadedMSG="PS4Debug Loaded";
     PLfile = "ps4debug.bin";
@@ -734,6 +742,7 @@ gtav.style.display = "none";
 <button id="button-Payload" onMouseOver="progress.innerHTML='Mira Orbis for PS4 9.00 Fw. first run JB then Mira'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mira()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Mira </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.0b by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2b </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.0b2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2b2 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.1 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen21()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.1</button>
 <br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='A full access FTP server for the PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_FTP()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > FTP </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Move installed games to an external USB drive'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_App2USB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > App2USB </button>
