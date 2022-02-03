@@ -325,10 +325,10 @@ window.progress.innerHTML="Payload Loaded. Send payloads to port 9021";
 alert("Payload Loaded. Send payloads to port 9021");
 }
 
-function goldhen2(){
-    progress.innerHTML="Goldhen 2.0b2 loading... please wait";
-    LoadedMSG="GoldHEN 2.0b2 Loaded";
-    PLfile = "goldhen2b2.bin";
+function goldhen21(){
+    progress.innerHTML="Goldhen 2.1 loading... please wait";
+    LoadedMSG="GoldHEN 2.1 Loaded";
+    PLfile = "goldhen_2.1_900.bin";
     out_jb = "AllPL";
     load_poc();
 }
@@ -407,7 +407,7 @@ function load_ToDex(){
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1><h1 id=progressx style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'></h1>
 <br>
 <div id=all style="text-align:center;">
-<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.0b2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen2()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:#CEC52A' > GoldHen V2.0b2 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.1 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen21()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:#CEC52A' > GoldHen V2.1 </button>
 <br><br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='WebRTE for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_WebRTE()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;background-color:blue;color:white' > WebRTE </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;background-color:green;color:white' > Ps4debug </button>
