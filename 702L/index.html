@@ -263,7 +263,6 @@
 	</style>
 	<body class="bg">
 		<script>
-           if(window.applicationCache.status==2){localStorage.is702LCached=true;}
 			window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";localStorage.is702LCached=false;};
 			window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
 			window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";localStorage.is702LCached=true;setTimeout(function(){document.getElementById("progressx").innerHTML="Turn Off the Internet & Reopen the Page to Run the Exploit!!"; }, 1500);};
