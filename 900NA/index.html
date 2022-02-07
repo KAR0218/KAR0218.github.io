@@ -474,9 +474,27 @@ function load_BackupDB(){
     out_jb = "AllPL";     load_poc();
 }
 
-function load_AppDumper(){
-    progress.innerHTML="AppDumper loading... please wait"; LoadedMSG="AppDumper Loaded";
-    PLfile = "app-dumper.bin";
+function load_DumperG(){
+    progress.innerHTML="Dumper Game loading... please wait"; LoadedMSG="Dumper Game Loaded";
+    PLfile = "DumperG.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DumperU(){
+    progress.innerHTML="Dumper Game Update loading... please wait"; LoadedMSG="Dumper Game Update Loaded";
+    PLfile = "DumperU.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DumperMGU(){
+    progress.innerHTML="Dumper Merged Games and Update loading... please wait"; LoadedMSG="Dumper Merged Games and Update Loaded";
+    PLfile = "DumperMGU.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DumperSGU(){
+    progress.innerHTML="Dumper Seperate Games and Update loading... please wait"; LoadedMSG="Dumper Seperate Games and Update Loaded";
+    PLfile = "DumperSGU.bin";
     out_jb = "AllPL";     load_poc();
 }
 
@@ -722,7 +740,7 @@ gtav.style.display = "none";
 </head>
 <body onload="poc()" style='background-color:#1A1920'>
 <h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Auto Exploit 9.00 fw</h1>
-<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1><h1 id=progressx style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'></h1><br>
+<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1><h1 id=progressx style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'></h1>
 <div id=all style="text-align:center;display:none">
 <button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Mira loader Port 9021 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > MiraLoader </button>
@@ -743,7 +761,6 @@ gtav.style.display = "none";
 <button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:green;color:white' > Ps4debug </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Orbis Toolbox Loader Alfa 1190 for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Orbis()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:red;color:white' > Orbis Toolbox </button>
 <a href="web.html"><button  onMouseOver="progress.innerHTML='Web Activator by Sleirsgoevy'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:#76411D;color:white'>Web Activator</button></a>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_AppDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='kernel dumper'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_KernelDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Kernel Dumper </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='module dumper'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ModuleDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Module Dumper </button>
 <br><br>
@@ -753,6 +770,11 @@ gtav.style.display = "none";
 <button id="button-Payload" onMouseOver="progress.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RestoreDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Restore </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Rif Renamer'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RIFRenamer()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Rif renamer </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='permanentuart'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_permanentuart()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > permanent uart </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperG()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games Update only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Update </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Merged Games and Update to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperMGU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper MGU </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Seperate Games and Update to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperSGU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper SGU </button>
 <br><br>
 <button  onMouseOver="progress.innerHTML='LinuxLoader 1gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux1()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 1GB</button>
 <button  onMouseOver="progress.innerHTML='LinuxLoader 2gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 2GB</button>
