@@ -1,11 +1,14 @@
 CACHE MANIFEST 
 
 CACHE: 
-app-dumper.bin
 app2usb.bin
 backupdb.bin
 disableaslr.bin
 disableupdates.bin
+DumperG.bin
+DumperU.bin
+DumperMGU.bin
+DumperSGU.bin
 enablebrowser.bin
 enableupdates.bin
 exitidu.bin
@@ -54,4 +57,4 @@ WebRTE.bin
 NETWORK: 
 * 
 
-# Date: 2022-01-28T14:59:00Z:
+# Date: 2022-02-07T14:59:00Z:
