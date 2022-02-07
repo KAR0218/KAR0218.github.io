@@ -2,8 +2,11 @@ CACHE MANIFEST
 
 CACHE: 
 app2usb.bin
-app-dumper.bin
 disableupdates.bin
+DumperG.bin
+DumperU.bin
+DumperMGU.bin
+DumperSGU.bin
 enableupdates.bin
 goldhen_2.1_900.bin
 index.html
@@ -20,4 +23,4 @@ WebRTE.bin
 NETWORK: 
 * 
 
-# Date: 2022-01-28T14:59:00Z:
+# Date: 2022-02-07T14:59:00Z:
