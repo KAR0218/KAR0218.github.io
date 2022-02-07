@@ -346,9 +346,27 @@ function load_App2USB(){
     out_jb = "AllPL";     load_poc();
 }
 
-function load_AppDumper(){
-    progress.innerHTML="AppDumper loading... please wait"; LoadedMSG="AppDumper Loaded";
-    PLfile = "app-dumper.bin";
+function load_DumperG(){
+    progress.innerHTML="Dumper Game loading... please wait"; LoadedMSG="Dumper Game Loaded";
+    PLfile = "DumperG.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DumperU(){
+    progress.innerHTML="Dumper Game Update loading... please wait"; LoadedMSG="Dumper Game Update Loaded";
+    PLfile = "DumperU.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DumperMGU(){
+    progress.innerHTML="Dumper Merged Games and Update loading... please wait"; LoadedMSG="Dumper Merged Games and Update Loaded";
+    PLfile = "DumperMGU.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_DumperSGU(){
+    progress.innerHTML="Dumper Seperate Games and Update loading... please wait"; LoadedMSG="Dumper Seperate Games and Update Loaded";
+    PLfile = "DumperSGU.bin";
     out_jb = "AllPL";     load_poc();
 }
 
@@ -416,11 +434,15 @@ function load_ToDex(){
 <button id="button-Payload" onMouseOver="progress.innerHTML='unlocks some debug features available on testkit'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDex()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableUpdates()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' >Disable Updates</button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableUpdates()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Update </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games to a USB drive to be able to create fpkg files'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_AppDumper()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
 <br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Move installed games to an external USB drive'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_App2USB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > App2USB </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Mira loader Port 9021 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mloader()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > MiraLoader </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperG()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games Update only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperU()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Update </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Merged Games and Update to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperMGU()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper MGU </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Seperate Games and Update to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperSGU()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper SGU </button>
 </div>
 <br><br>
 <div class="content" >
