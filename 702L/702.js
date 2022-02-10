@@ -832,8 +832,8 @@ function toggle_payload(pld){
 		PLfile = 'goldhen2b702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "goldhen21"){
-		document.getElementById("progress").innerHTML="Loading GoldHenv2.1.. Please wait..";
-		PLfile = 'goldhen_2.1_702.bin';
+		document.getElementById("progress").innerHTML="Loading GoldHenv2.1.1.. Please wait..";
+		PLfile = 'goldhen_2.1.1_702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "disableupdates"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
@@ -875,7 +875,7 @@ function done(){
 			'<a href="#" id="goldhen1" class="button" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
 			'<a href="#" id="goldhen" class="button" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>&nbsp;'+
 			'<a href="#" id="goldhen2b" class="button" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>&nbsp;'+
-			'<a href="#" id="goldhen21" class="button" onclick="toggle_payload(\'goldhen21\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.1</a>&nbsp;'+
+			'<a href="#" id="goldhen21" class="button" onclick="toggle_payload(\'goldhen21\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.1.1</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
