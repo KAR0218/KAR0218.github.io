@@ -5,10 +5,6 @@ app2usb.bin
 backupdb.bin
 disableaslr.bin
 disableupdates.bin
-DumperG.bin
-DumperU.bin
-DumperMGU.bin
-DumperSGU.bin
 enablebrowser.bin
 enableupdates.bin
 exitidu.bin
@@ -24,7 +20,7 @@ frontend.js
 ftp.bin
 goldhen2b.bin
 goldhen2b2.bin
-goldhen_2.1_900.bin
+goldhen_2.1.1_900.bin
 historyblocker.bin
 index.html
 int64.js
