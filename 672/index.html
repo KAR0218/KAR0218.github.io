@@ -210,13 +210,13 @@ var script = document.createElement('script');script.src = "pls_loader.js";docum
 }
 
 function load_SPF(){
-msgs.innerHTML="<div>Loading Firmware Spoof ...</div>";LoadedMSG="Payload Loaded";
+msgs2.innerHTML="<div>Loading Firmware Spoof ...</div>";LoadedMSG="Payload Loaded";
 fw1=parseInt(fws1.value,16);fw2=parseInt(fws2.value,16);
 spoof();
 var script = document.createElement('script');script.src = "pl_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
 }
 function load_fanthresh(){
-msgs.innerHTML="<div>Loading Fan Threshold ...</div>";txt2.innerHTML="Fan control for fw 6.72";
+msgs2.innerHTML="<div>Loading Fan Threshold ...</div>";txt2.innerHTML="Fan control for fw 6.72";
 fanTemp=tempC.value;
 fan();
 var script = document.createElement('script');script.src = "pl_loader.js";document.getElementsByTagName('head')[0].appendChild(script);
