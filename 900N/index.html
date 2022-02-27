@@ -698,9 +698,15 @@ function load_Oysters129(){
 }
 
 
-function load_ToDex(){
-    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
-    PLfile = "ToDex.bin";
+function load_ToDexE(){
+    progress.innerHTML="ToDEX Enabling... please wait"; LoadedMSG="ToDex Enabled";
+    PLfile = "todex-enable.bin";
+    out_jb = "AllPL";     load_poc();
+}
+
+function load_ToDexD(){
+    progress.innerHTML="ToDEX Disabling... please wait"; LoadedMSG="ToDex Disabled";
+    PLfile = "todex-disable.bin";
     out_jb = "AllPL";     load_poc();
 }
 
@@ -764,8 +770,8 @@ gtav.style.display = "none";
 <br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='A full access FTP server for the PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_FTP()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > FTP </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Move installed games to an external USB drive'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_App2USB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > App2USB </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='unlocks some debug features available on testkit'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDex()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Disable IDU Mode'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ExitIDU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Exit IDU </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='unlocks some debug features available on testkit'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDexE()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex Enable </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Disable ToDEX'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDexD()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex Disable </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='disable aslr'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableASLR()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Disable Aslr </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Enable Browser'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableBrowser()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Browser </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_HistoryBlocker()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > History Blocker </button>
@@ -781,6 +787,7 @@ gtav.style.display = "none";
 <button id="button-Payload" onMouseOver="progress.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableUpdates()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Update </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Create a backup of important database files ans User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_BackupDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Backup </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RestoreDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Restore </button>
+	<button id="button-Payload" onMouseOver="progress.innerHTML='Disable IDU Mode'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ExitIDU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Exit IDU </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Rif Renamer'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RIFRenamer()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Rif renamer </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='permanentuart'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_permanentuart()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > permanent uart </button>
 <br><br>
