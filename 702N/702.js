@@ -831,9 +831,9 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Loading GoldHenv2.0b.. Please wait..";
 		PLfile = 'goldhen2b702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
-	}else if(pld == "goldhen21"){
-		document.getElementById("progress").innerHTML="Loading GoldHenv2.1.2.. Please wait..";
-		PLfile = 'goldhen_212_702.bin';
+	}else if(pld == "goldhen22"){
+		document.getElementById("progress").innerHTML="Loading GoldHenv2.2.. Please wait..";
+		PLfile = 'goldhen_2.2_702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "ftp"){
 		setTimeout(function(){document.getElementById("progress").innerHTML="FTP Loaded.. Access at port 1337.."; }, 7000);
@@ -974,7 +974,7 @@ function done(){
 			'<a href="#" id="goldhen1" class="button" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
 			'<a href="#" id="goldhen" class="button" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>&nbsp;'+
 			'<a href="#" id="goldhen2b" class="button" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>&nbsp;'+
-			'<a href="#" id="goldhen21" class="button" onclick="toggle_payload(\'goldhen21\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.1.2</a>&nbsp;'+
+			'<a href="#" id="goldhen22" class="button" onclick="toggle_payload(\'goldhen22\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2</a>&nbsp;'+
 			'<a href="#" id="binloader" class="button" onclick="toggle_payload(\'binloader\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Bin Loader</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
