@@ -3,6 +3,7 @@ CACHE MANIFEST
 CACHE: 
 app2usb.bin
 backupdb.bin
+CopyCH.bin
 disableaslr.bin
 disableupdates.bin
 enablebrowser.bin
