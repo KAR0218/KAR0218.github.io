@@ -180,7 +180,7 @@ header div{
 <body style='background-color:#1A1920'>
 <script src="cal.js"></script>
 <div id=all style="text-align:center">
-<button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v1.1 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen(); return false"><b>&nbsp;&nbsp;GoldHenV1.1&nbsp;&nbsp; </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Copy json and shn files from USB to PS4'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_copych(); return false"> Cheat Copy </button>
 <button style='font-size:25px;text-align:center;font-weight: bold;text-shadow: 4px 6px 3px black;color:#CEC52A' class="pointer" onMouseOver="msgs.innerHTML='GoldHen v2.2 by Sistro'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_goldhen22(); return false"><b>GoldHenV2.2 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='binloader port 9020'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_binloader(); return false"> Bin Loader </button>
 <br><br>
@@ -312,6 +312,14 @@ header div{
 <br>
 
 <script>
+function load_copych(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'copych.html';
+        link.target = 'exp-loader';
+        link.click();
+}
+
 function load_hen16(){
   var link = document.createElement('a');
         document.body.appendChild(link);
