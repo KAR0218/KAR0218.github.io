@@ -3,6 +3,7 @@ CACHE MANIFEST
 
 avatar.bin
 cache.bin
+CopyCH.bin
 DB_SG_Backup.bin
 DB_SG_Restore.bin
 exp_loader.js
