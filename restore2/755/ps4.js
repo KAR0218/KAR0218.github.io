@@ -134,6 +134,10 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		preloadScripts(['jb.js', 'preloader.js', 'restore.js', 'loader.js']);
 	}
+	else if(pld == "copych"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		preloadScripts(['jb.js', 'preloader.js', 'CopyCH.js', 'loader.js']);
+	}
 	if(window.postPayload)
 		window.postPayload();
 	payload_finished(pld);
