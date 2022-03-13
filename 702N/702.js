@@ -839,6 +839,10 @@ function toggle_payload(pld){
 		setTimeout(function(){document.getElementById("progress").innerHTML="FTP Loaded.. Access at port 1337.."; }, 7000);
 		PLfile = 'ftp.bin';
 		preloadScripts(['jb.js', 'loader.js']);
+	}else if(pld == "copych"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		PLfile = 'CopyCH.bin';
+		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "app2usb"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		PLfile = 'app2usb.bin';
@@ -972,10 +976,9 @@ function done(){
 			'<td align="center" id="jailbreak" colspan="5" >'+
 			'<br><br><a href="#" id="hen213b" class="button" onclick="toggle_payload(\'hen213b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Hen213b</a>&nbsp;'+
 			'<a href="#" id="goldhen1" class="button" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
-			'<a href="#" id="goldhen" class="button" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>&nbsp;'+
-			'<a href="#" id="goldhen2b" class="button" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>&nbsp;'+
 			'<a href="#" id="goldhen22" class="button" onclick="toggle_payload(\'goldhen22\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2</a>&nbsp;'+
 			'<a href="#" id="binloader" class="button" onclick="toggle_payload(\'binloader\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Bin Loader</a>&nbsp;'+
+			'<a href="#" id="copych" class="button" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat.Copy</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
