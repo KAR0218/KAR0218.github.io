@@ -835,6 +835,10 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Loading GoldHenv2.2.. Please wait..";
 		PLfile = 'goldhen_2.2_702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
+	}else if(pld == "copych"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		PLfile = 'CopyCH.bin';
+		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "disableupdates"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		PLfile = 'disableupdates.bin';
@@ -872,10 +876,8 @@ function done(){
 			'<tr id="mexp">'+
 			'<td align="center" id="jailbreak" colspan="5" >'+
 			'<br><br><br><br><br><a href="#" id="hen213b" class="button" onclick="toggle_payload(\'hen213b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Hen213b</a>&nbsp;'+
-			'<a href="#" id="goldhen1" class="button" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
-			'<a href="#" id="goldhen" class="button" onclick="toggle_payload(\'goldhen\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.1</a>&nbsp;'+
-			'<a href="#" id="goldhen2b" class="button" onclick="toggle_payload(\'goldhen2b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2b</a>&nbsp;'+
 			'<a href="#" id="goldhen22" class="button" onclick="toggle_payload(\'goldhen22\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2</a>&nbsp;'+
+			'<a href="#" id="copych" class="button" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat.Copy</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
