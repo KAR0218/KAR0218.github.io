@@ -188,7 +188,9 @@ opacity:0.7;
 
     </style>
 <script>
-window.applicationCache.oncached=function(e){localStorage.cached="yes";setTimeout(poc,50);};
+window.applicationCache.ondownloading=function(){document.getElementById("progress").innerHTML="Page Caching Started!!";};
+window.applicationCache.onprogress=function(a){document.getElementById("progress").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
+window.applicationCache.oncached=function(e){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cachedG="yes";};
 </script>
 <meta charset="utf-8">
 <title>Karo Host Auto Exploit GoldHen V2.2 900fw</title>
@@ -232,7 +234,7 @@ function goldhen22(){
 }
 </script>
 </head>
-<body onload="if(localStorage.cached=='yes')setTimeout(poc,50);" style='background-color:#1A1920'>
+<body onload="if(localStorage.cachedG=='yes')setTimeout(poc,50);" style='background-color:#1A1920'>
 <h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Auto Exploit GoldHen V2.2 900fw</h1>
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking....Please wait</h1>
 <div class="content" >
