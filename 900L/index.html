@@ -431,10 +431,7 @@ function run_hax() {
     if (chain.syscall(23, 0).low != 0x0) {
         kernel();
     }
-	else
-    {
     jbdone();
-    }
 }
 
 function int64(low, hi) {
@@ -1051,6 +1048,7 @@ function kernel() {
     chain.fcall(window.syscalls[325]);
    }
    chain.run();
+   alert("Jailbreak Done! Please Remove USB Drive and Click Ok.");
    return;
   }
   alert("failed to trigger exploit kernel heap might be corrupted, try again or reboot the console");
