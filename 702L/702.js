@@ -831,9 +831,9 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Loading GoldHenv2.0b.. Please wait..";
 		PLfile = 'goldhen2b702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
-	}else if(pld == "goldhen22"){
-		document.getElementById("progress").innerHTML="Loading GoldHenv2.2.. Please wait..";
-		PLfile = 'goldhen_2.2_702.bin';
+	}else if(pld == "goldhen221"){
+		document.getElementById("progress").innerHTML="Loading GoldHenv2.2.1.. Please wait..";
+		PLfile = 'goldhen_2.2.1_702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "copych"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
@@ -876,7 +876,7 @@ function done(){
 			'<tr id="mexp">'+
 			'<td align="center" id="jailbreak" colspan="5" >'+
 			'<br><br><br><br><br><a href="#" id="hen213b" class="button" onclick="toggle_payload(\'hen213b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Hen213b</a>&nbsp;'+
-			'<a href="#" id="goldhen22" class="button" onclick="toggle_payload(\'goldhen22\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2</a>&nbsp;'+
+			'<a href="#" id="goldhen221" class="button" onclick="toggle_payload(\'goldhen221\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2.1</a>&nbsp;'+
 			'<a href="#" id="copych" class="button" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat.Copy</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
