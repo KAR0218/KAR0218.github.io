@@ -831,9 +831,9 @@ function toggle_payload(pld){
 		document.getElementById("progress").innerHTML="Loading GoldHenv2.0b.. Please wait..";
 		PLfile = 'goldhen2b702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
-	}else if(pld == "goldhen221"){
-		document.getElementById("progress").innerHTML="Loading GoldHenv2.2.1.. Please wait..";
-		PLfile = 'goldhen_2.2.1_702.bin';
+	}else if(pld == "goldhen222"){
+		document.getElementById("progress").innerHTML="Loading GoldHenv2.2.2.. Please wait..";
+		PLfile = 'goldhen_2.2.2_702.bin';
 		preloadScripts(['jb.js', 'loader.js']);
 	}else if(pld == "ftp"){
 		setTimeout(function(){document.getElementById("progress").innerHTML="FTP Loaded.. Access at port 1337.."; }, 7000);
@@ -976,7 +976,7 @@ function done(){
 			'<td align="center" id="jailbreak" colspan="5" >'+
 			'<br><br><a href="#" id="hen213b" class="button" onclick="toggle_payload(\'hen213b\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Hen213b</a>&nbsp;'+
 			'<a href="#" id="goldhen1" class="button" onclick="toggle_payload(\'goldhen1\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV1.0</a>&nbsp;'+
-			'<a href="#" id="goldhen221" class="button" onclick="toggle_payload(\'goldhen221\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2.1</a>&nbsp;'+
+			'<a href="#" id="goldhen222" class="button" onclick="toggle_payload(\'goldhen222\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2.2</a>&nbsp;'+
 			'<a href="#" id="binloader" class="button" onclick="toggle_payload(\'binloader\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Bin Loader</a>&nbsp;'+
 			'<a href="#" id="copych" class="button" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat.Copy</a>&nbsp;'+
 			'</td>'+
