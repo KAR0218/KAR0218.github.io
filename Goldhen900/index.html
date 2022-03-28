@@ -285,7 +285,9 @@ function run_hax() {
     if (chain.syscall(23, 0).low != 0x0) {
         kernel();
     }
+   else {
     jbdone();
+    }
 }
 
 function int64(low, hi) {
