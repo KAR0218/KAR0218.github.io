@@ -221,6 +221,15 @@ function load_poc(){
 
 function jbdone() {
 window.progress.innerHTML="Jailbreak Done";
+localStorage.setItem('fanthreshold', tempC.value);
+for(var i=50; i<=80; i=i+5){
+    var select = document.getElementById("tempC");
+    var option = document.createElement("OPTION");
+	select.options.add(option);
+	option.text = i;
+	option.value = i;
+}
+tempC.value=60;
 all.style.display = "block";
 }
 
@@ -795,17 +804,6 @@ Tools.style.display = "none";
  	        <br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo ,Specter ,Znullptr ... </a>
 	    </div>
 </div>
-<script>
-localStorage.setItem('fanthreshold', tempC.value);
-for(var i=50; i<=80; i=i+5){
-    var select = document.getElementById("tempC");
-    var option = document.createElement("OPTION");
-	select.options.add(option);
-	option.text = i;
-	option.value = i;
-}
-tempC.value=60;
-</script>
 <script>
 const OFFSET_wk_vtable_first_element = 0x104F110;
 const OFFSET_WK_memset_import = 0x000002A8;
