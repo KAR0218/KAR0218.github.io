@@ -19,8 +19,6 @@ fan75.bin
 fan80.bin
 frontend.js
 ftp.bin
-goldhen2b.bin
-goldhen2b2.bin
 goldhen_2.2.2_900.bin
 goldhen_212_900.bin
 historyblocker.bin
@@ -28,6 +26,10 @@ index.html
 int64b.js
 kerneldumper.bin
 LinuxLoader.js
+LinuxLoader2gb.js
+LinuxLoader3gb.js
+LinuxLoader4gb.js
+LinuxLoader5gb.js
 malloc.js
 mdumper.bin
 mira.js
@@ -52,4 +54,4 @@ WebRTE.bin
 NETWORK: 
 * 
 
-# Date: 2022-03-28T14:59:00Z:
+# Date: 2022-03-31T14:59:00Z:
