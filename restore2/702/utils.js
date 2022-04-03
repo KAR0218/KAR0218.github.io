@@ -4,8 +4,7 @@ function die(msg) {
 }
 
 function debug_log(msg) {
-	document.getElementById("progress").innerHTML=msg;
-	frame1();
+	document.getElementById("progressx").innerHTML=msg;
 }
 
 // The following functions are taken from https://github.com/saelo/jscpwn/:

@@ -810,3 +810,61 @@ var getitimer_addr = sys_86_addr;
 var read_addr = sys_3_addr;
 var stat_addr = sys_188_addr;
 var pwritev_addr = sys_290_addr;
+
+function toggle_payload(pld){
+	if(pld == "restore"){
+		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
+		PLfile = 'restore702.bin';
+		preloadScripts(['jb.js', 'loader.js']);
+	}
+	else if(pld == "usb"){
+		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
+		PLfile = 'usb.bin';
+		preloadScripts(['jb.js', 'loader.js']);
+	}
+	else if(pld == "copych"){
+		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
+		PLfile = 'CopyCH.bin';
+		preloadScripts(['jb.js', 'loader.js']);
+	}
+	if(window.postPayload)
+		window.postPayload();
+	payload_finished(pld);
+	
+}
+
+function payload_finished(payload)
+{
+	if(payload == "binloader"){
+		setTimeout(function(){document.getElementById("progress").innerHTML="Awaiting Payload!! Send Payload To Port 9020"; }, 7000);
+	} else {
+		setTimeout(function(){document.getElementById("progress").innerHTML="Payload Loaded Succesfully !!"; }, 7000);
+	}
+}
+
+function done(){
+	document.getElementById("progressx").remove();
+    document.getElementById('load').innerHTML='<tr id="progress" class="titlehead">'+
+			'<td align="center" id="jailbreak" colspan="5" >Karo Host for PS4 7.02 FW'+
+			'</td>'+
+			'</tr>'+
+			'<tr id="mexp">'+
+			'<td align="center" id="jailbreak" colspan="5" >'+
+			'<br><br><br>'+
+			'<a href="#" id="restore" class="button" onclick="toggle_payload(\'restore\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Without USB</a>&nbsp;'+
+			'<a href="#" id="usb" class="button" onclick="toggle_payload(\'usb\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">with USB</a>&nbsp;'+
+			'<a href="#" id="copych" class="button" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat Copy</a>&nbsp;'+
+			'<br><br><br><br><br><br><br><br><br></td>'+
+			'</tr>'+
+			'<tr><td><br/></td></tr>'+
+			'<tr><br><br><br>'+
+			'<br><br><br><td class="content" >'+
+ 	        '<div class="text" >'+
+ 	        '<br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>'+
+ 	        '<br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo , DarkModderVC , ... </a>'+
+	        '</div>'+
+			'</td>'+
+	        '</tr>'+
+			'<tr>';
+		}
+		
