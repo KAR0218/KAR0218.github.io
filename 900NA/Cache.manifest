@@ -30,6 +30,11 @@ LinuxLoader2gb.bin
 LinuxLoader3gb.bin
 LinuxLoader4gb.bin
 LinuxLoader5gb.bin
+payload-900-1gb.bin
+payload-900-2gb.bin
+payload-900-3gb.bin
+payload-900-4gb.bin
+payload-900-5gb.bin
 malloc.js
 mdumper.bin
 mira.js
@@ -55,4 +60,4 @@ WebRTE.bin
 NETWORK: 
 * 
 
-# Date: 2022-04-03T14:59:00Z:
+# Date: 2022-04-08T14:59:00Z:

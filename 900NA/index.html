@@ -287,6 +287,46 @@ var payload_buffer = chain.syscall(477, 0, 0x300000, 7, 0x1002, -1, 0);
             setTimeout(load_poc,2000);
 }
 
+function Linux1N(){
+progress.innerHTML="LinuxLoader 1GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-1gb.bin";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+load_poc2();
+}
+
+function Linux2N(){
+progress.innerHTML="LinuxLoader 2GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-2gb.bin";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+load_poc2();
+}
+
+function Linux3N(){
+progress.innerHTML="LinuxLoader 3GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-3gb.bin";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+load_poc2();
+}
+
+function Linux4N(){
+progress.innerHTML="LinuxLoader 4GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-4gb.bin";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+load_poc2();
+}
+
+function Linux5N(){
+progress.innerHTML="LinuxLoader 5GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-5gb.bin";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+load_poc2();
+}
+
 function Linux1(){
 progress.innerHTML="LinuxLoader 1GB loading... please wait";
 LoadedMSG="LinuxLoader Loaded";
@@ -761,6 +801,12 @@ Tools.style.display = "none";
 <br><br><br></div>
 <div id=Linuxs style="text-align:center;display:none">
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 1gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux1N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 1GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 2gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux2N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 2GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 3gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux3N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 3GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 4gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux4N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 4GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 5gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux5N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 5GB</button>
 <br><br>
 <button  onMouseOver="progress.innerHTML='LinuxLoader 1gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux1()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 1GB</button>
 <button  onMouseOver="progress.innerHTML='LinuxLoader 2gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 2GB</button>
