@@ -204,6 +204,10 @@ header div{
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='FTP server'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ftp(); return false">&nbsp; FTP &nbsp;</button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='FTP server with RW'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_ftprw(); return false"> FTP RW </button>
 <br><br>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ReactPSPlus By Zer0xFF / Al Azif for FW 5.05'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_react();"><b>ReactPSplus </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='DeactPSPlus By Zer0xFF / Al Azif for FW 5.05'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_deact();"><b>DeactPSplus </button>
+<button style='font-size:22px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ReactPSPlus Moddable v1.0 By Zer0xFF/Leeful 5.05'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_reactM();"><b>ReactPSplusMOD </button>
+<br><br>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Disable Update'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_updatesdisable(); return false"> Disable Updates </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Enable Update'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_updatesenable(); return false"> Enable Updates </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Change License Hen to Mira'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rif(); return false"> Rif Renamer </button>
@@ -310,6 +314,27 @@ header div{
 <br>
 
 <script>
+function load_react(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'react1.html';
+        link.target = '_blank';
+        link.click();
+}
+function load_deact(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'deact1.html';
+        link.target = '_blank';
+        link.click();
+}
+function load_reactM(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'reactM.html';
+        link.target = '_blank';
+        link.click();
+}
 function load_copych(){
   var link = document.createElement('a');
         document.body.appendChild(link);
