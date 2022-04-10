@@ -263,10 +263,9 @@
 	</style>
 	<body class="bg">
 		<script>
-		    if(window.applicationCache.status==2){localStorage.is755NCached=true;}
-			window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";localStorage.is755NCached=false;};
+			window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";};
 			window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
-			window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";localStorage.is755NCached=true;setTimeout(function(){document.getElementById("progressx").innerHTML="Turn Off the Internet & Reopen the Page !!"; }, 1500);};
+			window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progressx").innerHTML="Turn Off the Internet & Reopen the Page !!"; }, 1500);};
 			window.applicationCache.onnoupdate=function(){window.location.replace("lndex.html");};
         	window.applicationCache.onerror=function(){window.location.replace("lndex.html");};
 		</script>
