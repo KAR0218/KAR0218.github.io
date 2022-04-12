@@ -286,6 +286,7 @@ header div{
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Red dead redemption 2 mod  menu V1.19 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rdr119(); return false"> RDR2 V1.19 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Red dead redemption 2 mod  menu V1.24 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rdr124(); return false"> RDR2 V1.24 </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='Red dead redemption 2 mod  menu V1.29 by RF0oDxM0Dz (R1 + Square)'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_rdr129(); return false"> RDR2 V1.29 </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Red dead redemption 2 mod  menu V1.29 by 0x199'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_rdr129H();"> RDR2 Havana V1.29 </button>
  </div>
  <div id=hens style="text-align:center;display:none">
  <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
@@ -803,6 +804,13 @@ function load_rdr129(){
   var link = document.createElement('a');
         document.body.appendChild(link);
         link.href = 'RDR2v129.html';
+        link.target = 'exp-loader';
+        link.click();
+		}
+function load_rdr129H(){
+  var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = 'RDR2v129H.html';
         link.target = 'exp-loader';
         link.click();
 		}
