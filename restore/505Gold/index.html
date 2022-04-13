@@ -1,0 +1,231 @@
+<!--
+
+  Flow Control:
+    index.html -> webkitExploit_$.js -> index.html -> userland.js -> index.html -> kernelExploit_$.js
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Restore 505</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        margin: 0;
+      }
+
+      ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -75px 0 0 -75px;
+
+        border: 10px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 10px solid #044595;
+        border-left: 10px solid #044595;
+        width: 120px;
+        height: 120px;
+
+        -webkit-animation: spin 1s linear infinite;
+      }
+
+      .info {
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        font-size: 45px;
+        font-family: sans-serif;
+
+        transform: translate(-50%, -50%);
+      }
+
+      .credits {
+        overflow: hidden;
+        position: absolute;
+        top: 90%;
+        left: 50%;
+
+        font-size: 16px;
+        font-family: sans-serif;
+        text-align: center;
+
+        transform: translate(-50%, -90%);
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Exploit Settings
+      var devkit = false;                        // Is this a Devkit (Not a Testkit)
+
+      // The following will determine what the exploit will do. It will only do one of these and they will be checked in the order they are listed
+      //   ex. If both kernel_dump and bin_loader is true it will only dump the kernel and will not listen for payloads.
+
+      var dump_method = 'socket';                // What method do you want to use to dump the module ("socket" or "http")?
+                                                 //   If you select "socket" you cannot select "all" in the option below for module dumping.
+      var dump_ip = '0.0.0.0';                   // What IP should it be dumped to? (Used for "socket")
+      var dump_port = 9023;                      // What port should it be dumped to? (Used for "socket")
+      var dump_url = 'http://0.0.0.0/dump';      // What URL should it be dumped to? (Used for "http")
+
+      var module_dump = false;                   // Do you want to dump the webkit modules?
+      var module_dump_name = 'libSceWebKit2';    // Which module to dump ("libSceWebKit2", "libkernel", "libSceLibcInternal", or "all")
+
+      var kernel_dump = false;                   // Do you want to dump the kernel?
+      var kernel_dump_size = 0x69B8000;          // How big of a dump should be made?
+
+      var bin_loader = false;                     // Do you want to listen for payloads on port 9020?
+
+      var embedded_payload = true;              // Do you want to load an embedded payload?
+      var payload_location = 'payload.bin';      // What location do you want to load the payload from?
+
+      function iframeMessage(message) {
+        try {
+          if (window.self !== window.top) {
+            parent.exploitDone(message);
+          }
+        } catch (e) {
+          parent.exploitDone(message);
+        }
+      }
+
+      function allset() {
+        iframeMessage('Success!');
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('allset').style.display = 'block';
+      }
+
+      function awaitpl() {
+        iframeMessage('Awaiting Payload...');
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('awaiting').style.display = 'block';
+      }
+
+      function fail(info) {
+        iframeMessage(info);
+        document.getElementById('allset').style.display = 'none';
+        document.getElementById('awaiting').style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('fail').innerText = info;
+        document.getElementById('fail').style.display = 'block';
+      }
+
+      window.onerror = function (e) {
+        if (e.slice(0, 6) == 'Error:') {
+          fail(e);
+        }
+      };
+
+      // This should detect the current FW, even if spoofed, as long as it uses the predetermined values, this can be removed after the HMD patch is used vs spoofing SDK version
+      var spoofedFW = {
+        9.00: 4.05,
+        9.01: 4.55,
+        9.02: 4.74,
+        9.03: 5.01,
+        9.04: 5.03,
+        9.05: 5.05,
+      };
+      var fwFromUA = parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('5.0 (') + 19, navigator.userAgent.indexOf(') Apple')));
+      if (fwFromUA in spoofedFW) {
+        fwFromUA = spoofedFW[fwFromUA];
+      }
+
+      function kernelExploit() {
+        try {
+          /*
+          if (fwFromUA <= 3.70) {
+            kernelExploit_bpf_race_old();
+          } else if (fwFromUA <= 4.07) {
+            kernelExploit_namedobj();
+          } else if (fwFromUA <= 4.55) {
+            kernelExploit_bpf_race();
+          } else
+          */
+          if (fwFromUA <= 5.07) {
+            kernelExploit_bpf_double_free();
+          }
+        } catch (e) {
+          throw new Error(e.message);
+        }
+      };
+
+      function stage2() {
+        try {
+          userland();
+        } catch (e) {
+          throw new Error(e.message);
+        }
+      };
+
+      function postWebkitExploit() {
+        try {
+          setTimeout(stage2, 1);
+        } catch (e) {
+          throw new Error(e.message);
+        }
+      };
+
+      window.onload = function () {
+        try {
+          if (fwFromUA >= 3.50 && fwFromUA <= 5.07) {
+            if (fwFromUA <= 4.07) {
+              setTimeout(webkitExploit_stackUnitializedRead, 1);
+            //} else if (fwFromUA >= 4.50 && fwFromUA <= 5.01) {
+            //  setTimeout(exploit_setAttributeNodeNS, 1);
+            } else if (fwFromUA >= 4.50 && fwFromUA <= 5.56) {
+              setTimeout(webkitExploit_haveABadTime, 1);
+            } else if (fwFromUA >= 6.00 && fwFromUA <= 6.20) {
+              setTimeout(webkitExploit_shiftCountWithArrayStorage, 1);
+            } else if (fwFromUA >= 6.50 && fwFromUA <= 6.72) {
+              setTimeout(webkitExploit_badHoist, 1);
+            }
+          } else {
+            throw new Error('Unsupported Firmware!');
+          }
+        } catch (e) {
+          throw new Error(e.message);
+        }
+      };
+    </script>
+    <div id="loader" class="loader"></div>
+    <div id="awaiting" class="info" style="display:none;">Awaiting Payload...</div>
+    <div id="allset" class="info" style="display:none;">Success!</div>
+    <div id="fail" class="info" style="display:none;">Fail!</div>
+    <div id="footer" class="credits">
+      <ul>
+        <li>Exploits from qwertyoruiopz</li>
+        <li>Implementation by Specter and CelesteBlue</li>
+      </ul>
+    </div>
+    <script src="./common.js"></script>
+    <script src="./rop.js"></script>
+    <script src="./offsets.js"></script>
+    <!--<script src="./kernelExploit_namedobj.js"></script>-->
+    <!--<script src="./kernelExploit_bpf_race_old.js"></script>-->
+    <!--<script src="./kernelExploit_bpf_race.js"></script>-->
+    <script src="./kernelExploit_bpf_double_free.js"></script>
+    <script src="./userland.js"></script>
+    <script src="./webkitExploit_stackUnitializedRead.js"></script>
+    <!--<script src="./webkitExploit_setAttributeNodeNS.js"></script>-->
+    <script src="./webkitExploit_haveABadTime.js"></script>
+    <!--<script src="./webkitExploit_shiftCountWithArrayStorage.js"></script>-->
+    <!--<script src="./webkitExploit_badHoist.js"></script>-->
+  </body>
+</html>
