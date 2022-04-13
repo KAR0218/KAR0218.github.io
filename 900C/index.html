@@ -415,36 +415,28 @@ runScript('relocator.js');
 }, 1000);
 }
 
-function goldhen(){
-    progress.innerHTML="Goldhen loading... please wait";
-    LoadedMSG="GoldHEN 2.0b Loaded";
-    setTimeout(function(){ let array = loadFile('goldhen2b.bin.bz2');}, 50);
-    out_jb = "AllPL";
-    setTimeout(load_pocj, 500);
-}
-
 function goldhen2(){
     progress.innerHTML="Goldhen 2.0b2 loading... please wait";
     LoadedMSG="GoldHEN 2.0b2 Loaded";
-    setTimeout(function(){ let array = loadFile('goldhen2b2.bin.bz2');}, 50);
+    PLfile = "goldhen2b2.bin";
     out_jb = "AllPL";
-    setTimeout(load_pocj, 500);
+    load_pocB();
 }
 
 function goldhen222(){
     progress.innerHTML="Goldhen 2.2.2 loading... please wait";
     LoadedMSG="GoldHEN 2.2.2 Loaded";
-    setTimeout(function(){ let array = loadFile('goldhen_2.2.2_900.bin.bz2');}, 50);
+    PLfile = "goldhen_2.2.2_900.bin";
     out_jb = "AllPL";
-    setTimeout(load_pocj, 500);
+    load_pocB();
 }
 
 function goldhen212(){
     progress.innerHTML="Goldhen 2.1.2 loading... please wait";
     LoadedMSG="GoldHEN 2.1.2 Loaded";
-    setTimeout(function(){ let array = loadFile('goldhen_212_900.bin.bz2');}, 50);
+    PLfile = "goldhen_212_900.bin";
     out_jb = "AllPL";
-    setTimeout(load_pocj, 500);
+    load_pocB();
 }
 
 function load_PS4Debug(){
