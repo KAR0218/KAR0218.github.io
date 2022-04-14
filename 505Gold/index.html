@@ -304,7 +304,20 @@ function getScript(source,callback){var gs = document.createElement('script');gs
 function loadScript(){getScript('exploit.js',function(){setTimeout(exploit,1000);});}
 function loadScript2(){getScript('exploit_bin_x2.js',function(){setTimeout(exploit,1000);});}
 function loadScript3(){getScript('exploit_bin_x3.js',function(){setTimeout(exploit,1000);});}
+function loadScriptb(){getScript('binloader.js',function(){setTimeout(exploit,1000);});}
 function anim(){document.getElementById('loader3').style.display='block';document.getElementById('done2').style.display='block';}
+function allset() {
+window.msgs2.innerHTML="Payload Loaded";
+}
+
+function failload() {
+alert("Error Loading. try again");
+}
+
+function Binset() {
+window.msgs2.innerHTML="Payload Loaded. Send payloads to port 9020";
+alert("Payload Loaded. Send payloads to port 9020");
+}
 function load_copych(){
   bin="CopyCH.bin";loadScript();anim();
 }
@@ -342,11 +355,7 @@ function load_orbisafr(){
 bin1="Mira.bin";bin2="OrbisAFR.bin";bin3="Hen19Mira.bin";loadScript3();anim();
 }
 function load_binloader(){
-  var link = document.createElement('a');
-        document.body.appendChild(link);
-        link.href = 'binloader.html';
-        link.target = '_blank';
-        link.click();
+loadScriptb();anim();
 }
 function load_react(){
   var link = document.createElement('a');

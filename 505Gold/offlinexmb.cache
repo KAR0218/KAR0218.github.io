@@ -2,7 +2,7 @@ CACHE MANIFEST
 # v1.0.0 Self-Host 
 
 AppToUsb.bin
-binloader.html
+binloader.js
 cal.js
 CopyCH.bin
 Database_Backup.bin
