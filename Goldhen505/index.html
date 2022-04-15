@@ -1,0 +1,214 @@
+<!DOCTYPE html><html manifest="offlinexmb.cache">
+<head>
+<title>Karo Host GoldHEN 5.05 FW</title>
+<style type="text/css">
+html, body {
+margin: 0;
+height: 100%;
+padding: 0;
+overflow: hidden;
+font-family: sans-serif;
+font-size: 20px;
+font-weight: bold;
+text-align: center;  
+width: 100%;
+overflow: hidden;
+}
+#head {
+ font-weight:bold;
+ font-size:20px;
+ color: white;
+  margin-right:10%;
+}
+ button {
+            
+            border: 2px solid black;
+            border-radius: 10px;
+			width: 250px;
+            height: 45px;            
+            text-align: center;
+            padding: 1px;
+            margin: 1px;
+            box-shadow: 0 5px 20px 0 white;
+            background:rgba(0,0,0,0.5);
+}
+button:hover {
+            box-shadow: 0 5px 50px 0 white;
+            color: white;
+            border-radius: 10px;
+            background-color: #0F0F53;
+}
+header{
+	height: 3em;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10;
+}
+#clock{
+ float:right;
+ margin-right:2.25%;
+ margin-top: 0px;
+ font-weight:bold;
+ font-size:20px;
+  color: white;
+}
+#date {
+ float:left;
+ margin-left:1.25%;
+ font-weight:bold;
+ margin-top: 5px;
+ font-size:20px;
+ color: white;
+}
+#donate2{
+ float:right;
+ margin-right:2.25%;
+ margin-top: 0px;
+ font-weight:bold;
+ font-size:28px;
+  color: white;
+}
+#donate {
+ float:left;
+ margin-left:1.60%;
+ font-weight:bold;
+ margin-top: 0px;
+ font-size:28px;
+ color: white;
+}
+#msgs {
+ font-weight:bold;
+ font-size:17px;
+}
+header div{
+	height: 100%;
+	display: ruby-text;
+	margin-top: -1.5em;
+}
+.pointer {cursor: pointer;}
+.yellow {
+  color:yellow;
+ }
+ .hue {
+  color:yellow;
+  padding:10px;
+  border-radius:10px;
+  animation:hue 5s linear infinite;
+  -webkit-animation: hue 5s linear infinite;
+  box-shadow: 0px 0px 50px yellow;
+  color:white;
+  background:rgba(255,255,0,0.4);
+ }
+ .hue:hover{
+  color:yellow;
+  background:transparent;
+ }
+ @keyframes hue{
+ 0%{
+ filter:hue-rotate(0deg);
+ -webkit-filter:hue-rotate(0deg);
+ }
+ 10%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 20%{
+ box-shadow: 1px 1px 50px yellow;
+ }
+ 30%{
+ box-shadow: 1px 0px 50px yellow;
+ }
+ 40%{
+  box-shadow: 1px -1px 50px yellow;
+ }
+ 50%{
+ box-shadow: 0px -1px 50px yellow;
+ }
+ 60%{
+ box-shadow: -1px -1px 50px yellow;
+ }
+ 70%{
+ box-shadow: -1px 0px 50px yellow;
+ }
+ 80%{
+ box-shadow: -1px 1px 50px yellow;
+ }
+ 90%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 100%{
+ filter:hue-rotate(360deg);
+ -webkit-filter:hue-rotate(360deg);
+ }
+ }
+  .content {
+  width:80%;
+  margin-left:7.5%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  margin-top:0%;
+  font-size:25px;
+  text-align:center;
+  border-radius:30px;
+  padding:20px;
+  line-height:20px;
+  position:absolute;bottom:0px;
+ }
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ h1 {
+text-shadow: 0.1em 0.1em 0.2em black;
+font-size: 25px;
+text-align: center;
+color: white;
+}
+.TextCaption{
+display: block;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+a img {
+    display: inline-block;  text-decoration: none;
+}
+a {
+    display: inline-block;  text-decoration: none;
+}
+
+a:hover img, a:hover .TextCaption{
+transform: scale(1.1)
+}
+</style>
+<script>
+  window.applicationCache.ondownloading=function(){document.getElementById("msgs").innerHTML="Caching Started!!"};
+  window.applicationCache.onprogress=function(a){document.getElementById("msgs").innerHTML="Caching Status: "+(Math.round(100*(a.loaded/a.total)))+"% Completed"};
+  window.applicationCache.oncached=function(){document.getElementById("msgs").innerHTML="Cached Successfully!!";setTimeout(function(){document.getElementById("msgs").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cached505G="yes";};
+</script>
+</head>
+<body onload="if(localStorage.cached505G=='yes')setTimeout(goldhen222,50);" style='background-color:#1A1920'>
+<h1 id=msgs style='font-size:25px;text-shadow: 4px 4px 4px black;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host GoldHEN 5.05 FW</h1>
+<div id=loader1></div><div id=loader2></div>
+<div id=loader3 style='font-size:25px;text-shadow: 4px 4px 4px black;text-align:center;text-shadow: 4px 4px 4px black;color:white;display:none'>Loading</div><div id=done1 class="info"></div>
+<div id=done2 class="info" style=display:none></div>
+<div id=done3 class="info" style=display:none></div><br><div class=ib></div>
+<div id=fail class=info style=display:none></div>
+<br><br>
+<div class="content" >
+ 	 <br><span class="yellow" >Designed by :</span >&nbsp;&nbsp; <a class="hue" style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Karo Sharifi</a>
+ 	 <br><br><br><br><span class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Specter , AlAzif , SiSTRo. , ... </a>
+ </div>
+<script>
+function getScript(source,callback){var gs = document.createElement('script');gs.src = source;gs.onload = callback;gs.async = false;document.body.appendChild(gs);}
+function loadScript(){getScript('exploit.js',function(){setTimeout(exploit,1000);});}
+function anim(){document.getElementById('loader3').style.display='block';document.getElementById('done2').style.display='block';}
+function goldhen222(){bin="goldhen_2.2.2_505.bin";loadScript();anim();}
+</script>
+</body>
+</html>
