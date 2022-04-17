@@ -127,15 +127,15 @@ background-size:cover;
   width:15%;
   display:flex;
   position: absolute;
-  
+
   background: rgba(0, 0, 0, 0.500);
   border-radius: 2em;
   border: none;
   padding: 0.8em;
-  
+
   color: #ffffff;
   padding-left: 1.5em;
-  
+
   outline: none;
   box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
   backdrop-filter: blur(5px);
@@ -162,7 +162,7 @@ button {
             border: 2px solid black;
             border-radius: 10px;
             width: 173px;
-            height: 40px;            
+            height: 40px;
             text-align: center;
 }
 button:hover {
@@ -194,7 +194,7 @@ window.applicationCache.onprogress=function(a){document.getElementById("progress
 window.applicationCache.oncached=function(e){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cachedG="yes";};
 </script>
 <meta charset="utf-8">
-<title>Karo Host Auto Exploit GoldHen V2.2.2 900fw</title>
+<title>Karo Host Auto Exploit GoldHEN V2.2.2 900fw</title>
 <script>
 function loadBIN(){
  var req = new XMLHttpRequest();
@@ -228,7 +228,7 @@ window.progress.innerHTML= LoadedMSG
 }
 
 function goldhen222(){
-    progress.innerHTML="Goldhen 2.2.2 loading... please wait";
+    progress.innerHTML="GoldHEN 2.2.2 loading... please wait";
     LoadedMSG="GoldHEN 2.2.2 Loaded";
     PLfile = "goldhen_2.2.2_900.bin";
     setTimeout(loadBIN,50);
@@ -236,7 +236,7 @@ function goldhen222(){
 </script>
 </head>
 <body onload="if(localStorage.cachedG=='yes')setTimeout(poc,50);" style='background-color:#1A1920'>
-<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Auto Exploit GoldHen V2.2.2 900fw</h1>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Auto Exploit GoldHEN V2.2.2 900fw</h1>
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking....Please wait</h1>
 <div class="content" >
  	    <div class="text" >
@@ -669,7 +669,7 @@ function kernel() {
   };
   return tlsinit;
  }
- 
+
  function extra_gadgets() {
   handle = p.malloc(0x1E8);
   var randomized_path_length_ptr = handle.add32(0x4);
@@ -696,7 +696,7 @@ function kernel() {
   }
   chain.run();
  }
- 
+
  function kchain_setup() {
   const KERNEL_busy = 0x1B28DF8;
   const KERNEL_bcopy = 0xACD;
@@ -838,7 +838,7 @@ function kernel() {
   kchain2.pushSymbolic();
   kchain2.finalizeSymbolic(idx6, idx6_dest);
  }
- 
+
  function object_setup() {
   var fake_knote = chain.syscall(477, 0x4000, 0x4000 * 0x3, 0x3, 0x1010, 0xFFFFFFFF, 0x0);
   var fake_filtops = fake_knote.add32(0x4000);
@@ -859,7 +859,7 @@ function kernel() {
   }
   chain.syscall(203, fake_knote, 0xC000);
  }
- 
+
  var trigger_spray = function () {
   var NUM_KQUEUES = 0x1B0;
   var kqueue_ptr = p.malloc(NUM_KQUEUES * 0x4); {
@@ -890,7 +890,7 @@ function kernel() {
     chain.fcall(window.syscalls[6], kqueues[i]);
    }
   }
-  chain.run(); 
+  chain.run();
   alert("Insert USB Drive and click OK after You See The Popup Notification, after jailbreak remove usb from PS4");
   {
    for (var i = 1; i < NUM_KQUEUES; i += 2) {
@@ -899,7 +899,7 @@ function kernel() {
   }
   chain.run();
   if (chain.syscall(23, 0).low == 0) {
-			
+
             chain.fcall(window.syscalls[73], 0x4000, 0xC000);
             chain.fcall(window.syscalls[325]);
             chain.run();
@@ -924,14 +924,14 @@ function kernel() {
             p.write8(0, 0);
         }
  };
- 
+
  function kernelX() {
   extra_gadgets();
   kchain_setup();
   object_setup();
   trigger_spray();
  }
- 
+
  kernelX();
 }
 

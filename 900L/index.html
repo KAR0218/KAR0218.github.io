@@ -127,15 +127,15 @@ background-size:cover;
   width:15%;
   display:flex;
   position: absolute;
-  
+
   background: rgba(0, 0, 0, 0.500);
   border-radius: 2em;
   border: none;
   padding: 0.8em;
-  
+
   color: #ffffff;
   padding-left: 1.5em;
-  
+
   outline: none;
   box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
   backdrop-filter: blur(5px);
@@ -162,7 +162,7 @@ button {
             border: 2px solid black;
             border-radius: 10px;
             width: 200px;
-            height: 50px;            
+            height: 50px;
             text-align: center;
 }
 button:hover {
@@ -239,7 +239,7 @@ alert("Payload Loaded. Send payloads to port 9021");
 }
 
 function goldhen212(){
-    progress.innerHTML="Goldhen 2.1.2 loading... please wait";
+    progress.innerHTML="GoldHEN 2.1.2 loading... please wait";
     LoadedMSG="GoldHEN 2.1.2 Loaded";
     PLfile = "goldhen_212_900.bin";
     out_jb = "AllPL";
@@ -247,7 +247,7 @@ function goldhen212(){
 }
 
 function goldhen222(){
-    progress.innerHTML="Goldhen 2.2.2 loading... please wait";
+    progress.innerHTML="GoldHEN 2.2.2 loading... please wait";
     LoadedMSG="GoldHEN 2.2.2 Loaded";
     PLfile = "goldhen_2.2.2_900.bin";
     out_jb = "AllPL";
@@ -303,7 +303,7 @@ function load_EnableUpdates(){
     PLfile = "enableupdates.bin";
     out_jb = "AllPL";     load_poc();
 }
-  
+
 function load_Orbis(){
     progress.innerHTML="Orbis-Toolbox loading... please wait"; LoadedMSG="Orbis-Toolbox Loaded";
     PLfile = "Orbis-Toolbox-900.bin";
@@ -362,8 +362,8 @@ function load_copych(){
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking... Wait</h1>
 <br>
 <div id=all style="text-align:center;display:none">
-<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.1.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen212()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:#CEC52A' > GoldHen V2.1.2 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.2.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen222()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:#CEC52A' > GoldHen V2.2.2 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHEN v2.1.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen212()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:#CEC52A' > GoldHEN V2.1.2 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHEN v2.2.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen222()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:#CEC52A' > GoldHEN V2.2.2 </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Copy json and shn files from USB to PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_copych()" style='font-size:26px;text-align:center;text-shadow: 4px 4px 4px black;width: 220px;height: 60px;color:white' > Cheat Copy </button>
 <br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='WebRTE for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_WebRTE()" style='font-size:23px;text-align:center;text-shadow: 4px 4px 4px black;background-color:blue;color:white' > WebRTE </button>
@@ -815,7 +815,7 @@ function kernel() {
   };
   return tlsinit;
  }
- 
+
  function extra_gadgets() {
   handle = p.malloc(0x1E8);
   var randomized_path_length_ptr = handle.add32(0x4);
@@ -842,7 +842,7 @@ function kernel() {
   }
   chain.run();
  }
- 
+
  function kchain_setup() {
   const KERNEL_busy = 0x1B28DF8;
   const KERNEL_bcopy = 0xACD;
@@ -984,7 +984,7 @@ function kernel() {
   kchain2.pushSymbolic();
   kchain2.finalizeSymbolic(idx6, idx6_dest);
  }
- 
+
  function object_setup() {
   var fake_knote = chain.syscall(477, 0x4000, 0x4000 * 0x3, 0x3, 0x1010, 0xFFFFFFFF, 0x0);
   var fake_filtops = fake_knote.add32(0x4000);
@@ -1005,7 +1005,7 @@ function kernel() {
   }
   chain.syscall(203, fake_knote, 0xC000);
  }
- 
+
  var trigger_spray = function () {
   var NUM_KQUEUES = 0x1B0;
   var kqueue_ptr = p.malloc(NUM_KQUEUES * 0x4); {
@@ -1036,7 +1036,7 @@ function kernel() {
     chain.fcall(window.syscalls[6], kqueues[i]);
    }
   }
-  chain.run(); 
+  chain.run();
   alert("Insert USB Drive and click OK after You See The Popup Notification, after jailbreak remove usb from PS4");
   {
    for (var i = 1; i < NUM_KQUEUES; i += 2) {
@@ -1045,7 +1045,7 @@ function kernel() {
   }
   chain.run();
   if (chain.syscall(23, 0).low == 0) {
-			
+
             chain.fcall(window.syscalls[73], 0x4000, 0xC000);
             chain.fcall(window.syscalls[325]);
             chain.run();
@@ -1070,14 +1070,14 @@ function kernel() {
             p.write8(0, 0);
         }
  };
- 
+
  function kernelX() {
   extra_gadgets();
   kchain_setup();
   object_setup();
   trigger_spray();
  }
- 
+
  kernelX();
 }
 
