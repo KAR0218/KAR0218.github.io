@@ -127,15 +127,15 @@ background-size:cover;
   width:15%;
   display:flex;
   position: absolute;
-  
+
   background: rgba(0, 0, 0, 0.500);
   border-radius: 2em;
   border: none;
   padding: 0.8em;
-  
+
   color: #ffffff;
   padding-left: 1.5em;
-  
+
   outline: none;
   box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
   backdrop-filter: blur(5px);
@@ -162,7 +162,7 @@ button {
             border: 2px solid black;
             border-radius: 10px;
             width: 200px;
-            height: 43px;            
+            height: 43px;
             text-align: center;
 }
 button:hover {
@@ -212,7 +212,7 @@ opacity:0.7;
     }
     return array;
   }
-  
+
 function load_pocj() {
 var payload_buffer = chain.syscall(477, 0, 0x300000, 7, 0x1002, -1, 0);
             var buf = new Uint8Array(1);
@@ -536,25 +536,25 @@ function load_ExitIDU(){
     setTimeout(function(){ let array = loadFile('exitidu.bin.bz2');}, 50);
     out_jb = "AllPL";     setTimeout(load_pocj, 500);
 }
-  
+
 function load_FTP(){
     progress.innerHTML="FTP loading... please wait"; LoadedMSG="FTP Loaded";
     setTimeout(function(){ let array = loadFile('ftp.bin.bz2');}, 50);
     out_jb = "AllPL";     setTimeout(load_pocj, 500);
 }
-  
+
 function load_HistoryBlocker(){
     progress.innerHTML="HistoryBlocker loading... please wait"; LoadedMSG="HistoryBlocker Loaded";
     setTimeout(function(){ let array = loadFile('historyblocker.bin.bz2');}, 50);
     out_jb = "AllPL";     setTimeout(load_pocj, 500);
 }
-  
+
 function load_RIFRenamer(){
     progress.innerHTML="RIFRenamer loading... please wait"; LoadedMSG="RIFRenamer Loaded";
     setTimeout(function(){ let array = loadFile('rifrenamer.bin.bz2');}, 50);
     out_jb = "AllPL";     setTimeout(load_pocj, 500);
 }
-  
+
 function load_Orbis(){
     progress.innerHTML="Orbis-Toolbox loading... please wait"; LoadedMSG="Orbis-Toolbox Loaded";
     setTimeout(function(){ let array = loadFile('Orbis-Toolbox-900.bin.bz2');}, 50);
@@ -818,11 +818,11 @@ Tools.style.display = "none";
 <button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.38 v1.7 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde38()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W138 </button>
 <!--<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Lamance 1.32 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAL()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV L </button>-->
 <br><br>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.00 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
-<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.29 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters129()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.29 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red Dead Redemption 2 mod menu 1.00 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red Dead Redemption 2 mod menu 1.13 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red Dead Redemption 2 mod menu 1.19 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red Dead Redemption 2 mod menu 1.24 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red Dead Redemption 2 mod menu 1.29 V1.3.5 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters129()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.29 </button>
 <br><br><br></div>
 <div id=Linuxs style="text-align:center;display:none">
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
@@ -1295,7 +1295,7 @@ function kernel() {
   };
   return tlsinit;
  }
- 
+
  function extra_gadgets() {
   handle = p.malloc(0x1E8);
   var randomized_path_length_ptr = handle.add32(0x4);
@@ -1322,7 +1322,7 @@ function kernel() {
   }
   chain.run();
  }
- 
+
  function kchain_setup() {
   const KERNEL_busy = 0x1B28DF8;
   const KERNEL_bcopy = 0xACD;
@@ -1464,7 +1464,7 @@ function kernel() {
   kchain2.pushSymbolic();
   kchain2.finalizeSymbolic(idx6, idx6_dest);
  }
- 
+
  function object_setup() {
   var fake_knote = chain.syscall(477, 0x4000, 0x4000 * 0x3, 0x3, 0x1010, 0xFFFFFFFF, 0x0);
   var fake_filtops = fake_knote.add32(0x4000);
@@ -1485,7 +1485,7 @@ function kernel() {
   }
   chain.syscall(203, fake_knote, 0xC000);
  }
- 
+
  var trigger_spray = function () {
   var NUM_KQUEUES = 0x1B0;
   var kqueue_ptr = p.malloc(NUM_KQUEUES * 0x4); {
@@ -1516,7 +1516,7 @@ function kernel() {
     chain.fcall(window.syscalls[6], kqueues[i]);
    }
   }
-  chain.run(); 
+  chain.run();
   alert("Insert USB Drive and click OK after You See The Popup Notification, after jailbreak remove usb from PS4");
   {
    for (var i = 1; i < NUM_KQUEUES; i += 2) {
@@ -1525,7 +1525,7 @@ function kernel() {
   }
   chain.run();
   if (chain.syscall(23, 0).low == 0) {
-			
+
             chain.fcall(window.syscalls[73], 0x4000, 0xC000);
             chain.fcall(window.syscalls[325]);
             chain.run();
@@ -1550,14 +1550,14 @@ function kernel() {
             p.write8(0, 0);
         }
  };
- 
+
  function kernelX() {
   extra_gadgets();
   kchain_setup();
   object_setup();
   trigger_spray();
  }
- 
+
  kernelX();
 }
 
