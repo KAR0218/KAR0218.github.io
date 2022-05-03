@@ -69,6 +69,7 @@ payload-900-5gb.bin
 payload.js
 permanentuart.bin.bz2
 pl_EnableUpdates.bin.bz2
+pkg-backup.bin.bz2
 ps4debug.bin.bz2
 relocator.js
 restoredb.bin.bz2
@@ -88,4 +89,4 @@ WildeModz-1.38.bin.bz2
 NETWORK: 
 * 
 
-# Date: 2022-04-24T14:59:00Z:
+# Date: 2022-05-03T14:59:00Z:
