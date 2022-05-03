@@ -230,6 +230,7 @@ header div{
 <div id=dump style="text-align:center;display:none">
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='back to base menu'"; onmouseout="msgs2.innerHTML='Status'" onclick="backall();"> Back to Menu </button>
 <br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='PS4 PKG Backup by Kameleon'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="load_pkgb(); return false"> PKG Backup </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Kernel Dumper'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_kdumper();"> Kernel Dumper </button>
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Dumper for Games'"; onmouseout="msgs2.innerHTML='Status'" onclick="load_dumper();"> Dumper </button>
 </div>
@@ -398,6 +399,9 @@ function load_updatesenable(){
 }
 function load_dbBackup(){
   bin="Database_Backup.bin";loadScript();anim();
+}
+function load_pkgb(){
+  bin="pkg-backup.bin";loadScript();anim();
 }
 function load_kdumper(){
   bin="kdamper.bin";loadScript();anim();
