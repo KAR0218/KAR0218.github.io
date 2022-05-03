@@ -944,6 +944,15 @@ function toggle_payload(pld){
         scripts.push('payloads.js');
         scripts.push('loader.js');
         preloadScripts(scripts, go);
+	}else if(pld == "pkgb"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		PLfile = 'pkg-backup.bin.bz2'
+		let array = loadFile(PLfile);
+	    var scripts = ['jb.js'];
+	    scripts.push('preloader.js');
+        scripts.push('payloads.js');
+        scripts.push('loader.js');
+        preloadScripts(scripts, go);
 	}else if(pld == "dumper"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		PLfile = 'dumper.bin.bz2'
@@ -1161,6 +1170,7 @@ function done(){
 			'<a href="#" id="webrte" class="button" onclick="toggle_payload(\'webrte\'); return false" style="font-size:25px;text-align:center;background-color:blue;text-shadow: 4px 4px 4px black;color:white">WebRTE</a>&nbsp;'+
 			'<a href="#" id="enableupdates" class="button" onclick="toggle_payload(\'enableupdates\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Enable.Updates</a>&nbsp;'+
 			'<a href="#" id="dumper" class="button" onclick="toggle_payload(\'dumper\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Dumper</a>&nbsp;'+
+			'<a href="#" id="pkgb" class="button" onclick="toggle_payload(\'pkgb\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">PKG Backup</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
