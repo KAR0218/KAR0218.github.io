@@ -464,6 +464,12 @@ function load_BackupDB(){
     out_jb = "AllPL";     setTimeout(load_pocj, 500);
 }
 
+function load_pkgb(){
+    progress.innerHTML="PKG Backup loading... please wait"; LoadedMSG="PKG Backup Loaded";
+    setTimeout(function(){ let array = loadFile('pkg-backup.bin.bz2');}, 50);
+    out_jb = "AllPL";     setTimeout(load_pocj, 500);
+}
+
 function load_DumperG(){
     progress.innerHTML="Dumper Game loading... please wait"; LoadedMSG="Dumper Game Loaded";
     setTimeout(function(){ let array = loadFile('DumperG.bin.bz2');}, 50);
@@ -854,6 +860,8 @@ Tools.style.display = "none";
 </div>
 <div id=Dumpers style="text-align:center;display:none">
 <button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="msgs.innerHTML='back to base menu'"; onmouseout="msgs.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='PS4 PKG Backup by Kameleon'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_pkgb()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > PKG Backup </button>
 <br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperG()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games Update only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Update </button>
