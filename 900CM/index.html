@@ -423,6 +423,14 @@ var script = document.createElement('script');script.src = "MiraLoader.js";docum
 if(sessionStorage.Exploit!="yes"){setTimeout(poc, 50);} else {load_poc2();}
 }
 
+function Linux6(){
+progress.innerHTML="Whos That Southbridge loading... please wait";
+LoadedMSG="Whos That Southbridge Loaded";
+out_jb = "Gold";
+PLfile = "wtsb.bin";
+ if(sessionStorage.Exploit!="yes"){setTimeout(poc, 50);} else {load_pocB();}
+}
+
 function Mira(){
 progress.innerHTML="Mira loading... please wait";
 LoadedMSG="Mira Loaded";
@@ -866,6 +874,8 @@ Tools.style.display = "none";
 <button  onMouseOver="progress.innerHTML='LinuxLoader 3gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 3GB</button>
 <button  onMouseOver="progress.innerHTML='LinuxLoader 4gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux4()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 4GB</button>
 <button  onMouseOver="progress.innerHTML='LinuxLoader 5gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux5()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 5GB</button>
+<br><br>
+<button  onMouseOver="progress.innerHTML='Whos That Southbridge'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux6()" style='width: 300px;height: 50px;font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Whos_That_Southbridge</button>
 <br><br><br>
 </div>
 <div id=Tools style="text-align:center;display:none">
