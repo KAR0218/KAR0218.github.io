@@ -1105,6 +1105,15 @@ function toggle_payload(pld){
         scripts.push('payloads.js');
         scripts.push('loader.js');
         preloadScripts(scripts, go);
+	}else if(pld == "gtavl9"){
+		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
+		PLfile = 'Lamance9.bin.bz2'
+		let array = loadFile(PLfile);
+	    var scripts = ['jb.js'];
+	    scripts.push('preloader.js');
+        scripts.push('payloads.js');
+        scripts.push('loader.js');
+        preloadScripts(scripts, go);
 	}else if(pld == "rdr113"){
 		document.getElementById("progress").innerHTML="Loading Payload.. Please wait..";
 		PLfile = 'rdr113.bin.bz2'
@@ -1213,6 +1222,7 @@ function done(){
 			'<a href="#" id="gtavl132" class="button" onclick="toggle_payload(\'gtavl132\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">GTAV-La-132</a>&nbsp;'+
 			'<a href="#" id="gtavbq132" class="button" onclick="toggle_payload(\'gtavbq132\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">GTAV-BQ-132</a>&nbsp;'+
 			'<a href="#" id="gtavbq133" class="button" onclick="toggle_payload(\'gtavbq133\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">GTAV-Bq-133</a>&nbsp;'+
+			'<a href="#" id="gtavl9" class="button" onclick="toggle_payload(\'gtavl9\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">GTAV-L-138</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
 			'<tr><td><br/></td></tr>'+
