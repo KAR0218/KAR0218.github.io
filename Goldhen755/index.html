@@ -266,6 +266,8 @@
   window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Caching Started!!"};
   window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML="Caching Status: "+(Math.round(100*(a.loaded/a.total)))+"% Completed"};
   window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Cached Successfully!!";setTimeout(function(){document.getElementById("progressx").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cached755="yes";};
+  window.applicationCache.onnoupdate=function(){localStorage.cached755="yes";};
+  window.applicationCache.onerror=function(){localStorage.cached755="yes";};
 </script>
 	<body onload="if(localStorage.cached755=='yes')go();" class="bg">
 		<script>
