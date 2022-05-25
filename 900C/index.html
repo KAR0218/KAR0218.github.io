@@ -194,6 +194,8 @@ opacity:0.7;
 			window.applicationCache.ondownloading=function(){document.getElementById("progress").innerHTML="Page Caching Started!!";};
 			window.applicationCache.onprogress=function(a){document.getElementById("progress").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
 			window.applicationCache.oncached=function(){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cachedB="yes";};
+			window.applicationCache.onnoupdate=function(){localStorage.cachedB="yes";};
+          	        window.applicationCache.onerror=function(){localStorage.cachedB="yes";};
 		</script>
 <script>
   function loadFile(fileName) {
