@@ -192,6 +192,8 @@ opacity:0.7;
 window.applicationCache.ondownloading=function(){document.getElementById("progress").innerHTML="Page Caching Started!!";};
 window.applicationCache.onprogress=function(a){document.getElementById("progress").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
 window.applicationCache.oncached=function(e){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cachedG="yes";};
+window.applicationCache.onnoupdate=function(){localStorage.cachedG="yes";};
+window.applicationCache.onerror=function(){localStorage.cachedG="yes";};
 </script>
 <meta charset="utf-8">
 <title>Karo Host Auto Exploit GoldHen V2.2.2 900fw</title>
