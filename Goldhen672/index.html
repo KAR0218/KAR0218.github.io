@@ -21,7 +21,6 @@ function DisplayCacheProgress(){
 	window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
 	window.applicationCache.onnoupdate=function(){localStorage.cached672="yes";};
         window.applicationCache.onerror=function(){localStorage.cached672="yes";};
-};
 </script>
 <script>
     function showdate() {
