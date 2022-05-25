@@ -190,6 +190,8 @@ transform: scale(1.1)
   window.applicationCache.ondownloading=function(){document.getElementById("msgs").innerHTML="Caching Started!!"};
   window.applicationCache.onprogress=function(a){document.getElementById("msgs").innerHTML="Caching Status: "+(Math.round(100*(a.loaded/a.total)))+"% Completed"};
   window.applicationCache.oncached=function(){document.getElementById("msgs").innerHTML="Cached Successfully!!";setTimeout(function(){document.getElementById("msgs").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cached505G="yes";};
+  window.applicationCache.onnoupdate=function(){localStorage.cached505G="yes";};
+  window.applicationCache.onerror=function(){localStorage.cached505G="yes";};
 </script>
 </head>
 <body onload="if(localStorage.cached505G=='yes')setTimeout(goldhen222,50);" style='background-color:#1A1920'>
