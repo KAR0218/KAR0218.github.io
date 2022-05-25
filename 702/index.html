@@ -265,7 +265,9 @@
 	window.applicationCache.ondownloading=function(){document.getElementById("progressx").innerHTML="Page Caching Started!!";};
 	window.applicationCache.onprogress=function(a){document.getElementById("progressx").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
 	window.applicationCache.oncached=function(){document.getElementById("progressx").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progressx").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cached702C="yes";};
-</script>
+        window.applicationCache.onnoupdate=function(){localStorage.cached702C="yes";};
+        window.applicationCache.onerror=function(){localStorage.cached702C="yes";};
+	</script>
 <body onload="if(localStorage.cached702C=='yes')setTimeout(go,50);" class="bg">
 <script>
 function print(){}
