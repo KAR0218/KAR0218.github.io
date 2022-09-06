@@ -195,7 +195,7 @@ opacity:0.7;
 			window.applicationCache.onprogress=function(a){document.getElementById("progress").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
 			window.applicationCache.oncached=function(){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Reopen the Page !!"; }, 1500);localStorage.cachedB="yes";};
 			window.applicationCache.onnoupdate=function(){localStorage.cachedB="yes";};
-          	        window.applicationCache.onerror=function(){localStorage.cachedB="yes";};
+            window.applicationCache.onerror=function(){localStorage.cachedB="yes";};
 		</script>
 <script>
   function loadFile(fileName) {
@@ -437,6 +437,14 @@ function goldhen222(){
     progress.innerHTML="Goldhen 2.2.2 loading... please wait";
     LoadedMSG="GoldHEN 2.2.2 Loaded";
     PLfile = "goldhen_2.2.2_900.bin";
+    out_jb = "AllPL";
+    load_pocB();
+}
+
+function goldhen223(){
+    progress.innerHTML="Goldhen 2.2.3 loading... please wait";
+    LoadedMSG="GoldHEN 2.2.3 Loaded";
+    PLfile = "goldhen_2.2.3_900.bin";
     out_jb = "AllPL";
     load_pocB();
 }
@@ -780,9 +788,9 @@ Tools.style.display = "none";
 <h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Auto Exploit Compressed Version 9.00 fw</h1>
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking... Wait</h1>
 <div id=all style="text-align:center;display:none">
-<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.0b2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2b2 </button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.1.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen212()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.1.2</button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.2.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen222()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.2.2</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.2.3 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen223()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.2.3</button>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Copy json and shn files from USB to PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_copych()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Cheat Copy </button>
 <br><br>
 <button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
