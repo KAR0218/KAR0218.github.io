@@ -1,0 +1,1211 @@
+<html manifest="Cache.manifest">
+<head>
+<style>
+    html, body{
+margin:auto;
+font-family:sans-serif;
+font-size:20px;
+font-weight:lighter;
+text-align: center;
+color:#FFFFFF;
+background-size:cover;
+overflow: hidden;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+ .content {
+  width:90%;
+  height:15%;
+  margin-left:3.5%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  margin-top:0%;
+  font-size:25px;
+  text-align:center;
+  border-radius:30px;
+  padding:20px;
+  line-height:12px;
+  position:absolute;bottom:0px;
+ }
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ .yellow {
+  color:yellow;
+ }
+ .hue {
+  color:yellow;
+  padding:10px;
+  border-radius:10px;
+  animation:hue 5s linear infinite;
+  -webkit-animation: hue 5s linear infinite;
+  box-shadow: 0px 0px 50px yellow;
+  color:white;
+  background:rgba(255,255,0,0.4);
+ }
+ .hue:hover{
+  color:yellow;
+  background:transparent;
+ }
+ @keyframes hue{
+ 0%{
+ filter:hue-rotate(0deg);
+ -webkit-filter:hue-rotate(0deg);
+ }
+ 10%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 20%{
+ box-shadow: 1px 1px 50px yellow;
+ }
+ 30%{
+ box-shadow: 1px 0px 50px yellow;
+ }
+ 40%{
+  box-shadow: 1px -1px 50px yellow;
+ }
+ 50%{
+ box-shadow: 0px -1px 50px yellow;
+ }
+ 60%{
+ box-shadow: -1px -1px 50px yellow;
+ }
+ 70%{
+ box-shadow: -1px 0px 50px yellow;
+ }
+ 80%{
+ box-shadow: -1px 1px 50px yellow;
+ }
+ 90%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 100%{
+ filter:hue-rotate(360deg);
+ -webkit-filter:hue-rotate(360deg);
+ }
+ }
+ .text {
+  padding-bottom:50px;
+ }
+  .back {
+   font-size:25px;
+   margin-top:10px;
+   display:block;
+   line-height:55px;
+   width:20%;
+   text-decoration:none;
+   height:50px;
+   background:white;
+   color:black;
+   border-radius:15px;
+  }
+  .back:hover{
+   border:2px solid white;
+   background:transparent;
+   box-sizing:border-box;
+   color:white;
+  }
+ #psip {
+  text-align: center;
+  margin-left: 38%;
+  margin-right: auto;
+  width:15%;
+  display:flex;
+  position: absolute;
+  
+  background: rgba(0, 0, 0, 0.500);
+  border-radius: 2em;
+  border: none;
+  padding: 0.8em;
+  
+  color: #ffffff;
+  padding-left: 1.5em;
+  
+  outline: none;
+  box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
+  backdrop-filter: blur(5px);
+}
+/* Modal Content */
+.modal-content {
+  font-family: BFARNAZ;
+  font-size: 18px;
+  position: relative;
+  background-color: #dddddd;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+button {
+            background:rgba(0,0,0,0.5);
+			box-shadow: 0 5px 20px 0 white;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 200px;
+            height: 43px;            
+            text-align: center;
+}
+button:hover {
+            box-shadow: 0 5px 50px 0 white;
+            color: white;
+            border-radius: 10px;
+			background-color: #0F0F53;
+}
+
+hr {
+padding:0;
+margin:0;
+opacity:0.7;
+}
+
+#progress {
+ font-weight:bold;
+ text-shadow: 4px 4px 4px black;
+
+ font-size:17px;
+}
+.pointer {cursor: pointer;}
+
+h1 {
+text-shadow: 0.1em 0.1em 0.2em black;
+font-size: 25px;
+text-align: center;
+color: white;
+}
+
+.TextCaption{
+display: block;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+a img {
+    display: inline-block;  text-decoration: none;
+}
+
+a {
+    display: inline-block;  text-decoration: none;
+}
+
+a:hover img, a:hover .TextCaption{
+transform: scale(1.1)
+}
+
+    </style>
+<meta charset="utf-8">
+<title>Karo Host Manual Exploit Compressed + New Webkit Version 9.00 fw</title>
+<script>
+window.applicationCache.ondownloading=function(){document.getElementById("progress").innerHTML="Page Caching Started!!";};
+window.applicationCache.onprogress=function(a){document.getElementById("progress").innerHTML=(Math.round(100*(a.loaded/a.total)))+"%";};
+window.applicationCache.oncached=function(){document.getElementById("progress").innerHTML="Page Cached Successfully!!";setTimeout(function(){document.getElementById("progress").innerHTML="Reopen the Page !!"; }, 1500);};
+</script>
+<script>
+function white() {
+document.getElementById("progress").style.color = "white";
+}
+function green() {
+document.getElementById("progress").style.color = "green";
+}
+
+function jbdone() {
+sessionStorage.Exploit="yes";
+document.getElementById("progress").style.color = "green";
+window.progress.innerHTML="Jailbreak Done";
+setTimeout(white, 200);
+setTimeout(green, 300);
+setTimeout(white, 500);
+load_pl();
+}
+
+function load_pl() {
+if(out_jb=="AllPL"){setTimeout(load_pocj, 500);} else  if(out_jb=="AllBin"){setTimeout(load_pocB, 500);} else if(sessionStorage.Payload!="yes"){setTimeout(load_poc2, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function allset() {
+window.progress.innerHTML= LoadedMSG
+}
+
+function Binset() {
+window.progress.innerHTML="Payload Loaded. Send payloads to port 9020";
+alert("Payload Loaded. Send payloads to port 9020");
+}
+
+function Mset() {
+window.progress.innerHTML="Payload Loaded. Send payloads to port 9021";
+alert("Payload Loaded. Send payloads to port 9021");
+}
+
+function runScript(what)
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', what, false);
+    xhr.send('');
+    eval.call(window, xhr.responseText);
+}
+
+function print(){}
+
+function load_poc2() {
+var payload_buffer = chain.syscall(477, 0x0, 0x300000, 0x7, 0x1000, 0xFFFFFFFF, 0);
+ var payload_loader = p.malloc32(0x1000);
+ var BLDR = payload_loader.backing;
+ BLDR[0]=0x56415741;BLDR[1]=0x83485541;BLDR[2]=0x894818EC;BLDR[3]=0xC748243C;BLDR[4]=0x10082444;BLDR[5]=0x483C2302;BLDR[6]=0x102444C7;BLDR[7]=0x00000000;BLDR[8]=0x000002BF;BLDR[9]=0x0001BE00;BLDR[10]=0xD2310000;BLDR[11]=0x00009CE8;BLDR[12]=0xC7894100;BLDR[13]=0x8D48C789;BLDR[14]=0xBA082474;BLDR[15]=0x00000010;BLDR[16]=0x000095E8;BLDR[17]=0xFF894400;BLDR[18]=0x000001BE;BLDR[19]=0x0095E800;BLDR[20]=0x89440000;BLDR[21]=0x31F631FF;BLDR[22]=0x0062E8D2;BLDR[23]=0x89410000;BLDR[24]=0x2C8B4CC6;BLDR[25]=0x45C64124;BLDR[26]=0x05EBC300;BLDR[27]=0x01499848;BLDR[28]=0xF78944C5;BLDR[29]=0xBAEE894C;BLDR[30]=0x00001000;BLDR[31]=0x000025E8;BLDR[32]=0x7FC08500;BLDR[33]=0xFF8944E7;BLDR[34]=0x000026E8;BLDR[35]=0xF7894400;BLDR[36]=0x00001EE8;BLDR[37]=0x2414FF00;BLDR[38]=0x18C48348;BLDR[39]=0x5E415D41;BLDR[40]=0x31485F41;BLDR[41]=0xC748C3C0;BLDR[42]=0x000003C0;BLDR[43]=0xCA894900;BLDR[44]=0x48C3050F;BLDR[45]=0x0006C0C7;BLDR[46]=0x89490000;BLDR[47]=0xC3050FCA;BLDR[48]=0x1EC0C748;BLDR[49]=0x49000000;BLDR[50]=0x050FCA89;BLDR[51]=0xC0C748C3;BLDR[52]=0x00000061;BLDR[53]=0x0FCA8949;BLDR[54]=0xC748C305;BLDR[55]=0x000068C0;BLDR[56]=0xCA894900;BLDR[57]=0x48C3050F;BLDR[58]=0x006AC0C7;BLDR[59]=0x89490000;BLDR[60]=0xC3050FCA;
+ chain.syscall(74, payload_loader, 0x4000, (0x1 | 0x2 | 0x4));
+ var pthread = p.malloc(0x10); {
+  chain.fcall(window.syscalls[203], payload_buffer, 0x300000);
+  chain.fcall(libKernelBase.add32(OFFSET_lk_pthread_create), pthread, 0x0, payload_loader, payload_buffer);
+ }
+ chain.run();
+ sessionStorage.Paload="yes";
+ setTimeout(load_pocl,2000);
+}
+
+function load_pocl() {
+var payload_buffer = chain.syscall(477, 0, 0x300000, 7, 0x1002, -1, 0);
+            var buf = new Uint8Array(1);
+            var buf_addr = p.leakval(buf);
+            var old_buf = p.read8(buf_addr.add32(16));
+            var old_sz = p.read4(buf_addr.add32(24));
+            p.write8(buf_addr.add32(16), payload_buffer);
+            p.write4(buf_addr.add32(24), PLS.length);
+            for(var i = 0; i < PLS.length; i++) buf[i] = PLS[i];
+            p.write8(buf_addr.add32(16), old_buf);
+            p.write4(buf_addr.add32(24), old_sz);
+            var pthread = p.malloc(0x10);
+            chain.call(libKernelBase.add32(OFFSET_lk_pthread_create), pthread, 0x0, payload_buffer, 0);
+            setTimeout(load_pocB,2000);
+}
+function load_pocB(){
+ var req = new XMLHttpRequest();
+ req.responseType = "arraybuffer";
+ req.open('GET', PLfile);
+ req.send();
+ req.onreadystatechange = function () {
+  if (req.readyState == 4) {
+   PLD = req.response;
+   var payload_buffer = chain.syscall(477, 0, PLD.byteLength*4 , 7, 0x1002, -1, 0);
+   var pl = p.array_from_address(payload_buffer, PLD.byteLength*4);
+   var padding = new Uint8Array(4 - (req.response.byteLength % 4) % 4);
+   var tmp = new Uint8Array(req.response.byteLength + padding.byteLength);
+   tmp.set(new Uint8Array(req.response), 0);
+   tmp.set(padding, req.response.byteLength);
+   var shellcode = new Uint32Array(tmp.buffer);
+   pl.set(shellcode,0);
+   var pthread = p.malloc(0x10);
+   chain.call(libKernelBase.add32(OFFSET_lk_pthread_create), pthread, 0x0, payload_buffer, 0);
+   allset();
+  }
+ };
+}
+
+  function loadFile(fileName) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", fileName, false);
+    xhr.overrideMimeType("text/plain; charset=x-user-defined");
+    xhr.send();
+    let array = Uint8Array.from(xhr.response, c => c.charCodeAt(0));
+    if (fileName.endsWith(".bz2")) {
+      try {
+        PLS = bzip2.simple(bzip2.array(array));
+      } catch(error) {
+        alert(fileName + ": \"" + error + "\"\n");
+        throw error;
+      }
+    }
+    return array;
+  }
+  
+function load_pocj() {
+var payload_buffer2 = chain.syscall(477, 0, 0x300000, 7, 0x1002, -1, 0);
+            var buf = new Uint8Array(1);
+            var buf_addr = p.leakval(buf);
+            var old_buf = p.read8(buf_addr.add32(16));
+            var old_sz = p.read4(buf_addr.add32(24));
+            p.write8(buf_addr.add32(16), payload_buffer2);
+            p.write4(buf_addr.add32(24), PLS.length);
+            for(var i = 0; i < PLS.length; i++) buf[i] = PLS[i];
+            p.write8(buf_addr.add32(16), old_buf);
+            p.write4(buf_addr.add32(24), old_sz);
+            var pthread2 = p.malloc(0x10);
+            chain.call(libKernelBase.add32(OFFSET_lk_pthread_create), pthread2, 0x0, payload_buffer2, 0);
+            allset();
+}
+
+function Linux1N(){
+progress.innerHTML="LinuxLoader 1GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-1gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux2N(){
+progress.innerHTML="LinuxLoader 2GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-2gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux3N(){
+progress.innerHTML="LinuxLoader 3GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-3gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux4N(){
+progress.innerHTML="LinuxLoader 4GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-4gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux5N(){
+progress.innerHTML="LinuxLoader 5GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "payload-900-5gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux1(){
+progress.innerHTML="LinuxLoader 1GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "LinuxLoader.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux2(){
+progress.innerHTML="LinuxLoader 2GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "LinuxLoader2gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux3(){
+progress.innerHTML="LinuxLoader 3GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "LinuxLoader3gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux4(){
+progress.innerHTML="LinuxLoader 4GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "LinuxLoader4gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux5(){
+progress.innerHTML="LinuxLoader 5GB loading... please wait";
+LoadedMSG="LinuxLoader Loaded";
+PLfile = "LinuxLoader5gb.bin";
+out_jb = "Linux";
+var script = document.createElement('script');script.src = "MiraLoader.js";document.getElementsByTagName('head')[0].appendChild(script);
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 500);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Linux6(){
+progress.innerHTML="Whos That Southbridge loading... please wait";
+LoadedMSG="Whos That Southbridge Loaded";
+out_jb = "AllBin";
+PLfile = "wtsb.bin";
+if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+
+function Mira(){
+progress.innerHTML="Mira loading... please wait";
+LoadedMSG="Mira Loaded";
+setTimeout(function(){
+runScript('netcat.js');
+runScript('malloc.js');
+runScript('ropb2.js');
+runScript('syscalls.js');
+runScript('syscalls2.js');
+runScript('mira2.js');
+runScript('mira.js');
+runScript('relocator.js');
+}, 1000);
+}
+
+function goldhen2(){
+    progress.innerHTML="Goldhen 2.0b2 loading... please wait";
+    LoadedMSG="GoldHEN 2.0b2 Loaded";
+    PLfile = "goldhen2b2.bin";
+    out_jb = "AllBin";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+
+function goldhen222(){
+    progress.innerHTML="Goldhen 2.2.2 loading... please wait";
+    LoadedMSG="GoldHEN 2.2.2 Loaded";
+    PLfile = "goldhen_2.2.2_900.bin";
+    out_jb = "AllBin";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+
+function goldhen224(){
+    progress.innerHTML="Goldhen 2.2.4 loading... please wait";
+    LoadedMSG="GoldHEN 2.2.4 Loaded";
+    PLfile = "goldhen_2.2.4_900.bin";
+    out_jb = "AllBin";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+
+function goldhen23(){
+    progress.innerHTML="Goldhen 2.3 loading... please wait";
+    LoadedMSG="GoldHEN 2.3 Loaded";
+    PLfile = "goldhen_2.3_900.bin";
+    out_jb = "AllBin";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+function goldhen24(){
+    progress.innerHTML="Goldhen 2.4 Beta 16 2 loading... please wait";
+    LoadedMSG="GoldHEN 2.4 Beta 16 2 Loaded";
+    PLfile = "goldhen_2.4_b16_900.bin";
+    out_jb = "AllBin";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+function goldhen212(){
+    progress.innerHTML="Goldhen 2.1.2 loading... please wait";
+    LoadedMSG="GoldHEN 2.1.2 Loaded";
+    PLfile = "goldhen_212_900.bin";
+    out_jb = "AllBin";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocB, 1000);}
+}
+
+function load_PS4Debug(){
+    progress.innerHTML="PS4Debug loading... please wait"; LoadedMSG="PS4Debug Loaded";
+    setTimeout(function(){ let array = loadFile('ps4debug.bin.bz2');}, 50);
+    out_jb = "AllPL";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_permanentuart(){
+    progress.innerHTML="permanentuart loading... please wait"; LoadedMSG="permanentuart Loaded";
+    setTimeout(function(){ let array = loadFile('permanentuart.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_App2USB(){
+    progress.innerHTML="app2usb loading... please wait"; LoadedMSG="app2usb Loaded";
+    setTimeout(function(){ let array = loadFile('app2usb.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_BackupDB(){
+    progress.innerHTML="backupdb loading... please wait"; LoadedMSG="backupdb Loaded";
+    setTimeout(function(){ let array = loadFile('backupdb.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_pkgb(){
+    progress.innerHTML="PKG Backup loading... please wait"; LoadedMSG="PKG Backup Loaded";
+    setTimeout(function(){ let array = loadFile('pkg-backup.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_DumperG(){
+    progress.innerHTML="Dumper Game loading... please wait"; LoadedMSG="Dumper Game Loaded";
+    setTimeout(function(){ let array = loadFile('DumperG.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_DumperU(){
+    progress.innerHTML="Dumper Game Update loading... please wait"; LoadedMSG="Dumper Game Update Loaded";
+    setTimeout(function(){ let array = loadFile('DumperU.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_DumperMGU(){
+    progress.innerHTML="Dumper Merged Games and Update loading... please wait"; LoadedMSG="Dumper Merged Games and Update Loaded";
+    setTimeout(function(){ let array = loadFile('DumperMGU.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_DumperSGU(){
+    progress.innerHTML="Dumper Seperate Games and Update loading... please wait"; LoadedMSG="Dumper Seperate Games and Update Loaded";
+    setTimeout(function(){ let array = loadFile('DumperSGU.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_KernelDumper(){
+    progress.innerHTML="kerneldumper loading... please wait"; LoadedMSG="kerneldumper Loaded";
+    setTimeout(function(){ let array = loadFile('kerneldumper.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_ModuleDumper(){
+    progress.innerHTML="ModuleDumper loading... please wait"; LoadedMSG="ModuleDumper Loaded";
+    setTimeout(function(){ let array = loadFile('mdumper.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_RestoreDB(){
+    progress.innerHTML="RestoreDB loading... please wait"; LoadedMSG="RestoreDB Loaded";
+    setTimeout(function(){ let array = loadFile('restoredb.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_DisableASLR(){
+    progress.innerHTML="DisableASLR loading... please wait"; LoadedMSG="DisableASLR Loaded";
+    setTimeout(function(){ let array = loadFile('disableaslr.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_DisableUpdates(){
+    progress.innerHTML="DisableUpdates loading... please wait"; LoadedMSG="DisableUpdates Loaded";
+    setTimeout(function(){ let array = loadFile('disableupdates.bin.bz2');}, 50);
+    out_jb = "AllPL";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_EnableUpdates(){
+    progress.innerHTML="EnableUpdates loading... please wait"; LoadedMSG="EnableUpdates Loaded";
+    setTimeout(function(){ let array = loadFile('enableupdates.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_EnableBrowser(){
+    progress.innerHTML="EnableBrowser loading... please wait"; LoadedMSG="EnableBrowser Loaded";
+    setTimeout(function(){ let array = loadFile('enablebrowser.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_ExitIDU(){
+    progress.innerHTML="ExitIDU loading... please wait"; LoadedMSG="ExitIDU Loaded";
+    setTimeout(function(){ let array = loadFile('exitidu.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+  
+function load_FTP(){
+    progress.innerHTML="FTP loading... please wait"; LoadedMSG="FTP Loaded";
+    setTimeout(function(){ let array = loadFile('ftp.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+  
+function load_HistoryBlocker(){
+    progress.innerHTML="HistoryBlocker loading... please wait"; LoadedMSG="HistoryBlocker Loaded";
+    setTimeout(function(){ let array = loadFile('historyblocker.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+  
+function load_RIFRenamer(){
+    progress.innerHTML="RIFRenamer loading... please wait"; LoadedMSG="RIFRenamer Loaded";
+    setTimeout(function(){ let array = loadFile('rifrenamer.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+  
+function load_Orbis(){
+    progress.innerHTML="Orbis-Toolbox loading... please wait"; LoadedMSG="Orbis-Toolbox Loaded";
+    setTimeout(function(){ let array = loadFile('Orbis-Toolbox-900.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAAr0(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('gtava0.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAAr1(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('gtava1.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAAr2(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('gtava2.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAAr3(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('gtava3.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAL(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('Lamance9.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_expul(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('LushModz-1.0-9.00.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_expul2(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('LushModz-4.0-9.00.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTABQ(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('BeefQueefMod.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTABQ2(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('BeefQueefMod134.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTABQ3(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('BeefQueefMod138.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAVMB(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('gtavmb127.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_GTAVLTS(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('gtavLTS127.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Wilde32(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('WildeModz-1.32.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Wilde33(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('WildeModz-1.33.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Wilde38(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('WildeModz-1.38.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Oysters100(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('Oysters1.00.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Oysters113(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('Oysters1.13.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Oysters119(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('Oysters1.19.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Oysters124(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('Oysters1.24.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_Oysters129(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('Oysters1.29.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+
+function load_ToDexE(){
+    progress.innerHTML="ToDEX Enabling... please wait"; LoadedMSG="ToDex Enabled";
+    setTimeout(function(){ let array = loadFile('todex-enable.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_ToDexD(){
+    progress.innerHTML="ToDEX Disabling... please wait"; LoadedMSG="ToDex Disabled";
+    setTimeout(function(){ let array = loadFile('todex-disable.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_WebRTE(){
+    progress.innerHTML="WebRTE loading... please wait"; LoadedMSG="WebRTE Loaded";
+    setTimeout(function(){ let array = loadFile('WebRTE.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function load_fan(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    let array = loadFile("fan" +tempC.value+ ".bin.bz2");
+    out_jb = "AllPL";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function Mloader(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="MiraLoader Loaded. Send payloads to port 9021";
+    setTimeout(function(){ let array = loadFile('MiraLoader.bin.bz2');}, 50);
+    out_jb = "AllPL";
+    if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function Bloader(){
+ progress.innerHTML="Payload loading... please wait";
+ var payload_buffer = chain.syscall(477, 0x0, 0x300000, 0x7, 0x1000, 0xFFFFFFFF, 0);
+ var payload_loader = p.malloc32(0x1000);
+ var BLDR = payload_loader.backing;
+ BLDR[0]=0x56415741;BLDR[1]=0x83485541;BLDR[2]=0x894818EC;BLDR[3]=0xC748243C;BLDR[4]=0x10082444;BLDR[5]=0x483C2302;BLDR[6]=0x102444C7;BLDR[7]=0x00000000;BLDR[8]=0x000002BF;BLDR[9]=0x0001BE00;BLDR[10]=0xD2310000;BLDR[11]=0x00009CE8;BLDR[12]=0xC7894100;BLDR[13]=0x8D48C789;BLDR[14]=0xBA082474;BLDR[15]=0x00000010;BLDR[16]=0x000095E8;BLDR[17]=0xFF894400;BLDR[18]=0x000001BE;BLDR[19]=0x0095E800;BLDR[20]=0x89440000;BLDR[21]=0x31F631FF;BLDR[22]=0x0062E8D2;BLDR[23]=0x89410000;BLDR[24]=0x2C8B4CC6;BLDR[25]=0x45C64124;BLDR[26]=0x05EBC300;BLDR[27]=0x01499848;BLDR[28]=0xF78944C5;BLDR[29]=0xBAEE894C;BLDR[30]=0x00001000;BLDR[31]=0x000025E8;BLDR[32]=0x7FC08500;BLDR[33]=0xFF8944E7;BLDR[34]=0x000026E8;BLDR[35]=0xF7894400;BLDR[36]=0x00001EE8;BLDR[37]=0x2414FF00;BLDR[38]=0x18C48348;BLDR[39]=0x5E415D41;BLDR[40]=0x31485F41;BLDR[41]=0xC748C3C0;BLDR[42]=0x000003C0;BLDR[43]=0xCA894900;BLDR[44]=0x48C3050F;BLDR[45]=0x0006C0C7;BLDR[46]=0x89490000;BLDR[47]=0xC3050FCA;BLDR[48]=0x1EC0C748;BLDR[49]=0x49000000;BLDR[50]=0x050FCA89;BLDR[51]=0xC0C748C3;BLDR[52]=0x00000061;BLDR[53]=0x0FCA8949;BLDR[54]=0xC748C305;BLDR[55]=0x000068C0;BLDR[56]=0xCA894900;BLDR[57]=0x48C3050F;BLDR[58]=0x006AC0C7;BLDR[59]=0x89490000;BLDR[60]=0xC3050FCA;
+ chain.syscall(74, payload_loader, 0x4000, (0x1 | 0x2 | 0x4));
+ var pthread = p.malloc(0x10); {
+  chain.fcall(window.syscalls[203], payload_buffer, 0x300000);
+  chain.fcall(libKernelBase.add32(OFFSET_lk_pthread_create), pthread, 0x0, payload_loader, payload_buffer);
+ }
+ chain.run();
+ Binset();
+}
+
+function load_copych(){
+    progress.innerHTML="Payload loading... please wait"; LoadedMSG="Payload Loaded";
+    setTimeout(function(){ let array = loadFile('CopyCH.bin.bz2');}, 50);
+    out_jb = "AllPL";     if(sessionStorage.Exploit!="yes"){setTimeout(webexp, 50);} else {setTimeout(load_pocj, 1000);}
+}
+
+function allmods(){
+all.style.display = "none";
+gtav.style.display = "block";
+		}
+function alldumpers(){
+all.style.display = "none";
+Dumpers.style.display = "block";
+		}
+function alllinux(){
+all.style.display = "none";
+Linuxs.style.display = "block";
+		}
+function alltools(){
+all.style.display = "none";
+Tools.style.display = "block";
+		}
+function backall(){
+all.style.display = "block";
+gtav.style.display = "none";
+Linuxs.style.display = "none";
+Dumpers.style.display = "none";
+Tools.style.display = "none";
+		}
+function webexp() 
+        {
+            import('./exploit.mjs');
+        }
+</script>
+<script src="./int64.js"></script>
+<script src="./rop.js"></script>
+<script src="./kexploit.js"></script>
+<script type=module src="./alert.js"></script>
+</head>
+<body style='background-color:#1A1920'>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Manual Exploit Compressed + New Webkit Version 9.00 fw</h1>
+<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Status</h1>
+<div id=all style="text-align:center;">
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.1.2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen212()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.1.2</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.2.4 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen224()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.2.4</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.3 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen23()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.3</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GoldHen v2.4 Beta 16 2 by SISTR0 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="goldhen24()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:#CEC52A' > GoldHenV2.4b162</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Copy json and shn files from USB to PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_copych()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Cheat Copy </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Binloader Port 9020 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Bloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > BinLoader </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Mira loader Port 9021 for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mloader()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > MiraLoader </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Mira Orbis for PS4 9.00 Fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Mira()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Mira </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='WebRTE for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_WebRTE()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:blue;color:white' > WebRTE </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='ps4debug for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_PS4Debug()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:green;color:white' > Ps4debug </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Orbis Toolbox Loader Alfa 1190 for PS4 9.00 fw'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Orbis()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:red;color:white' > Orbis Toolbox </button>
+<a href="web.html"><button  onMouseOver="progress.innerHTML='Web Activator by Sleirsgoevy'"; onmouseout="progress.innerHTML='Status'" type="button" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;background-color:#76411D;color:white'>Web Activator</button></a>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='A full access FTP server for the PS4'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_FTP()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > FTP </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Move installed games to an external USB drive'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_App2USB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > App2USB </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='unlocks some debug features available on testkit'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDexE()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex Enable </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Disable ToDEX'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ToDexD()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > ToDex Disable </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Creates dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableUpdates()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' >Disable Updates</button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Removes the dummy files in the PS4 update folder'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableUpdates()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Update </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Disable the auto opening of the last page used in the PS4 WebBrowser'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_HistoryBlocker()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > History Blocker </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Enable Browser'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_EnableBrowser()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Enable Browser </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;width: 230px;color:white' class="pointer" onMouseOver="progress.innerHTML='All Dumper payloads'"; onmouseout="progress.innerHTML='Status'" onclick="alldumpers(); return false"> Dumper Group</button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;width: 230px;color:white' class="pointer" onMouseOver="progress.innerHTML='All Linux payloads'"; onmouseout="progress.innerHTML='Status'" onclick="alllinux(); return false"> Linux Group </button>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;width: 230px;color:white' class="pointer" onMouseOver="progress.innerHTML='All Tools payloads'"; onmouseout="progress.innerHTML='Status'" onclick="alltools(); return false"> Tools Group </button>
+<br><br>
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;width: 350px;height: 45px;color:white' class="pointer" onMouseOver="progress.innerHTML='All Mods Gtav & RDR2 payloads'"; onmouseout="progress.innerHTML='Status'" onclick="allmods(); return false"> GTAV & RDR2 Mods Group </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Set the desired temperature that the PS4 fan starts'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_fan()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Fan Control </button><select style='font-size:20px;text-align:center;color:black' id="tempC"></select><a style='font-size:17px;text-align:center;color:white;'>&#176;C</a>
+<br>
+</div>
+<div id=gtav style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="progress.innerHTML='back to base menu'"; onmouseout="progress.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.00 by Karo for 900 L1+R1'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr0()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A100 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.27 by rfoodxmodz  fixed by Karo for 900 ==> + [] '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr1()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A127 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.32 by rfoodxmodz fixed by Karo for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A132 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV ArabicGuy 1.33 by rfoodxmodz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAAr3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV A133 </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.33 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.34 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ2 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV BeefQueefMod 1.38 by GraFfix_221211 for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTABQ3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV BQ3 </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Menu-Base 1.27 Ported by Karo for 900 ==> + []'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAVMB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV MB127 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV LTS 1.27 Ported by Karo for 900 ==> + []'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAVLTS()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV LTS127 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.35 by LushModz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_expul()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV Ex135 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mode Menu 1.38 V4.0 by LushModz for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_expul2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV Ex138 </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mod Menu 1.32 v1.1 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde32()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W132 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mod Menu 1.33 v1.1 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde33()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W133 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Expulsion Mod Menu 1.38 v1.7 by x_WildeModz_x for 900 '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Wilde38()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > GTAV W138 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='GTAV Lamance Mod 1.38 v0.9 by david1337hax '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_GTAL()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' >GTAV Lamance</button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.00 V1.3.6 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters100()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.00 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.13 V1.3.6 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters113()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.13 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.19 V1.3.6 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters119()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.19 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.24 V1.3.6 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters124()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.24 </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Red dead redemption 2 mod  menu 1.29 V1.3.6 by RF0oDxM0Dz (R1 + Square) '"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_Oysters129()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:red' > RDR2 V1.29 </button>
+<br><br><br></div>
+<div id=Linuxs style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="progress.innerHTML='back to base menu'"; onmouseout="progress.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 1gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux1N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 1GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 2gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux2N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 2GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 3gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux3N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 3GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 4gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux4N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 4GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 5gb by PSXITA'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux5N()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux PSXITA 5GB</button>
+<br><br>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 1gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux1()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 1GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 2gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux2()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 2GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 3gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux3()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 3GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 4gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux4()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 4GB</button>
+<button  onMouseOver="progress.innerHTML='LinuxLoader 5gb by Nazky'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux5()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Linux 5GB</button>
+<br><br>
+<button  onMouseOver="progress.innerHTML='Whos That Southbridge'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="Linux6()" style='width: 300px;height: 50px;font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white'>Whos_That_Southbridge</button>
+<br><br><br>
+</div>
+<div id=Tools style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="progress.innerHTML='back to base menu'"; onmouseout="progress.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Create a backup of important database files ans User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_BackupDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Backup </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Restore a backup of the database files and User Data'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RestoreDB()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > DB Restore </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Disable IDU Mode'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ExitIDU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Exit IDU </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Rif Renamer'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_RIFRenamer()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Rif renamer </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='permanentuart'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_permanentuart()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > permanent uart </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='disable aslr'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DisableASLR()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Disable Aslr </button>
+<br><br><br>
+</div>
+<div id=Dumpers style="text-align:center;display:none">
+<button style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' class="pointer" onMouseOver="progress.innerHTML='back to base menu'"; onmouseout="progress.innerHTML='Karo Host 5.05 fw'" onclick="backall(); return false"> Back to Menu </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='PS4 PKG Backup by Kameleon'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_pkgb()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > PKG Backup </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperG()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Game </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Games Update only to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper Update </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Merged Games and Update to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperMGU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper MGU </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='Dump Seperate Games and Update to a USB drive by Leeful'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_DumperSGU()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Dumper SGU </button>
+<br><br>
+<button id="button-Payload" onMouseOver="progress.innerHTML='kernel dumper'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_KernelDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Kernel Dumper </button>
+<button id="button-Payload" onMouseOver="progress.innerHTML='module dumper'"; onmouseout="progress.innerHTML='Status'" type="button" onclick="load_ModuleDumper()" style='font-size:20px;text-align:center;text-shadow: 4px 4px 4px black;color:white' > Module Dumper </button>
+<br><br><br>
+</div>
+<div class="content" >
+ 	    <div class="text" >
+ 	        <br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>
+ 	        <br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo ,Specter ,Znullptr ,hippie68 ... </a>
+	    </div>
+</div>
+<script>
+localStorage.setItem('fanthreshold', tempC.value);
+for(var i=50; i<=80; i=i+5){
+    var select = document.getElementById("tempC");
+    var option = document.createElement("OPTION");
+	select.options.add(option);
+	option.text = i;
+	option.value = i;
+}
+tempC.value=60;
+
+var bzip2 = {};
+
+bzip2.array = function(bytes) {
+  var bit = 0, byte = 0;
+  var BITMASK = [0, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF];
+  return function(n) {
+    var result = 0;
+    while (n > 0) {
+      var left = 8 - bit;
+      if (n >= left) {
+        result <<= left;
+        result |= (BITMASK[left] & bytes[byte++]);
+        bit = 0;
+        n -= left;
+      } else {
+        result <<= n;
+        result |= ((bytes[byte] & (BITMASK[n] << (8 - n - bit))) >> (8 - n - bit));
+        bit += n;
+        n = 0;
+      }
+    }
+    return result;
+  }
+};
+
+bzip2.simple = function(bits) {
+  var size = bzip2.header(bits);
+  var all = [], chunk = [];
+  do {
+    all = all.concat(chunk);
+    chunk = bzip2.decompress(bits, size);
+  } while (chunk != -1);
+  return Uint8Array.from(all);
+};
+
+bzip2.header = function(bits) {
+  if (bits(8 * 3) != 4348520) throw "No magic number found.";
+  var i = bits(8) - 48;
+  if (i < 1 || i > 9) throw "Not a bzip2 archive.";
+  return i;
+};
+
+// Param1: a function for reading the block data (starting with 0x314159265359)
+// Param2: block size (0-9) (optional, defaults to 9)
+// Param3: length at which to stop decompressing and return the output
+bzip2.decompress = function(bits, size, len) {
+  var MAX_HUFCODE_BITS = 20;
+  var MAX_SYMBOLS = 258;
+  var SYMBOL_RUNA = 0;
+  var SYMBOL_RUNB = 1;
+  var GROUP_SIZE = 50;
+
+  var bufsize = 100000 * size;
+  for (var h = "", i = 0; i < 6; i++) h += bits(8).toString(16);
+  if (h == "177245385090") return -1; // Last block
+  if (h != "314159265359") throw "Not valid bzip2 data.";
+  bits(32); // Ignore CRC codes
+  if (bits(1)) throw "Unsupported obsolete version.";
+  var origPtr = bits(24);
+  if(origPtr > bufsize) throw "Initial position larger than buffer size.";
+  var t = bits(16);
+  var symToByte = new Uint8Array(256),
+      symTotal = 0;
+  for (i = 0; i < 16; i++) {
+    if (t & (1 << (15 - i))) {
+      var k = bits(16);
+      for (j = 0; j < 16; j++) {
+        if (k & (1 << (15 - j))) {
+          symToByte[symTotal++] = (16 * i) + j;
+        }
+      }
+    }
+  }
+
+  var groupCount = bits(3);
+  if (groupCount < 2 || groupCount > 6) throw "Error 1 while decompressing.";
+  var nSelectors = bits(15);
+  if (nSelectors == 0) throw "Error 2 while decompressing.";
+  var mtfSymbol = []; // TODO: possibly replace JS array with typed arrays
+  for (var i = 0; i < groupCount; i++) mtfSymbol[i] = i;
+  var selectors = new Uint8Array(32768);
+
+  for (var i = 0; i < nSelectors; i++) {
+    for (var j = 0; bits(1); j++) if (j >= groupCount) throw "Error 3 while decompressing.";
+    var uc = mtfSymbol[j];
+    mtfSymbol.splice(j, 1); // This is a probably inefficient MTF transform
+    mtfSymbol.splice(0, 0, uc);
+    selectors[i] = uc;
+  }
+
+  var symCount = symTotal + 2;
+  var groups = [];
+  for (var j = 0; j < groupCount; j++) {
+    var length = new Uint8Array(MAX_SYMBOLS),
+        temp = new Uint8Array(MAX_HUFCODE_BITS + 1);
+    t = bits(5); // Lengths
+    for (var i = 0; i < symCount; i++) {
+      while (true) {
+        if (t < 1 || t > MAX_HUFCODE_BITS) throw "Error 4 while decompressing.";
+        if (!bits(1)) break;
+        if (!bits(1)) t++;
+        else t--;
+      }
+      length[i] = t;
+    }
+    var  minLen,  maxLen;
+    minLen = maxLen = length[0];
+    for (var i = 1; i < symCount; i++) {
+      if (length[i] > maxLen) maxLen = length[i];
+      else if (length[i] < minLen) minLen = length[i];
+    }
+    var hufGroup;
+    hufGroup = groups[j] = {};
+    hufGroup.permute = new Uint32Array(MAX_SYMBOLS);
+    hufGroup.limit = new Uint32Array(MAX_HUFCODE_BITS + 1);
+    hufGroup.base = new Uint32Array(MAX_HUFCODE_BITS + 1);
+    hufGroup.minLen = minLen;
+    hufGroup.maxLen = maxLen;
+    var base = hufGroup.base.subarray(1);
+    var limit = hufGroup.limit.subarray(1);
+    var pp = 0;
+    for (var i = minLen; i <= maxLen; i++)
+      for (var t = 0; t < symCount; t++)
+      if (length[t] == i) hufGroup.permute[pp++] = t;
+      for (i = minLen; i <= maxLen; i++) temp[i] = limit[i] = 0;
+      for (i = 0; i < symCount; i++) temp[length[i]]++;
+      pp = t = 0;
+      for (i = minLen; i < maxLen; i++) {
+        pp += temp[i];
+        limit[i] = pp - 1;
+        pp <<= 1;
+        base[i + 1] = pp - (t += temp[i]);
+      }
+      limit[maxLen] = pp + temp[maxLen] - 1;
+      base[minLen] = 0;
+  }
+  var byteCount = new Uint32Array(256);
+  for (var i = 0; i < 256; i++) mtfSymbol[i] = i;
+  var runPos, count, symCount, selector;
+  runPos = count = symCount = selector = 0;
+  var buf = new Uint32Array(bufsize);
+  while (true) {
+    if (!(symCount--)) {
+      symCount = GROUP_SIZE - 1;
+      if (selector >= nSelectors) throw "Error 5 while decompressing.";
+      hufGroup = groups[selectors[selector++]];
+      base = hufGroup.base.subarray(1);
+      limit = hufGroup.limit.subarray(1);
+    }
+    i = hufGroup.minLen;
+    j = bits(i);
+    while (true) {
+      if (i > hufGroup.maxLen) throw "Error 6 while decompressing.";
+      if (j <= limit[i]) break;
+      i++;
+      j = (j << 1) | bits(1);
+    }
+    j -= base[i];
+    if (j < 0 || j >= MAX_SYMBOLS) throw "Error 7 while decompressing.";
+    var nextSym = hufGroup.permute[j];
+    if (nextSym == SYMBOL_RUNA || nextSym == SYMBOL_RUNB) {
+      if (!runPos) {
+        runPos = 1;
+        t = 0;
+      }
+      if (nextSym == SYMBOL_RUNA) t += runPos;
+      else t += 2 * runPos;
+      runPos <<= 1;
+      continue;
+    }
+    if (runPos) {
+      runPos = 0;
+      if (count + t >= bufsize) throw "Error 8 while decompressing.";
+      uc = symToByte[mtfSymbol[0]];
+      byteCount[uc] += t;
+      while (t--) buf[count++] = uc;
+    }
+    if (nextSym > symTotal) break;
+    if (count >= bufsize) throw "Error 9 while decompressing.";
+    i = nextSym -1;
+    uc = mtfSymbol[i];
+    mtfSymbol.splice(i, 1);
+    mtfSymbol.splice(0, 0, uc);
+    uc = symToByte[uc];
+    byteCount[uc]++;
+    buf[count++] = uc;
+  }
+  if (origPtr < 0 || origPtr >= count) throw "Error 10 while decompressing.";
+  var j = 0;
+  for (var i = 0; i < 256; i++) {
+    k = j + byteCount[i];
+    byteCount[i] = j;
+    j = k;
+  }
+  for (var i = 0; i < count; i++) {
+    uc = buf[i] & 0xff;
+    buf[byteCount[uc]] |= (i << 8);
+    byteCount[uc]++;
+  }
+  var pos = 0, current = 0, run = 0;
+  if (count) {
+    pos = buf[origPtr];
+    current = (pos & 0xff);
+    pos >>= 8;
+    run = -1;
+  }
+  count = count;
+  var output = [];
+  var copies, previous, outbyte;
+  if (!len) len = Infinity;
+  while (count) {
+    count--;
+    previous = current;
+    pos = buf[pos];
+    current = pos & 0xff;
+    pos >>= 8;
+    if (run++ == 3) {
+      copies = current;
+      outbyte = previous;
+      current = -1;
+    } else {
+      copies = 1;
+      outbyte = current;
+    }
+    while (copies--) {
+      output.push(outbyte);
+      if (!--len) return output;
+    }
+    if (current != previous) run = 0;
+  }
+  return output;
+};
+</script>
+</body>
+
+</html>
