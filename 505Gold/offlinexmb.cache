@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# v1.0.0 Self-Host 
+# v1.0.1 Self-Host 
 
 AppToUsb.bin
 binloader.js
@@ -25,6 +25,7 @@ goldhen_2.2.2_505.bin
 goldhen_2.2.4_505.bin
 goldhen_212_505.bin
 goldhen_2.3_505.bin
+goldhenv2.4b16.2.bin
 gtava127.bin
 gtava132.bin
 gtava133.bin
