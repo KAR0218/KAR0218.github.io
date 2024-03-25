@@ -1,99 +1,18 @@
 <html>
-	<style>
-        .switch {
-		  position: relative;
-		  display: inline-block;
-		  width: 60px;
-		  height: 34px;
-		}
-
-		.switch input { 
-		  opacity: 0;
-		  width: 0;
-		  height: 0;
-		}
-
-		.slider {
-		  position: absolute;
-		  cursor: pointer;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: #2196F3;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-		
-		.slider.new {
-		  position: absolute;
-		  cursor: pointer;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: #585858;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-
-		.slider:before {
-		  position: absolute;
-		  content: "";
-		  height: 26px;
-		  width: 26px;
-		  left: 4px;
-		  bottom: 4px;
-		  background-color: white;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-
-		input:checked + .slider {
-		  background-color: #2196F3;
-		}
-
-		input:focus + .slider {
-		  box-shadow: 0 0 1px #2196F3;
-		}
-
-		input:checked + .slider:before {
-		  -webkit-transform: translateX(26px);
-		  -ms-transform: translateX(26px);
-		  transform: translateX(26px);
-		}
-
-		/* Rounded sliders */
-		.slider.round {
-		  border-radius: 34px;
-		}
-
-		.slider.round:before {
-		  border-radius: 50%;
-		}
-		.button {
-		  background:rgba(0,0,0,0.5);
-		  box-shadow: 0 5px 20px 0 white;
-		  border: 2px solid black;
-		  border-radius: 10px;
-		  color: white;
-		  text-decoration: none;
-		  width: 270px;
-          height: 40px;
-		  display:inline-table;
-		  font-family: system-ui;
-		  text-align: center;
-		}
-
-		.button:focus,
-		.button:hover {
-		  color: White;
-		  box-shadow: 0 5px 50px 0 white;
-		  background-color: #0F0F53;
-          border-radius: 10px;
-		}
-
-		.modal {
+<head>
+<title>Karo Host Auto Exploit + PSFree Webkit Light Version 7.50 - 7.55 fw</title>
+<style>
+html, body{
+margin:auto;
+font-family:sans-serif;
+font-size:20px;
+font-weight:lighter;
+text-align: center;
+color:#FFFFFF;
+background-size:cover;
+overflow: hidden;
+}
+.modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -107,17 +26,18 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
  .content {
-  width:80%;
+  width:90%;
   height:15%;
-  margin-left:7.5%;
+  margin-left:3.5%;
   background:rgba(0,0,0,0.5);
   color:white;
-  margin-top:1%;
+  margin-top:0%;
   font-size:25px;
   text-align:center;
   border-radius:30px;
   padding:20px;
   line-height:12px;
+  position:absolute;bottom:0px;
  }
  .title {
   font-size:40px;
@@ -202,6 +122,26 @@
    box-sizing:border-box;
    color:white;
   }
+ #psip {
+  text-align: center;
+  margin-left: 38%;
+  margin-right: auto;
+  width:15%;
+  display:flex;
+  position: absolute;
+  
+  background: rgba(0, 0, 0, 0.500);
+  border-radius: 2em;
+  border: none;
+  padding: 0.8em;
+  
+  color: #ffffff;
+  padding-left: 1.5em;
+  
+  outline: none;
+  box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
+  backdrop-filter: blur(5px);
+}
 /* Modal Content */
 .modal-content {
   font-family: BFARNAZ;
@@ -218,128 +158,180 @@
   animation-name: animatetop;
   animation-duration: 0.4s
 }
-.titleheadx {
-		  background-color: #1A1920;  
-		  border-radius: 5px;
+		.button {
+		  background:rgba(0,0,0,0.5);
+		  box-shadow: 0 5px 20px 0 white;
+		  border: 2px solid black;
+		  border-radius: 10px;
 		  color: white;
-		  padding: .5em;
 		  text-decoration: none;
+		  width: 200px;
+          height: 40px;
+		  display:inline-table;
+		  font-family: system-ui;
 		  text-align: center;
-		  margin-top: 17%;
-		  margin-bottom: -10px;
-		  font-family: system-ui;
+		}
+
+		.button:focus,
+		.button:hover {
+		  color: White;
+		  box-shadow: 0 5px 50px 0 white;
+		  background-color: #0F0F53;
+          border-radius: 10px;
+		}
+button {
+  background:rgba(0,0,0,0.5);
+  box-shadow: 0 5px 20px 0 white;
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 200px;
+  height: 43px;            
+  text-align: center;
 }
-
-.titlehead {
-		  background-color: #1A1920;  
-		  color: white;
-		  padding: .5em;
-		  text-align: center;
-		  margin-top: 0%;
-		  font-family: system-ui;
-		  font-size:30px;
-		  text-shadow: 4px 4px 4px black;
+button:hover {
+  box-shadow: 0 5px 50px 0 white;
+  color: white;
+  border-radius: 10px;
+  background-color: #0F0F53;
 }
+hr {
+padding:0;
+margin:0;
+opacity:0.7;
+}
+#progress {
+ font-weight:bold;
+ text-shadow: 4px 4px 4px black;
 
-		.bg {
-		  /* The image used */
-		  background-color:#1A1920;
-		  font-family: system-ui;
-		  /* Center and scale the image nicely */
-		  background-position: center;
-		  background-repeat: no-repeat;
-		  background-size: cover;
-		}
-
-       #Progress {
-		  color: white;
-		}
-
-       #Progressx {
-		  color: white;
-		}
-
+ font-size:17px;
+}
 .pointer {cursor: pointer;}
-	</style>
-	<body onload="go()" class="bg">
-		<script>
-		function print(){}
 
-		var scriptCode = '';
+h1 {
+text-shadow: 0.1em 0.1em 0.2em black;
+font-size: 25px;
+text-align: center;
+color: white;
+}
 
-		function preloadScripts(lst)
-		{	
-			scriptCode = '';
-			for(var i = 0; i < lst.length; i++)
-			{
-				var xhr = new XMLHttpRequest();
-				xhr.open('GET', lst[i], false);
-				xhr.send('');
-				scriptCode += xhr.responseText + '\n';
-			}
-		}
-		
+.TextCaption{
+display: block;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+a img {
+    display: inline-block;  text-decoration: none;
+}
+
+a {
+    display: inline-block;  text-decoration: none;
+}
+
+a:hover img, a:hover .TextCaption{
+transform: scale(1.1)
+}
+</style>
+</head>
+	<body style='background-color:#1A1920'>
+        <script src="utils.js"></script>
+		<script src="int64.js"></script>
+		<script src="exploit.js" defer></script>
+<script>
+function print(){}
+
+function toggle_payload(pld){
+	if(pld == "restore"){
+		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
+		setTimeout(runScriptsR, 500);
+	}
+	else if(pld == "usb"){
+		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
+		setTimeout(runScriptsU, 500);
+	}
+	else if(pld == "copych"){
+		document.getElementById("progress").innerHTML="Loading Restore.. Please wait..";
+		setTimeout(runScriptsC, 500);
+	}
+	payload_finished(pld);
+	
+}
+
+function payload_finished(payload)
+{
+	if(payload == "binloader"){
+		setTimeout(function(){document.getElementById("progress").innerHTML="Awaiting Payload!! Send Payload To Port 9020"; }, 7000);
+	} else {
+		setTimeout(function(){document.getElementById("progress").innerHTML="Payload Loaded Succesfully !!"; }, 7000);
+	}
+}
+
 function done(){
-            document.getElementById("progressx").remove();
-			document.getElementById('load').innerHTML='<tr id="progress" class="titlehead">'+
-			'<td align="center" id="jailbreak" colspan="5" >Karo Host for PS4 7.5X FW'+
-			'</td>'+
-			'</tr>'+
-			'<tr id="mexp">'+
+        	document.getElementById("input").remove();
+            document.getElementById('load').innerHTML='<tr id="mexp">'+
 			'<td align="center" id="jailbreak" colspan="5" >'+
-			'<br><br><br><br><a href="#" id="restore" class="button pointer" onMouseOver="progress.innerHTML=\'Restore PS4Trainer to users guide without usb for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'restore\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">without USB</a>&nbsp;'+
-			'<a href="#" id="usb" class="button pointer" onMouseOver="progress.innerHTML=\'Restore PS4Trainer to users guide with usb for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'usb\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">with USB</a>&nbsp;'+
-			'<a href="#" id="copych" class="button pointer" onMouseOver="progress.innerHTML=\'Copy Cheats to PS4 for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Karo Host for PS4 7.5X FW\'" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat Copy</a>&nbsp;'+
+			'<br><br><br>'+
+			'<a href="#" id="restore" class="button" onclick="toggle_payload(\'restore\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Without USB</a>&nbsp;'+
+			'<a href="#" id="usb" class="button" onclick="toggle_payload(\'usb\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">with USB</a>&nbsp;'+
+			'<a href="#" id="copych" class="button" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat Copy</a>&nbsp;'+
 			'</td>'+
-			'</tr>'+
-			'<tr><td><br/><br/><br/><br/></td></tr>'+
-			'<tr>'+
-			'<td class="content" >'+
- 	        '<div class="text" >'+
- 	        '<br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>'+
- 	        '<br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , DarkModderVC , ... </a>'+
-	        '</div>'+
-			'</td>'+
-	        '</tr>'+
 			'<tr>';
 		}
-		
-		window.midExploit = function()
-		{
-			preloadScripts(['exploit.js']);
-		}
 
-		window.postExploit = function()
-		{
-			setTimeout(function()
-			{	
-				eval.call(window, scriptCode);
-				done();
-			}, 100);
+var cachedJS = {};
 
-		};
-		
-		window.postPayload = function()
-		{
-			setTimeout(function()
-			{	
-				eval.call(window, scriptCode);
-				//done();
-			}, 100);
+function runJS(path)
+{
+    if(!(path in cachedJS))
+    {
+        var xxx = new XMLHttpRequest();
+        xxx.open("GET", path, false);
+        xxx.send('');
+        cachedJS[path] = xxx.responseText;
+    }
+    eval.call(window, cachedJS[path]);
+}
+function runScriptsR()
+{
+    runJS('jb.js');
+    runJS('preloader.js');
+    runJS('restore.js');
+    runJS('loader.js');
+}
 
-		};
+function runScriptsU()
+{
+    runJS('jb.js');
+    runJS('preloader.js');
+    runJS('usb.js');
+    runJS('loader.js');
+}
+
+function runScriptsC()
+{
+    runJS('jb.js');
+    runJS('preloader.js');
+    runJS('CopyCH.js');
+    runJS('loader.js');
+}
+
+function runScripts()
+{
+    setTimeout(done, 500);
+    runJS('rop.js');
+}
 
 		</script>
-		<script src="utils.js"></script>
-		<script src="int64.js"></script>
-		<script src="ps4.js"></script>
-		<h1 id="progressx" class="titleheadx">Loading ...</h1><br>
-		<table id="load" align="center" style="width:1300px;margin-top:0px;"></table>
-		<button style="opacity:0" id="input1" onfocus="handle2()"></button>
-		<button style="opacity:0" id="input2"></button>
-		<button style="opacity:0" id="input3" onfocus="handle2()"></button>
-		<select style="opacity:0" id="select1">
-			<option value="value1">Value1</option>
-		</select>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;margin-top:1%;'>Karo Host Auto Exploit + PSFree Webkit Light Version 7.50 - 7.55 fw</h1>
+<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking... Wait</h1>
+<table id="load" align="center" style="width:1500px;margin-top:0px;"></table>
+<br><br>			
+		<div class="content" >
+ 	    <div class="text" >
+ 	    <br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>
+ 	    <br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo ,Specter ,Abc ,Znullptr ,hippie68 ... </button>
+	    </div>
+	    </div>
 	</body>
 </html>
