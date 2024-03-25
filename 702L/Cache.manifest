@@ -1,0 +1,24 @@
+CACHE MANIFEST 
+# v2.5.8 Self-Host 
+
+702.js
+CopyCH.bin.bz2
+cache.html
+goldhen_2.2.2_702.bin.bz2
+goldhen_2.3_702.bin.bz2
+exploit.js
+ftp.bin.bz2
+index.html
+int64.js
+jb.js
+loader.js
+payloads.js
+preloader.js
+ps4debug.bin.bz2
+utils.js
+webrte.bin.bz2
+disableupdates.bin.bz2
+enableupdates.bin.bz2
+
+NETWORK:
+*
