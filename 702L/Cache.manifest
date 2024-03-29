@@ -1,0 +1,21 @@
+CACHE MANIFEST 
+# v2.5.9 Self-Host 
+
+CopyCH.bin
+cache.html
+goldhen_2.2.2_702.bin
+goldhen_2.3_702.bin
+exploit.js
+index.html
+int64.js
+rop.js
+userland.js
+utils.js
+ftp.bin
+ps4debug.bin
+webrte.bin
+disableupdates.bin
+enableupdates.bin
+
+NETWORK:
+*
