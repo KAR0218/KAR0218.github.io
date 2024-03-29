@@ -1,0 +1,47 @@
+<html>
+<body>
+<h2>Loading...</h2>
+<!-- preload necessary fonts before exploit -->
+<div style="opacity: 0">
+<p><i>Italic text</i></p>
+<table>
+<tr>
+<th>H1</th>
+<th>H2</th>
+<th>H3</th>
+</tr>
+<tr>
+<td>text</td>
+<td><input value="text"/></td>
+<td><button>text</button></td>
+</tr>
+</table>
+</div>
+        <script src="utils.js"></script>
+		<script src="int64.js"></script>
+		<script src="exploitw.js" defer></script>
+<script>
+function loadScript(path)
+{
+    var xhr = new XMLHttpRequest(path);
+    xhr.open("GET", path, false);
+    xhr.send('');
+    return xhr.responseText;
+}
+function exploit()
+{
+    
+    eval.call(window, loadScript('702.js');
+    document.getElementById("input").remove();
+    setTimeout(exploitw, 50);
+}
+function exploitw()
+{
+ eval.call(window, loadScript('jb.js')
++loadScript('payload.js')
++loadScript('frontend.js'));
+document.getElementById('q').innerHTML = 'Some other text';
+}
+</script>
+</body>
+</html>
