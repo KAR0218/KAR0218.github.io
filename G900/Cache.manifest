@@ -4,10 +4,13 @@ CACHE:
 cache.html
 Cache.manifest
 exploit.js
-goldhen.bin
+goldhen_v2.4b17.3.bin
 index.html
 int64.js
 kexploit.js
 rop.js
 
-# 2024-02-26 14:22:30
+NETWORK: 
+* 
+
+# 2024-06-16 14:22:30
