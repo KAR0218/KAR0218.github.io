@@ -339,14 +339,14 @@ function toggle_payload(pld){
 			}
 			let array = loadFile(PLfile);
 	    setTimeout(runScripts2, 500);
-	}else if(pld == "goldhen23"){
-		document.getElementById("progress").innerHTML="Loading GoldHenv2.3.. Please wait..";
+	}else if(pld == "goldhen24"){
+		document.getElementById("progress").innerHTML="Loading GoldHenv2.4b 18.9.. Please wait..";
 		if(fw=="755"){
-			PLfile = 'goldhen_2.3_755.bin.bz2';
+			PLfile = 'goldhen.bin.bz2';
 			} else if(fw=="750"){
-			PLfile = 'goldhen_2.3_755.bin.bz2';
+			PLfile = 'goldhen.bin.bz2';
 			}else if(fw=="751"){
-			PLfile = 'goldhen_2.3_755.bin.bz2';
+			PLfile = 'goldhen.bin.bz2';
 			}
 			let array = loadFile(PLfile);
 	    setTimeout(runScripts2, 500);
@@ -518,7 +518,7 @@ function done(){
             document.getElementById('load').innerHTML='<tr id="mexp">'+
 			'<td align="center" id="jailbreak" colspan="5" >'+
 			'<br><a href="#" id="goldhen222" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v2.2.2 by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Status\'" onclick="toggle_payload(\'goldhen222\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.2.2</a>&nbsp;'+
-			'<a href="#" id="goldhen23" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v2.3 by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Status\'" onclick="toggle_payload(\'goldhen23\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.3</a>&nbsp;'+
+			'<a href="#" id="goldhen24" class="button pointer" onMouseOver="progress.innerHTML=\'GoldHen v2.4 by Sistro for All PS4 7.5X Fw\'"; onmouseout="progress.innerHTML=\'Status\'" onclick="toggle_payload(\'goldhen24\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow">GoldHenV2.4</a>&nbsp;'+
 			'<a href="#" id="copych" class="button pointer" onMouseOver="progress.innerHTML=\'Copy json and shn files from USB to PS4\'"; onmouseout="progress.innerHTML=\'Status\'" onclick="toggle_payload(\'copych\'); return false" style="font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white">Cheat Copy</a>&nbsp;'+
 			'</td>'+
 			'</tr>'+
