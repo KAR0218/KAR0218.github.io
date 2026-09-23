@@ -1022,7 +1022,6 @@ const rowByKey = new Map();
 let payloadSendBusy = false;
 const PAYLOAD_PORT = 9021;
 const PAYLOAD_BUFFER_SIZE = 0x10000;
-const PAYLOAD_MAX_SIZE = 0x400000;
 let payloadSendStore = null;
 let payloadSockaddrStore = null;
 let payloadSocketOptionStore = null;
@@ -1034,14 +1033,8 @@ let consoleNetworkInfo = { ip: "", name: "" };
 // console sees the same ELFs whichever site it came in through. Every name here
 // is checked against payloads\ by tools\site_check.py.
 const PAYLOADS = Object.freeze([
-    { title: "OnionHEN", description: "Homebrew enabler and payload host.",
-        name: "OnionHEN.elf", info: "OnionHEN.elf" },
     { title: "etaHEN", description: "Homebrew enabler and payload host.",
         name: "etaHEN.elf", info: "etaHEN.elf" },
-    { title: "browser", description: "Homebrew PS5 Browser.",
-        name: "browser_launcher.elf", info: "browser_launcher.elf" },
-    { title: "Webkitautoloader", description: "Homebrew Webkit autoloader Installer.",
-        name: "webkit-autoloader-installer.elf", info: "webkit-autoloader-installer.elf" },
     { title: "ps5-kstuff", description: "Kernel support payload and FPKG enabler.",
         name: "kstuff.elf", info: "kstuff.elf - EchoStretch" },
     { title: "ShadowMountPlus", description: "Mount and manage game images.",
@@ -1087,7 +1080,7 @@ function populatePayloadButtons() {
         info.classList.add("payloadStatus");
         info.classList.add("payload-btn-info");
         info.setAttribute("data-ready", payload.info);
-        info.textContent = payload.info.replace(" - ", " 路 ");
+        info.textContent = payload.info.replace(" - ", " · ");
 
         button.appendChild(title);
         button.appendChild(description);
@@ -1330,8 +1323,6 @@ async function sendPayloadToElfldr(name) {
     const bytes = new Uint8Array(await response.arrayBuffer());
     if (!bytes.length)
         throw new Error("payload is empty");
-    if (bytes.length > PAYLOAD_MAX_SIZE)
-        throw new Error("payload is larger than the 4 MiB limit");
     if (bytes.length < 4 || bytes[0] !== 0x7f || bytes[1] !== 0x45
         || bytes[2] !== 0x4c || bytes[3] !== 0x46)
         throw new Error("payload does not start with the ELF signature");
