@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>poopsploit</title>
+  <link rel="stylesheet" href="main.css?v=lowfw17">
+  <style>
+  /* ---- creds & greetz, lifted verbatim from the poop2jb landing ---- */
+/* Credits, in slopkit2's style: a muted label over a single wrapped line of names.
+   position:fixed so it pins to the bottom without joining the centred flex column
+   (body is height:100vh;overflow:hidden - an in-flow footer would push the buttons). */
+#credits{
+    position:fixed; bottom:14px; left:0; right:0;
+    text-align:center; padding:0 16px; pointer-events:none;
+}
+#credits span{ display:block; color:#6f7076; font-size:0.8rem; font-weight:700;
+               letter-spacing:.22em; margin-bottom:5px; }
+/* 26 names wrap to ~3 lines; cap the width so they break evenly rather than
+   spanning the full screen, and keep the whole block clear of the buttons. */
+#credits h3{ margin:0 auto; max-width:60rem; font-size:0.82rem; font-weight:700;
+             color:#4a4b50; line-height:1.55; }
+#basedon{ margin:9px 0 0; font-size:0.68rem; color:#3d3e43; letter-spacing:.05em;
+           font-weight:400; }
+  </style>
+</head>
+<body>
+  <div class="p-2">
+    <h1 class="text-center">poopsploit (7.00-12.00)</h1>
+    <p class="text-center" id="top-bar-text">Current Firmware: <span class="fw-bold" id="current-fw">Unknown</span></p>
+  </div>
+
+  <div id="main-content">
+    <div id="pre-jb-view" class="selected">
+      <a tabindex="0" class="btn fw-bold" id="run-jb"
+         href="poopsploit/poops.html?go=1&amp;auto=1&amp;production=1&amp;trigger=netcontrol&amp;attempts=8&amp;only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&amp;log=debug&amp;payload=1&amp;v=lowfw17">Jailbreak</a>
+      <a tabindex="0" class="btn btn-secondary" id="run-sender"
+         href="poopsploit/poops.html?go=1&amp;auto=1&amp;production=1&amp;trigger=netcontrol&amp;attempts=8&amp;only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&amp;log=debug&amp;payload=1&amp;reuse=1&amp;v=lowfw17">Payloads (sender)</a>
+    </div>
+  </div>
+
+<!-- CREDS & GREETZ. Styled after zecoxao's site (his hen/hen2/hen3/idlesauce pages all
+     carry the same "creds & greetz" block), but the NAMES are the operator's own list,
+     not a copy of his - his local mirror had 8 of 12 slots stripped and those were never
+     guessed. zecoxao leads. One name was dropped at the operator's request. The list is
+     de-duplicated: zecoxao and idlesauce each appeared twice across the old block and the
+     added list, and are kept once, in their first position.
+     j0rdy is deliberately NOT a greet - he gets the attribution line underneath, which is
+     credit rather than a greeting. -->
+<div id="credits">
+    <span>creds &amp; greetz</span>
+    <h3>
+        zecoxao, ChendoChap, abc/psfree, idlesauce, flat_z, TheFlow,
+        c0w-ar, earthonion, SIStro, egycnq, abkarino, gezine, Dr.Yenyen,
+        StonedModder, VoidWhisper, EchoStretch, BestPig, AlAzif, drakmor,
+        hzhreal, hammer-83, ntfargo, shahrilnet, Znullptr,
+        LM, ItsJokerZz,
+        cblock, BeLegal, Lord Caio Barros
+    </h3>
+    <p id="basedon">based on the slopkit by j0rdy</p>
+</div>
+
+  <script>
+    try {
+      var firmwareMatch = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent);
+      var firmware = firmwareMatch ? firmwareMatch[1] : "";
+      document.getElementById("current-fw").textContent = firmware || "Not detected";
+    } catch (e) { }
+    try { document.getElementById("run-jb").focus(); } catch (e) { }
+  </script>
+</body>
+</html>

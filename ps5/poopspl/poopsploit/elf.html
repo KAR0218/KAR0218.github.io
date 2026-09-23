@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>poopsploit Payloads</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; padding:16px 12px 32px; background:#0b0d10; color:#e8eaed;
+         font:16px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif; }
+  h1 { margin:0 0 4px; font-size:22px; letter-spacing:.02em; }
+  .sub { margin:0 0 14px; color:#9aa4b2; font-size:14px; }
+  .grid { display:flex; flex-wrap:wrap; gap:10px; }
+  a.tile { display:block; flex:1 1 300px; max-width:520px; padding:14px 16px;
+           border:2px solid #2b3440; border-radius:10px; background:#141a21;
+           color:#e8eaed; text-decoration:none; }
+  a.tile:focus, a.tile:hover { outline:none; border-color:#ebcb8b; background:#1d2732; }
+  a.tile b { display:block; font-size:18px; }
+  a.tile span { display:block; margin-top:2px; color:#9aa4b2; font-size:13px; }
+  #msg { margin:14px 0 0; padding:10px 12px; border-radius:8px; font-size:14px;
+         white-space:pre-wrap; }
+  #msg.ok   { background:#11250f; color:#b9e6a7; border:1px solid #2f5c25; }
+  #msg.bad  { background:#2a1414; color:#ffb3b3; border:1px solid #7a2b2b; }
+  #msg.warn { background:#2a2410; color:#ffd24d; border:1px solid #b38b00; }
+  #fallback { margin-top:14px; }
+  #fallback a { color:#ffd24d; }
+  .note { margin-top:22px; color:#6f7b8a; font-size:12px; }
+
+  /* ---- ARTWORK MODE ---------------------------------------------------------
+     THE LABEL IS THE PNG. Text tiles were tried in this menu on 2026-08-26 and laid
+     out perfectly while painting NO GLYPHS AT ALL - "the boxes are there but
+     invisible" - on 12.00 retail and 12.70 devkit both. That is why every label here
+     is an image, and why a tile must stay a transparent hit target: give it a
+     background and it draws a box behind the box. Result is colour only; there is no
+     text in here to change. Geometry copied from #payloadMenuGrid so this page looks
+     identical to the menu it replaces. */
+  body.art { background:#0c0c0f; color:#fff; }
+  body.art .menuTitle { display:block; width:626px; height:56px; max-width:100%;
+    margin:0 auto 12px; }
+  body.art .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:2.5rem; row-gap:1rem; width:1356px; max-width:96vw;
+    margin:0 auto; padding:0 2rem 1rem; box-sizing:border-box; align-content:start; }
+  body.art a.tile { display:block; width:100%; max-width:none; flex:none;
+    margin:0; padding:0; border:0; border-radius:1.25rem;
+    background:transparent; text-decoration:none; cursor:pointer; }
+  body.art a.tile:hover, body.art a.tile:focus { outline:3px solid #fff;
+    outline-offset:2px; background:#2b2c31; }
+  body.art a.tile img { display:block; width:626px; height:104px; max-width:100%;
+    margin:0 auto; }
+  body.art a.tile.busy   { opacity:.42; }
+  body.art a.tile.sent   { outline:3px solid #47c76a; outline-offset:2px; }
+  body.art a.tile.failed { outline:3px solid #e05561; outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<h1 id="hdr">poopsploit Payloads (7.00-12.00)</h1>
+<p class="sub">Pick one. elfldr downloads it to the console itself &mdash; this page runs no exploit code.</p>
+<div class="grid" id="grid"></div>
+<div id="msg" hidden></div>
+<div id="fallback" hidden>
+  elfldr&rsquo;s HTTP listener did not answer.
+  <a id="oldway" href="poops.html?go=1&amp;auto=1&amp;production=1&amp;trigger=netcontrol&amp;attempts=8&amp;only=ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&amp;log=debug&amp;payload=1&amp;reuse=1">Use the old sender instead</a>
+  &mdash; it is heavier and can trip the memory error, but it does not need that listener.
+</div>
+
+<p class="note">poopsploit &middot; firmware 7.00-12.00 &middot; needs a jailbreak this boot:
+   elfldr is what a run leaves behind.</p>
+
+<script>
+/* ZERO exploit code lives in this file. It talks to elfldr over plain HTTP.
+   See tools/build_elf_page.py for why - the short version is that the old menu loaded
+   ~830 KB of exploit JS to draw these tiles and died 20% of the time doing it. */
+
+var SITE_NAME = "poopsploit";
+var SITE_FW   = "7.00-12.00";
+var ELFLDR    = "http://localhost:9021";
+var PAYLOADS  = [
+    { title: "etaHEN", description: "Homebrew enabler and payload host.", name: "etaHEN.elf", key: "etahenelf" },
+    { title: "ps5-kstuff", description: "Kernel support payload and FPKG enabler.", name: "kstuff.elf", key: "kstuffelf" },
+    { title: "ShadowMountPlus", description: "Mount and manage game images.", name: "shadowmountplus.elf", key: "shadowmountpluself" },
+    { title: "Autoloader", description: "Runs a stored payload automatically.", name: "autoloader.elf", key: "autoloaderelf" },
+    { title: "ftpsrv", description: "FTP server. Runs on port 2121.", name: "ftpsrv-ps5.elf", key: "ftpsrvps5elf" },
+    { title: "Payload Manager", description: "Payload management tools.", name: "pldmgr.elf", key: "pldmgrelf" },
+    { title: "gdbsrv", description: "GDB server. Runs on port 2159.", name: "gdbsrv-ps5.elf", key: "gdbsrvps5elf" },
+    { title: "klogsrv", description: "Kernel log server. Runs on port 3232.", name: "klogsrv-ps5.elf", key: "klogsrvps5elf" },
+    { title: "shsrv", description: "Telnet shell server. Runs on port 2323.", name: "shsrv-ps5.elf", key: "shsrvps5elf" },
+    { title: "websrv", description: "Homebrew web server. Runs on port 8080.", name: "websrv-ps5.elf", key: "websrvps5elf" }
+];
+
+var msgEl = document.getElementById("msg");
+var fbEl  = document.getElementById("fallback");
+
+/* Beacons are best-effort and RELATIVE: on a static host the 404 is the answer and
+   nothing here depends on one arriving. */
+function beacon(tag, extra) {
+    try {
+        var x = new XMLHttpRequest();
+        x.open("GET", "log/" + encodeURIComponent("ELFPAGE-" + tag + "-" + extra), true);
+        x.send();
+    } catch (e) { }
+}
+
+function say(text, kind) {
+    msgEl.textContent = text;
+    msgEl.className = kind || "";
+    msgEl.hidden = false;
+}
+
+/* The URL handed to elfldr must be absolute and reachable BY THE CONSOLE, not by this
+   page - elfldr is the one that fetches it. Deriving it from location.href keeps the
+   site portable: LAN host, static host, subdirectory, all correct without editing. */
+function payloadURL(name) {
+    return new URL("payloads/" + name, location.href).href;
+}
+
+var ART     = false;
+var ART_DIR = "";
+var ART_PFX = "";
+
+function art(key, state) { return ART_DIR + ART_PFX + key + "-" + state + ".png"; }
+
+/* Preload every state at page load. The original menu decodes its art up front on
+   purpose - swapping to a not-yet-fetched PNG mid-send shows a blank tile. */
+function preloadArt() {
+    if (!ART) return;
+    var states = ["sending", "sent", "failed"];
+    for (var i = 0; i < PAYLOADS.length; ++i)
+        for (var j = 0; j < states.length; ++j) {
+            var im = new Image();
+            im.src = art(PAYLOADS[i].key, states[j]);
+        }
+}
+
+/* Result is colour + artwork only - never text on the tile itself. */
+function setState(p, state) {
+    if (!p._tile) return;
+    p._tile.className = "tile" + (state === "sending" ? " busy"
+                                : state === "sent" ? " sent"
+                                : state === "failed" ? " failed" : "");
+    if (ART && p._img) p._img.src = art(p.key, state === "sending" ? "sending"
+                                              : state === "sent" ? "sent"
+                                              : state === "failed" ? "failed" : "default");
+}
+
+/* Mixed-content path: an https page cannot fetch() http://localhost:9021, but it CAN
+   point an <img> at it. Fire-and-forget - the launch happens, stdout is not readable.
+   Same workaround sites/payloads/elfldr.js uses. */
+function launchViaImg(uri) {
+    var img = document.createElement("img");
+    img.width = img.height = 1;
+    img.style.cssText = "position:absolute;left:-9999px;top:-9999px";
+    img.src = ELFLDR + "?" + new URLSearchParams({ uri: uri + "?pipe=0&args=" });
+    document.body.appendChild(img);
+}
+
+async function launch(p) {
+    var uri = payloadURL(p.name);
+    setState(p, "sending");
+    say("sending " + p.title + " ...", "");
+    beacon("SEND", p.key + "-" + p.name);
+
+    var qs = new URLSearchParams({ uri: uri + "?args=" });
+    try {
+        var res = await fetch(ELFLDR + "?" + qs);
+        if (!res.ok) throw new Error("elfldr replied " + res.status);
+        /* Stream stdout back when the console lets us read it. */
+        var out = "";
+        try {
+            var reader = res.body.getReader();
+            var dec = new TextDecoder();
+            for (;;) {
+                var r = await reader.read();
+                if (r.done) break;
+                out += dec.decode(r.value);
+                say(p.title + " running:\n" + out, "ok");
+            }
+        } catch (e) { }
+        say(p.title + " sent." + (out ? "\n" + out : ""), "ok");
+        beacon("OK", p.key);
+    } catch (err) {
+        /* An https page reaching a http listener fails here EVERY time and is not a
+           real error - take the img path and say so plainly. */
+        if (location.protocol !== "http:") {
+            launchViaImg(uri);
+            setState(p, "sent");
+            say(p.title + " sent (no stdout: this page is not http, so the reply cannot"
+                + " be read).", "warn");
+            beacon("OK-IMG", p.key);
+            return;
+        }
+        setState(p, "failed");
+        say(p.title + " failed: " + ((err && err.message) || err), "bad");
+        fbEl.hidden = false;
+        beacon("FAIL", p.key + "-" + String((err && err.message) || err).slice(0, 60));
+    }
+}
+
+(function build() {
+    if (ART) document.body.className = "art";
+    preloadArt();
+    var grid = document.getElementById("grid");
+    for (var i = 0; i < PAYLOADS.length; ++i) {
+        (function (p, idx) {
+            var a = document.createElement("a");
+            a.className = "tile";
+            a.href = "#";
+            a.tabIndex = idx + 1;
+            if (ART) {
+                /* The PNG is the whole button - title, description and attribution are
+                   baked into it by tools/make_payload_buttons.py. */
+                var im = document.createElement("img");
+                im.width = 626; im.height = 104; im.alt = p.title;
+                im.src = art(p.key, "default");
+                a.appendChild(im);
+                p._img = im;
+            } else {
+                var b = document.createElement("b");
+                b.textContent = p.title;
+                var sp = document.createElement("span");
+                sp.textContent = p.description;
+                a.appendChild(b);
+                a.appendChild(sp);
+            }
+            p._tile = a;
+            a.addEventListener("click", function (e) { e.preventDefault(); launch(p); });
+            grid.appendChild(a);
+            if (idx === 0) try { a.focus(); } catch (e) { }
+        })(PAYLOADS[i], i);
+    }
+    beacon("BOOT", SITE_NAME + "-tiles=" + PAYLOADS.length + "-proto=" + location.protocol);
+})();
+</script>
+</body>
+</html>

