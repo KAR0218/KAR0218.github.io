@@ -1,0 +1,11 @@
+# Pin line endings. This repo is served as static files to a PS5 browser, and the
+# working tree lives on Windows where core.autocrlf rewrites LF -> CRLF on checkout.
+# That churn already produced a 2321-line "diff" on p2jb.html that was pure line
+# endings and masked the real changes underneath. Force LF everywhere so the bytes
+# GitHub Pages serves are the bytes that were tested.
+* text=auto eol=lf
+*.png binary
+*.gif binary
+*.elf binary
+*.bin binary
+*.zip binary

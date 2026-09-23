@@ -1,0 +1,5 @@
+# Route  api/payload/<name>  ->  payload.php  (Apache).
+# Without this the request 404s and the tile reports "no payload helper".
+RewriteEngine On
+RewriteBase /
+RewriteRule ^payload/(.+)$ payload.php/$1 [L,QSA]

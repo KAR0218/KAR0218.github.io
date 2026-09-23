@@ -1,0 +1,100 @@
+:root {
+  --text-color-primary: #fff;
+  --text-color-secondary: #ccc;
+  --text-color-tertiary: #999;
+  --background-color-primary: #0c0c0f;
+  --surface-color-primary: #202125;
+  --surface-color-secondary: #15161a;
+  --surface-color-hover: #a2a2a6;
+  --text-color-primary-hover: #202020;
+  --text-color-secondary-hover: #444;
+  font-size: 17px;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: var(--background-color-primary);
+  color: var(--text-color-primary);
+  font-family: Arial, sans-serif;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+a { color: var(--text-color-secondary); }
+a:active, a:focus { outline: 0; border: none; }
+
+.btn {
+  padding: 1rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: .2rem;
+  cursor: pointer;
+  line-height: 2.5rem;
+  min-width: 5rem;
+  border-radius: 1.25rem;
+  width: 50%;
+  background-color: var(--surface-color-primary);
+  border: none;
+  color: var(--text-color-primary);
+  font-size: 1.3rem;
+  transition: background-color .25s ease;
+  box-sizing: border-box;
+}
+
+.btn:hover, .btn:focus {
+  background-color: var(--surface-color-hover);
+  color: var(--text-color-primary-hover);
+}
+
+.btn-secondary { padding: .5rem 2rem; font-size: 1rem; }
+
+#main-content { position: relative; box-sizing: border-box; }
+#main-content > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease-in-out;
+  box-sizing: border-box;
+  display: flex;
+}
+
+#pre-jb-view {
+  display: block !important;
+  padding-top: 18vh;
+  text-align: center;
+}
+
+#pre-jb-view .btn {
+  display: block;
+  width: 70%;
+  max-width: none;
+  margin: .5rem auto;
+}
+
+.selected { opacity: 1 !important; pointer-events: auto !important; }
+.position-relative { position: relative; }
+.text-center { text-align: center; }
+.fw-bold { font-weight: 800; }
+.text-secondary {
+  color: var(--text-color-secondary);
+  margin: 0;
+  padding: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: .8rem;
+}
+.p-2 { padding: .5rem !important; }
+.mt-2 { margin-top: .5rem !important; }
+.mb-2 { margin-bottom: .5rem !important; }
