@@ -1,0 +1,94 @@
+<html>
+<!-- <html manifest="cache.appcache"> -->
+
+<head>
+    <title>PS5 UMTX2 Jailbreak</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<!-- body is set up as three rows: auto 1fr auto -->
+<body>
+    <!-- Row 1 -->
+    <div class="p-2">
+        <h1 class="text-center">PS5 UMTX2 Jailbreak (1.xx-5.xx)</h1>
+        <p class="text-center" id="top-bar-text">Current firmware: <span class="fw-bold" id="current-fw"></span></p>
+
+        <!-- This is absolute positioned to the body-->
+        <div id="toast-container"></div>
+    </div>
+
+    <!-- Row 2 -->
+    <div id="main-content">
+        <div id="pre-jb-view" class="d-flex align-items-center justify-content-center flex-direction-column selected">
+            <a tabindex="0" class="btn fw-bold" id="run-jb" onclick="run()">Jailbreak</a>
+            <a tabindex="0" class="btn" style="padding: 0.5rem 2rem; font-size: 1rem;" id="run-wk-only"
+                onclick="run(true)">Webkit-only (sender)</a>
+        </div>
+
+        <div id="console-view">
+            <div id="console" class="log"></div>
+        </div>
+
+        <div id="payloads-view">
+        </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="position-relative text-center p-2 mb-2">
+        <p class="text-secondary" id="version">v1.0</p>
+        <p class="text-secondary">creds & greetz</p>
+        <!-- Same greetz list the p2jb / poopsploit landings carry, so every site on the
+             host reads the same. This replaces the upstream mirror's own list on purpose;
+             MIRROR.md tracks the code, not the credits. -->
+        <h3 class="text-secondary mt-2">
+            zecoxao, ChendoChap, abc/psfree, idlesauce, flat_z, TheFlow,
+            c0w-ar, earthonion, SIStro, egycnq, abkarino, gezine, Dr.Yenyen,
+            <br />
+            StonedModder, VoidWhisper, EchoStretch, BestPig, AlAzif, drakmor,
+            hzhreal, hammer-83, ntfargo, shahrilnet, Znullptr,
+            <br />
+            LM, ItsJokerZz, cblock, BeLegal, Lord Caio Barros
+        </h3>
+        <p class="text-secondary mt-2">based on the slopkit by j0rdy</p>
+
+        <div class="position-absolute d-flex align-items-center bottom-0 left-0 m-4">
+            <div class="l2-redirect-box">L2</div>
+            <span class="ml-2">Redirect</span>
+        </div>
+    </div>
+
+    <script src="int64.js"></script>
+    <script src="rop.js"></script>
+    <script src="main.js"></script>
+    <script src="umtx2.js"></script>
+    <script src="custom_host_stuff.js"></script>
+    <script src="syscalls.js"></script>
+    <script type="module" src="psfree/psfree.js"></script>
+    <script src="payload_map.js"></script>
+
+    <script>
+        addEventListener('unhandledrejection', (event) => {
+            const reason = event.reason;
+            // We log the line and column numbers as well since some exceptions (like
+            // SyntaxError) do not show it in the stack trace.
+            alert(
+                `${reason}\n`
+                + `${reason.sourceURL}:${reason.line}:${reason.column}\n`
+                + `${reason.stack}`
+            );
+            throw reason;
+        });
+        document.getElementById("current-fw").innerHTML = fw_str;
+        registerAppCacheEventHandlers();
+        registerL2ButtonHandler();
+        window.onload = function () {
+            let autoload = sessionStorage.getItem(SESSIONSTORE_ON_LOAD_AUTORUN_KEY);
+            if (autoload) {
+                run(autoload == "wkonly", false);
+            }
+        };
+    </script>
+</body>
+
+</html>
