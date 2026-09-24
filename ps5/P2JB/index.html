@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P2JB</title>
+  <link rel="stylesheet" href="main.css?v=final">
+  <style>
+    /* main.css lays #main-content out for the multi-view app page: every
+       #main-content > div is position:absolute; height:100%, cross-faded by
+       .selected. On THIS landing there is only one view and #main-content has no
+       height of its own, so that box collapses to zero and the two block buttons
+       overflow it and overlay the Credits block - which on the console reads as
+       "only one button". Put the single view back in normal flow instead. */
+    #main-content { min-height: 0; }
+    #main-content > #pre-jb-view {
+      position: static; height: auto; opacity: 1; pointer-events: auto;
+      display: block; padding-top: 6vh;
+    }
+
+  /* ---- creds & greetz, lifted verbatim from the poop2jb landing ---- */
+/* Credits, in slopkit2's style: a muted label over a single wrapped line of names.
+   position:fixed so it pins to the bottom without joining the centred flex column
+   (body is height:100vh;overflow:hidden - an in-flow footer would push the buttons). */
+#credits{
+    position:fixed; bottom:14px; left:0; right:0;
+    text-align:center; padding:0 16px; pointer-events:none;
+}
+#credits span{ display:block; color:#6f7076; font-size:0.8rem; font-weight:700;
+               letter-spacing:.22em; margin-bottom:5px; }
+/* 26 names wrap to ~3 lines; cap the width so they break evenly rather than
+   spanning the full screen, and keep the whole block clear of the buttons. */
+#credits h3{ margin:0 auto; max-width:60rem; font-size:0.82rem; font-weight:700;
+             color:#4a4b50; line-height:1.55; }
+#basedon{ margin:9px 0 0; font-size:0.68rem; color:#3d3e43; letter-spacing:.05em;
+           font-weight:400; }
+  </style>
+</head>
+<body>
+  <div class="p-2">
+    <h1 class="text-center">P2JB (12.00-12.70)</h1>
+    <p class="text-center" id="top-bar-text">Current Firmware: <span class="fw-bold" id="current-fw">Unknown</span></p>
+  </div>
+
+  <div id="main-content">
+    <div id="pre-jb-view" class="selected">
+      <!-- Query strings copied verbatim from the working poop2jb landing; do not
+           re-derive them. v=134 is that site's cache-buster and the console has no
+           address bar, so p2jb.html alone cannot be bumped. -->
+      <a tabindex="0" class="btn fw-bold" id="run-jb"
+         href="p2jb.html?go=1&amp;auto=1&amp;trigger=netcontrol&amp;payload=1&amp;v=195">Jailbreak</a>
+      <!-- Straight to the ELF sender, skipping the exploit. p2jb.html checks
+           ?payloads=1 before it checks ARMED, so this needs no go=1 and never
+           re-runs the UAF on an already-patched kernel. -->
+      <a tabindex="0" class="btn btn-secondary" id="run-payloads"
+         href="p2jb.html?payloads=1&amp;v=195">Payloads (already jailbroken)</a>
+      <!-- NO-HANDOFF DIAGNOSTIC BUTTON REMOVED. It ran the real jailbreak, so it
+           sat one mis-tap away from the Jailbreak button while doing something the
+           user did not ask for, and it only means anything on a FRESH BOOT. The
+           flag still works by hand: append &nohandoff=1 to the Jailbreak link.
+           These sites now expose exactly two actions: Jailbreak and Payloads. -->
+</div>
+  </div>
+
+<!-- CREDS & GREETZ. Styled after zecoxao's site (his hen/hen2/hen3/idlesauce pages all
+     carry the same "creds & greetz" block), but the NAMES are the operator's own list,
+     not a copy of his - his local mirror had 8 of 12 slots stripped and those were never
+     guessed. zecoxao leads. One name was dropped at the operator's request. The list is
+     de-duplicated: zecoxao and idlesauce each appeared twice across the old block and the
+     added list, and are kept once, in their first position.
+     j0rdy is deliberately NOT a greet - he gets the attribution line underneath, which is
+     credit rather than a greeting. -->
+<div id="credits">
+    <span>creds &amp; greetz</span>
+    <h3>
+        zecoxao, ChendoChap, abc/psfree, idlesauce, flat_z, TheFlow,
+        c0w-ar, earthonion, SIStro, egycnq, abkarino, gezine, Dr.Yenyen,
+        StonedModder, VoidWhisper, EchoStretch, BestPig, AlAzif, drakmor,
+        hzhreal, hammer-83, ntfargo, shahrilnet, Znullptr,
+        LM, ItsJokerZz,
+        cblock, BeLegal, Lord Caio Barros
+    </h3>
+    <p id="basedon">based on the slopkit by j0rdy</p>
+</div>
+
+  <script>
+    try {
+      var firmwareMatch = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent);
+      var firmware = firmwareMatch ? firmwareMatch[1] : "";
+      document.getElementById("current-fw").textContent = firmware || "Not detected";
+    } catch (e) { }
+    try { document.getElementById("run-jb").focus(); } catch (e) { }
+  </script>
+</body>
+</html>
