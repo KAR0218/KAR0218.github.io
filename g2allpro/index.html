@@ -1,0 +1,326 @@
+<html manifest="Cache.manifest">
+<head>
+<style>
+    html, body{
+margin:auto;
+font-family:sans-serif;
+font-size:20px;
+font-weight:lighter;
+text-align: center;
+color:#FFFFFF;
+background-size:cover;
+overflow: hidden;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+ .content {
+  width:90%;
+  height:15%;
+  margin-left:3.5%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  margin-top:0%;
+  font-size:25px;
+  text-align:center;
+  border-radius:30px;
+  padding:20px;
+  line-height:12px;
+  position:absolute;bottom:0px;
+ }
+ .title {
+  font-size:40px;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-weight:bolder;
+  margin-bottom:10px;
+ }
+ .yellow {
+  color:yellow;
+ }
+ .hue {
+  color:yellow;
+  padding:10px;
+  border-radius:10px;
+  animation:hue 5s linear infinite;
+  -webkit-animation: hue 5s linear infinite;
+  box-shadow: 0px 0px 50px yellow;
+  color:white;
+  background:rgba(255,255,0,0.4);
+ }
+ .hue:hover{
+  color:yellow;
+  background:transparent;
+ }
+ @keyframes hue{
+ 0%{
+ filter:hue-rotate(0deg);
+ -webkit-filter:hue-rotate(0deg);
+ }
+ 10%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 20%{
+ box-shadow: 1px 1px 50px yellow;
+ }
+ 30%{
+ box-shadow: 1px 0px 50px yellow;
+ }
+ 40%{
+  box-shadow: 1px -1px 50px yellow;
+ }
+ 50%{
+ box-shadow: 0px -1px 50px yellow;
+ }
+ 60%{
+ box-shadow: -1px -1px 50px yellow;
+ }
+ 70%{
+ box-shadow: -1px 0px 50px yellow;
+ }
+ 80%{
+ box-shadow: -1px 1px 50px yellow;
+ }
+ 90%{
+ box-shadow: 0px 1px 50px yellow;
+ }
+ 100%{
+ filter:hue-rotate(360deg);
+ -webkit-filter:hue-rotate(360deg);
+ }
+ }
+ .text {
+  padding-bottom:50px;
+ }
+  .back {
+   font-size:25px;
+   margin-top:10px;
+   display:block;
+   line-height:55px;
+   width:20%;
+   text-decoration:none;
+   height:50px;
+   background:white;
+   color:black;
+   border-radius:15px;
+  }
+  .back:hover{
+   border:2px solid white;
+   background:transparent;
+   box-sizing:border-box;
+   color:white;
+  }
+ #psip {
+  text-align: center;
+  margin-left: 38%;
+  margin-right: auto;
+  width:15%;
+  display:flex;
+  position: absolute;
+  
+  background: rgba(0, 0, 0, 0.500);
+  border-radius: 2em;
+  border: none;
+  padding: 0.8em;
+  
+  color: #ffffff;
+  padding-left: 1.5em;
+  
+  outline: none;
+  box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
+  backdrop-filter: blur(5px);
+}
+/* Modal Content */
+.modal-content {
+  font-family: BFARNAZ;
+  font-size: 18px;
+  position: relative;
+  background-color: #dddddd;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+button {
+            background:rgba(0,0,0,0.5);
+			box-shadow: 0 5px 20px 0 white;
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 200px;
+            height: 43px;            
+            text-align: center;
+}
+button:hover {
+            box-shadow: 0 5px 50px 0 white;
+            color: white;
+            border-radius: 10px;
+			background-color: #0F0F53;
+}
+
+hr {
+padding:0;
+margin:0;
+opacity:0.7;
+}
+
+#progress {
+ font-weight:bold;
+ text-shadow: 4px 4px 4px black;
+
+ font-size:17px;
+}
+.pointer {cursor: pointer;}
+
+h1 {
+text-shadow: 0.1em 0.1em 0.2em black;
+font-size: 25px;
+text-align: center;
+color: white;
+}
+
+.TextCaption{
+display: block;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+a img {
+    display: inline-block;  text-decoration: none;
+}
+
+a {
+    display: inline-block;  text-decoration: none;
+}
+
+a:hover img, a:hover .TextCaption{
+transform: scale(1.1)
+}
+
+    </style>
+<meta charset="utf-8">
+<title>Karo Host Auto Exploit GoldHen PS4 5.05 & 7.XX - 13.52 FW</title>
+<script>
+      if (window.applicationCache.status === 0) {window.location.replace("cache.html");}
+</script>
+</head>
+<body style='background-color:#1A1920'>
+<br>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host Auto Exploit GoldHen PS4 5.05 & 7.XX - 13.52 FW</h1>
+<h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking....</h1><br>
+
+<div id=all class="content" >
+ 	    <div class="text" >
+ 	        <br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Designed, Compiled by :</span >&nbsp;&nbsp; <span style="text-shadow: 4px 4px 4px black;" class="hue" >Karo Sharifi</span>
+ 	        <br><br><br><br><span style="text-shadow: 4px 4px 4px black;" class="yellow" >Super Special Thanks To :</span >&nbsp;&nbsp; <a style="font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:white;">Sleirsgoevy , Al Azif , ChendoChap , SiSTRo ,Abc ,Xalfia, Specter ,Znullptr ... </a>
+	    </div>
+</div>
+</body>
+<script>
+var outputConsole = document.getElementById("progress");
+window.log = function (msg, color) {
+      if (color === undefined) color = "#cccccc";
+      outputConsole.innerHTML = '<span style="color:' + color + '">' + msg + '</span><br>';
+};
+window.logger = function (msg, color) {
+      if (color === undefined) color = "#cccccc";
+      outputConsole.innerHTML = '<span style="color:' + color + '">' + msg + '</span><br>';
+};
+window.addEventListener('error', function (event) {
+      var reason = event.error;
+      var msg = 'Unhandled error\n';
+      if (reason) {
+        msg += reason + '\n';
+        if (reason.sourceURL)
+          msg += reason.sourceURL;
+        if (reason.line)
+          msg += ':' + reason.line;
+        if (reason.column)
+          msg += ':' + reason.column;
+        if (reason.stack)
+          msg += '\n' + reason.stack;
+      } else {
+        msg += 'No error object';
+      }
+      alert(msg);
+      return true;
+});
+var uaFull = navigator.userAgent;
+var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
+var isPS4 = match !== null;
+var fwVersion = isPS4 ? match[1] : "Unknown";
+var fwNum = parseFloat(fwVersion);
+
+function onScriptError() {
+    progress.innerHTML = "Content not Found! - Clear Browser Data and Re-Install Cache ...";
+}
+
+if (!isPS4) {
+    document.addEventListener("DOMContentLoaded", () => {
+        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
+    });
+} else {
+        if (fwNum == 5.05 || fwNum == 5.07) {
+            var script = document.createElement('script');
+            script.src = "exploit5.js";
+            script.onerror = onScriptError;
+            document.head.appendChild(script);
+        }
+        else if (fwNum >= 7.00 && fwNum <= 9.60) {
+            var script = document.createElement('script');
+            script.src = "exploit7_9.js";
+            script.onerror = onScriptError;
+            document.head.appendChild(script);
+             setTimeout(function() { window.log("Reloading...");try {
+                 doJailBreak();
+                } catch (error) {
+                 window.log("An error occured during exploit: " + error, "red");
+                 }; }, 500);
+             
+        }
+        else if (fwNum >= 10.00 && fwNum <= 11.02) {
+            var script = document.createElement('script');script.src = "exploit10.js";script.onerror = onScriptError;
+            script.onload = function () {
+                setTimeout(function () {
+                    doJb();
+                }, 1000);
+            };
+            document.head.appendChild(script);
+        }
+        else if (fwNum >= 11.50 && fwNum <= 12.02) {
+           var script = document.createElement('script');
+           script.src = "1150_1202.js";
+           script.onerror = onScriptError;
+           document.head.appendChild(script);
+       }
+       else if (fwNum >= 12.50 && fwNum <= 13.00) {
+           var script = document.createElement('script');
+           script.src = "1250_13.js";
+           script.onerror = onScriptError;
+           document.head.appendChild(script);
+       }
+       else if (fwNum >= 13.02 && fwNum <= 13.52) {
+           var script = document.createElement('script');
+           script.src = "1302_1352.js";
+           script.onerror = onScriptError;
+           document.head.appendChild(script);
+       }
+    }
+</script>
+</html>
