@@ -378,5 +378,69 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<style id="ps5-portal-cache-ui">
+#ps5-cache-box{
+    position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+    z-index:2147483647;width:min(430px,82vw);padding:20px;
+    border-radius:14px;background:rgba(15,18,24,.97);color:#fff;
+    font:14px/1.4 Arial,Helvetica,sans-serif;
+    box-shadow:0 10px 35px rgba(0,0,0,.5);display:none
+}
+#ps5-cache-title{font-size:17px;font-weight:700;margin-bottom:12px}
+#ps5-cache-bar{height:9px;background:rgba(255,255,255,.18);border-radius:9px;overflow:hidden}
+#ps5-cache-fill{height:100%;width:0%;background:#4caf50;transition:width .12s linear}
+#ps5-cache-text{margin-top:9px;color:#dcecff}
+</style>
+
+<div id="ps5-cache-box">
+  <div id="ps5-cache-title">Caching PS5 Portal…</div>
+  <div id="ps5-cache-bar"><div id="ps5-cache-fill"></div></div>
+  <div id="ps5-cache-text">Preparing…</div>
+</div>
+
+<script>
+(function(){
+    if (!("serviceWorker" in navigator)) return;
+
+    const box  = document.getElementById("ps5-cache-box");
+    const fill = document.getElementById("ps5-cache-fill");
+    const text = document.getElementById("ps5-cache-text");
+
+    navigator.serviceWorker.addEventListener("message", function(e){
+        const d = e.data || {};
+        if(d.type === "PORTAL_CACHE_START"){
+            box.style.display = "block";
+            fill.style.width = "0%";
+            text.textContent = "Caching: 0% (0/" + d.total + ")";
+        }
+        if(d.type === "PORTAL_CACHE_PROGRESS"){
+            box.style.display = "block";
+            fill.style.width = d.percent + "%";
+            text.textContent = "Caching: " + d.percent + "% (" +
+                d.done + "/" + d.total + ")" +
+                (d.failed ? " — skipped" : "");
+        }
+        if(d.type === "PORTAL_CACHE_COMPLETE"){
+            box.style.display = "block";
+            fill.style.width = "100%";
+            text.textContent = "Cache complete — 100%";
+            setTimeout(function(){ box.style.display = "none"; }, 1800);
+        }
+    });
+
+    window.addEventListener("load", function(){
+        navigator.serviceWorker.register("/ps5/sw.js", {scope:"/ps5/"})
+            .then(function(reg){
+                console.log("[PS5 Portal Cache] Service Worker registered");
+                reg.update().catch(function(){});
+            })
+            .catch(function(err){
+                console.log("[PS5 Portal Cache] unavailable:", err);
+            });
+    });
+})();
+</script>
+
 </body>
 </html>
