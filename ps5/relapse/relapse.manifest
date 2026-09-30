@@ -3,7 +3,6 @@ CACHE MANIFEST
 
 CACHE:
 
-.nojekyll
 cache.html
 cat.jpg
 core.js
