@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PS5 UMTX2 Jailbreak — Cache</title>
+<style>
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:#0c0c0f;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    overflow:hidden;
+}
+body{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+.top{
+    padding:2rem 1rem 1rem;
+    text-align:center;
+}
+h1{
+    margin:0;
+    font-size:clamp(28px,4vw,46px);
+    font-weight:800;
+}
+.fw{
+    margin-top:10px;
+    color:#8d9098;
+    font-weight:700;
+}
+.main{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:1rem;
+}
+.box{
+    width:min(760px,88vw);
+    text-align:center;
+}
+#status{
+    font-size:1.15rem;
+    font-weight:800;
+}
+#detail{
+    min-height:20px;
+    margin-top:8px;
+    color:#7b7e86;
+    font-size:.9rem;
+}
+.bar{
+    height:18px;
+    margin-top:22px;
+    border:1px solid #34363d;
+    background:#17181c;
+    border-radius:999px;
+    overflow:hidden;
+}
+#fill{
+    width:0%;
+    height:100%;
+    background:#5d9fe8;
+    transition:width .15s linear;
+}
+#percent{
+    margin-top:9px;
+    color:#b9c2ff;
+    font-weight:800;
+}
+.footer{
+    padding:0 1rem 1.2rem;
+    text-align:center;
+    color:#565961;
+    font-size:.78rem;
+}
+#back{
+    display:inline-block;
+    margin-top:18px;
+    padding:.65rem 1.6rem;
+    border:1px solid #245b9e;
+    border-radius:.7rem;
+    background:#12345d;
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+}
+</style>
+</head>
+<body>
+<div class="top">
+    <h1>PS5 UMTX2 Jailbreak (1.xx-5.xx)</h1>
+    <div class="fw">Application Cache</div>
+</div>
+
+<div class="main">
+    <div class="box">
+        <div id="status">Preparing cache...</div>
+        <div id="detail"></div>
+        <div class="bar"><div id="fill"></div></div>
+        <div id="percent">0%</div>
+        <a id="back" href="index.html">Back to UMTX2</a>
+    </div>
+</div>
+
+<div class="footer">
+    creds & greetz &nbsp;•&nbsp; based on the slopkit by j0rdy
+</div>
+
+<script>
+(function(){
+    var app=window.applicationCache;
+    var fill=document.getElementById("fill");
+    var percent=document.getElementById("percent");
+    var status=document.getElementById("status");
+    var detail=document.getElementById("detail");
+
+    function setProgress(p,msg,info){
+        p=Math.max(0,Math.min(100,p));
+        fill.style.width=p+"%";
+        percent.textContent=p+"%";
+        status.textContent=msg;
+        detail.textContent=info||"";
+    }
+
+    if(!app){
+        setProgress(0,"Application Cache unavailable","");
+        return;
+    }
+
+    app.addEventListener("checking",function(){
+        setProgress(0,"Checking UMTX cache...","Looking for a new version");
+    },false);
+
+    app.addEventListener("downloading",function(){
+        setProgress(0,"Caching UMTX...","Downloading local UMTX files");
+    },false);
+
+    app.addEventListener("progress",function(e){
+        var total=e.total||0;
+        var loaded=e.loaded||0;
+        var p=total ? Math.floor((loaded/total)*100) : 0;
+        setProgress(p,"Caching: "+p+"%",loaded+" / "+total+" resources");
+    },false);
+
+    app.addEventListener("cached",function(){
+        setProgress(100,"Cache complete — 100%","Opening UMTX2...");
+        setTimeout(function(){window.location.replace("index.html");},700);
+    },false);
+
+    app.addEventListener("updateready",function(){
+        setProgress(100,"Cache update complete — 100%","Opening UMTX2...");
+        try{app.swapCache();}catch(e){}
+        setTimeout(function(){window.location.replace("index.html");},700);
+    },false);
+
+    app.addEventListener("noupdate",function(){
+        setProgress(100,"UMTX cache is up to date — 100%","Opening UMTX2...");
+        setTimeout(function(){window.location.replace("index.html");},700);
+    },false);
+
+    app.addEventListener("error",function(){
+        setProgress(100,"Using existing UMTX cache","Offline / no update available");
+        setTimeout(function(){window.location.replace("index.html");},700);
+    },false);
+
+    if(window.location.search.indexOf("update=1") !== -1){
+        setTimeout(function(){
+            try{app.update();}catch(e){}
+        },300);
+    }
+})();
+</script>
+</body>
+</html>
