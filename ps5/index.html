@@ -216,6 +216,13 @@ p{
                 SAVE
             </button>
 
+            <button
+                class="btn"
+                type="button"
+                onclick="update_portal_cache(); return false;">
+                UPDATE CACHE
+            </button>
+
         </div>
 
         <div id="msgs">PS5 Web Portal</div>
@@ -227,38 +234,38 @@ p{
     <div class="nav">
 		<button
             type="button"
-            onclick="document.getElementById('link').value='https://kar0218.github.io/ps5/UMTX';">
+            onclick="window.location.href='https://kar0218.github.io/ps5/UMTX';">
             1.00-5.XX
         </button>
 		<button
             type="button"
-            onclick="document.getElementById('link').value='https://kar0218.github.io/ps5/poopspl';">
+            onclick="window.location.href='https://kar0218.github.io/ps5/poopspl';">
             7.00-12.00
         </button>
 		<button
             type="button"
-            onclick="document.getElementById('link').value='https://kar0218.github.io/ps5/P2JB';">
+            onclick="window.location.href='https://kar0218.github.io/ps5/P2JB';">
             12.00-12.70
         </button>
 		<button
             type="button"
-            onclick="document.getElementById('link').value='https://kar0218.github.io/ps5/relapse';">
+            onclick="window.location.href='https://kar0218.github.io/ps5/relapse';">
             7.00-13.60
         </button>
 		<button
             type="button"
-            onclick="document.getElementById('link').value='https://es7in1.site//';">
+            onclick="window.location.href='https://es7in1.site//';">
             ECHO STRETCH
         </button>
         <button
             type="button"
-            onclick="document.getElementById('link').value='https://www.youtube.com/';">
+            onclick="window.location.href='https://www.youtube.com/';">
             YouTube
         </button>
 
         <button
             type="button"
-            onclick="document.getElementById('link').value='https://www.google.com/';">
+            onclick="window.location.href='https://www.google.com/';">
             Google
         </button>
 
@@ -387,6 +394,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } catch(e) {}
 })();
+
+function update_portal_cache(){
+    var app = window.applicationCache;
+
+    if(!app){
+        document.getElementById('msgs').innerHTML =
+            "Application Cache is unavailable.";
+        return false;
+    }
+
+    document.getElementById('msgs').innerHTML =
+        "Checking for Portal cache update...";
+
+    try {
+        app.update();
+    } catch(e) {
+        document.getElementById('msgs').innerHTML =
+            "Cache update could not be started.";
+    }
+
+    return false;
+}
+
 </script>
 
 </body>

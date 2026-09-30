@@ -1,38 +1,30 @@
 <!DOCTYPE html>
-<html manifest="portal.manifest" lang="en">
+<html lang="en" manifest="portal.manifest">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>PS5 Web Portal Cache</title>
+<title>Updating Portal Cache</title>
 <style>
-body{
-    margin:0;padding:30px;background:#080b10;color:#fff;
-    font-family:Arial,Helvetica,sans-serif;text-align:center
-}
-.box{
-    max-width:460px;margin:80px auto;padding:24px;
-    background:#111722;border:1px solid #26344a;border-radius:16px
-}
-h1{color:#5d9fe8;font-size:24px}
-#percent{font-size:30px;font-weight:700;margin-top:20px}
-#bar{
-    height:10px;background:#28313d;border-radius:10px;
-    overflow:hidden;margin:18px 0
-}
-#fill{height:100%;width:0%;background:#4caf50}
-#status{color:#b8c4d3;font-size:14px}
-#detail{color:#7f93aa;font-size:12px;margin-top:8px}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#080b10;color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:min(760px,100%);background:#0d121b;border:1px solid #1e2c40;border-radius:18px;padding:28px}
+h1{margin:0 0 12px;color:#5d9fe8}
+#status{font-weight:700;margin-top:20px}
+#detail{color:#8ea7c2;margin-top:8px;font-size:13px;min-height:18px}
+.bar{height:18px;background:#111722;border:1px solid #26344a;border-radius:999px;overflow:hidden;margin-top:18px}
+#fill{height:100%;width:0%;background:#245b9e}
+#percent{margin-top:10px;color:#a9d1ff;font-weight:700}
 </style>
 </head>
 <body>
-<div class="box">
+<div class="card">
 <h1>PS5 Web Portal</h1>
-<div id="percent">0%</div>
-<div id="bar"><div id="fill"></div></div>
-<div id="status">Preparing cache...</div>
+<div id="status">Preparing cache update...</div>
 <div id="detail"></div>
+<div class="bar"><div id="fill"></div></div>
+<div id="percent">0%</div>
 </div>
-
 <script>
 (function(){
     var app=window.applicationCache;
@@ -71,36 +63,23 @@ h1{color:#5d9fe8;font-size:24px}
 
     app.addEventListener("cached",function(){
         setProgress(100,"Cache complete — 100%","Opening Web Portal...");
-        setTimeout(function(){
-            window.location.replace("index.html");
-        },700);
+        setTimeout(function(){ window.location.replace("index.html"); },700);
     },false);
 
     app.addEventListener("updateready",function(){
         setProgress(100,"Cache update complete — 100%","Opening Web Portal...");
         try { app.swapCache(); } catch(e) {}
-        setTimeout(function(){
-            window.location.replace("index.html");
-        },700);
+        setTimeout(function(){ window.location.replace("index.html"); },700);
     },false);
 
     app.addEventListener("noupdate",function(){
         setProgress(100,"Portal cache is up to date — 100%","Opening Web Portal...");
-        setTimeout(function(){
-            window.location.replace("index.html");
-        },700);
+        setTimeout(function(){ window.location.replace("index.html"); },700);
     },false);
 
     app.addEventListener("error",function(){
-        /*
-         * Do not redirect back to index here.
-         * If this is an offline AppCache check, the cached Portal
-         * may still be usable.
-         */
         setProgress(100,"Using existing Portal cache","Offline / no update available");
-        setTimeout(function(){
-            window.location.replace("index.html");
-        },700);
+        setTimeout(function(){ window.location.replace("index.html"); },700);
     },false);
 })();
 </script>
