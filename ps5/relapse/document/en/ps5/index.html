@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PS5 lab host</title>
+    <meta http-equiv="refresh" content="0; url=/index.html" />
+    <style>
+      body {
+        background: #0c0c0f;
+        color: #eee;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 28px;
+        line-height: 1.5;
+      }
+      h1 {
+        font-size: 1.4rem;
+        margin: 0 0 4px;
+      }
+      p.sub {
+        color: #888;
+        font-size: 0.85rem;
+        margin: 0 0 22px;
+      }
+      a.item {
+        display: block;
+        background: #1b1b20;
+        border: 1px solid #2c2c33;
+        border-radius: 12px;
+        padding: 15px 18px;
+        margin: 0 0 12px;
+        color: #fff;
+        text-decoration: none;
+      }
+      a.item b {
+        display: block;
+        font-size: 1.05rem;
+      }
+      a.item span {
+        color: #8a8a93;
+        font-size: 0.8rem;
+      }
+      #env {
+        margin-top: 26px;
+        padding: 14px 16px;
+        background: #141418;
+        border-radius: 10px;
+        color: #9a9aa3;
+        font-size: 0.78rem;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+    </style>
+    <script>
+      // Fires before the meta refresh in practice, and replace() keeps this page out
+      // of the back stack so the controller's Back button returns to the guide.
+      location.replace("/index.html");
+    </script>
+  </head>
+  <body>
+    <h1>PS5 research host</h1>
+    <p class="sub">
+      Redirecting to the launcher&hellip; if nothing happens, pick the first
+      item.
+    </p>
+
+    <a class="item" href="/index.html"
+      ><b>Launcher (start here)</b
+      ><span
+        >detects firmware, attaches the correct offsets and JSC profile, shows
+        the test bench</span
+      ></a
+    >
+    <a class="item" href="/offsets/offsets.json"
+      ><b>offsets.json</b
+      ><span>the offsets database this host is serving</span></a
+    >
+
+    <div id="env">reading environment...</div>
+
+    <script>
+      // Read-only. Shows the console's user agent and the offsets key that
+      // index.html derives from it, so a disabled RUN button can be diagnosed
+      // on the console itself instead of guessed at.
+      (function () {
+        var m = /PlayStation 5\/(\d+)\.(\d+)/.exec(navigator.userAgent);
+        var key = m
+          ? ("0" + m[1]).slice(-2) + "." + ("0" + m[2]).slice(-2)
+          : "(not a PS5 browser)";
+        document.getElementById("env").textContent =
+          "offsets key : " +
+          key +
+          "\n" +
+          "url         : " +
+          location.href +
+          "\n" +
+          "user agent  : " +
+          navigator.userAgent;
+      })();
+    </script>
+  </body>
+</html>

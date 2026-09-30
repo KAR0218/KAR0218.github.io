@@ -1,0 +1,11 @@
+# Route the payload-menu endpoints to their handlers (Apache).
+# Without these the requests 404 and every tile reports that it could not reach the
+# helper. ps-exploit-host.exe answers both itself and ignores this file.
+RewriteEngine On
+RewriteBase /
+
+# api/payload/<name>  -> stream that ELF to the requesting console on tcp/9021
+RewriteRule ^payload/(.+)$ payload.php/$1 [L,QSA]
+
+# api/elfldr          -> is elfldr listening on the requesting console?
+RewriteRule ^elfldr/?$ elfldr.php [L,QSA]

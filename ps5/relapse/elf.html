@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>relapse Payloads</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; padding:16px 12px 32px; background:#0b0d10; color:#e8eaed;
+         font:16px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif; }
+  h1 { margin:0 0 4px; font-size:22px; letter-spacing:.02em; }
+  .sub { margin:0 0 14px; color:#9aa4b2; font-size:14px; }
+  .grid { display:flex; flex-wrap:wrap; gap:10px; }
+  a.tile { display:block; flex:1 1 300px; max-width:520px; padding:14px 16px;
+           border:2px solid #2b3440; border-radius:10px; background:#141a21;
+           color:#e8eaed; text-decoration:none; }
+  a.tile:focus, a.tile:hover { outline:none; border-color:#ebcb8b; background:#1d2732; }
+  a.tile b { display:block; font-size:18px; }
+  a.tile span { display:block; margin-top:2px; color:#9aa4b2; font-size:13px; }
+  #msg { margin:14px 0 0; padding:10px 12px; border-radius:8px; font-size:14px;
+         white-space:pre-wrap; }
+  #msg.ok   { background:#11250f; color:#b9e6a7; border:1px solid #2f5c25; }
+  #msg.bad  { background:#2a1414; color:#ffb3b3; border:1px solid #7a2b2b; }
+  #msg.warn { background:#2a2410; color:#ffd24d; border:1px solid #b38b00; }
+  #fallback { margin-top:14px; }
+  #fallback a { color:#ffd24d; }
+  .note { margin-top:22px; color:#6f7b8a; font-size:12px; }
+
+  /* ---- ARTWORK MODE ---------------------------------------------------------
+     THE LABEL IS THE PNG. Text tiles were tried in this menu on 2026-08-26 and laid
+     out perfectly while painting NO GLYPHS AT ALL - "the boxes are there but
+     invisible" - on 12.00 retail and 12.70 devkit both. That is why every label here
+     is an image, and why a tile must stay a transparent hit target: give it a
+     background and it draws a box behind the box. Result is colour only; there is no
+     text in here to change. Geometry copied from #payloadMenuGrid so this page looks
+     identical to the menu it replaces. */
+  body.art { background:#0c0c0f; color:#fff; }
+  body.art .menuTitle { display:block; width:626px; height:56px; max-width:100%;
+    margin:0 auto 12px; }
+  body.art .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:2.5rem; row-gap:1rem; width:1356px; max-width:96vw;
+    margin:0 auto; padding:0 2rem 1rem; box-sizing:border-box; align-content:start; }
+  body.art a.tile { display:block; width:100%; max-width:none; flex:none;
+    margin:0; padding:0; border:0; border-radius:1.25rem;
+    background:transparent; text-decoration:none; cursor:pointer; }
+  body.art a.tile:hover, body.art a.tile:focus { outline:3px solid #fff;
+    outline-offset:2px; background:#2b2c31; }
+  body.art a.tile img { display:block; width:626px; height:104px; max-width:100%;
+    margin:0 auto; }
+  body.art a.tile.busy   { opacity:.42; }
+  body.art a.tile.sent   { outline:3px solid #47c76a; outline-offset:2px; }
+  body.art a.tile.failed { outline:3px solid #e05561; outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<img class="menuTitle" src="ui/hdr-payloads.png" alt="relapse Payloads">
+<div class="grid" id="grid"></div>
+<div id="msg" hidden></div>
+<div id="fallback" hidden>
+  elfldr&rsquo;s HTTP listener did not answer.
+  <a id="oldway" href="./?log=1">Run the chain again - elfldr is what a successful run leaves behind</a>
+</div>
+
+<p class="note">relapse &middot; firmware 7.00-13.60 &middot; needs a jailbreak this boot:
+   elfldr is what a run leaves behind.</p>
+
+<script>
+/* ZERO exploit code lives in this file, and it never talks to elfldr directly.
+
+   elfldr does NOT speak HTTP as a server. Probed against a live console on
+   2026-09-21: writing a bare URL to tcp/9021 runs the payload, and so does writing
+   raw ELF bytes, but every browser-shaped request - GET /<url>, GET /?uri=<url>,
+   absolute-form, POST - comes back "HTTP/1.1 200 OK" followed by
+   "[elfldr.elf] Error reading HTTP payload". Its HTTP mode consumes an HTTP
+   RESPONSE carrying the ELF, which is what its own http_get produces; a browser
+   client cannot emit that. So the old ?uri= call could never have worked, and the
+   200 in front of the error is exactly why the tile went green anyway.
+
+   The host already solves this: GET <site>/api/payload/<name> makes the HOST open
+   tcp/9021 to the REQUESTING console (the request peer) and stream the ELF bytes
+   itself - src/http.c, "ELF payload relay". It answers real JSON with CORS, so the
+   page gets a genuine success signal instead of guessing, and because the page only
+   ever talks to its own origin there is no mixed content and https is fine.
+
+   NOTE: the relay resolves the ELF as /payloads/<name> from the SITE ROOT, not from
+   the page. For a site served as a subdirectory of the guide (relapse under
+   poopicker) the ELFs therefore have to exist at <guide root>/payloads/ as well. */
+
+var SITE_NAME = "relapse";
+var SITE_FW   = "7.00-13.60";
+var RELAY    = "api/payload/";   /* host-side sender, relative to this page */
+var UPCHECK  = "api/elfldr";     /* host connect-tests the console on tcp/9021 */
+var PAYLOADS  = [
+    { title: "etahen", description: "Homebrew enabler and payload host.", name: "etaHEN.elf", key: "etahen" },
+    { title: "onionhen", description: "Homebrew enabler and payload host.", name: "OnionHEN.elf", key: "onionhen" }
+];
+
+var msgEl = document.getElementById("msg");
+var fbEl  = document.getElementById("fallback");
+
+/* Beacons are best-effort and RELATIVE: on a static host the 404 is the answer and
+   nothing here depends on one arriving. */
+function beacon(tag, extra) {
+    try {
+        var x = new XMLHttpRequest();
+        x.open("GET", "log/" + encodeURIComponent("ELFPAGE-" + tag + "-" + extra), true);
+        x.send();
+    } catch (e) { }
+}
+
+function say(text, kind) {
+    msgEl.textContent = text;
+    msgEl.className = kind || "";
+    msgEl.hidden = false;
+}
+
+
+var ART     = true;
+var ART_DIR = "ui/";
+var ART_PFX = "btn-";
+
+function art(key, state) { return ART_DIR + ART_PFX + key + "-" + state + ".png"; }
+
+/* Preload every state at page load. The original menu decodes its art up front on
+   purpose - swapping to a not-yet-fetched PNG mid-send shows a blank tile. */
+function preloadArt() {
+    if (!ART) return;
+    var states = ["sending", "sent", "failed"];
+    for (var i = 0; i < PAYLOADS.length; ++i)
+        for (var j = 0; j < states.length; ++j) {
+            var im = new Image();
+            im.src = art(PAYLOADS[i].key, states[j]);
+        }
+}
+
+/* Result is colour + artwork only - never text on the tile itself. */
+function setState(p, state) {
+    if (!p._tile) return;
+    p._tile.className = "tile" + (state === "sending" ? " busy"
+                                : state === "sent" ? " sent"
+                                : state === "failed" ? " failed" : "");
+    if (ART && p._img) p._img.src = art(p.key, state === "sending" ? "sending"
+                                              : state === "sent" ? "sent"
+                                              : state === "failed" ? "failed" : "default");
+}
+async function launch(p) {
+
+    setState(p, "sending");
+    say("sending " + p.title + " ...", "");
+    beacon("SEND", p.key + "-" + p.name);
+    try {
+        /* Relative on purpose: same origin as this page, so no mixed content and no
+           CORS preflight, and the host reaches the console by the request peer - the
+           page never needs to know its own address. */
+        var res = await fetch(RELAY + encodeURIComponent(p.name), { cache: "no-store" });
+        var j = await res.json();
+        if (!j.ok) throw new Error("the host could not reach elfldr on tcp/9021");
+        setState(p, "sent");
+        say(p.title + " sent - " + j.bytes + " bytes to tcp/" + (j.port || 9021) + ".", "ok");
+        beacon("OK", p.key + "-" + j.bytes);
+    } catch (err) {
+        setState(p, "failed");
+        say(p.title + " failed: " + ((err && err.message) || err), "bad");
+        fbEl.hidden = false;
+        beacon("FAIL", p.key + "-" + String((err && err.message) || err).slice(0, 60));
+    }
+}
+
+/* Ask the host to connect-test the console before anything is clicked, so "elfldr is
+   not up" is stated once, up front, instead of being discovered one failed tile at a
+   time. Best effort: if the probe itself fails the tiles stay enabled. */
+async function checkElfldr() {
+    try {
+        var r = await fetch(UPCHECK, { cache: "no-store" });
+        var j = await r.json();
+        beacon("UP", String(j.up));
+        if (!j.up) {
+            say("elfldr is not listening on this console. It only comes up after a"
+                + " successful run this boot.", "warn");
+            fbEl.hidden = false;
+        }
+    } catch (e) { beacon("UP", "probe-failed"); }
+}
+
+(function build() {
+    if (ART) document.body.className = "art";
+    preloadArt();
+    var grid = document.getElementById("grid");
+    for (var i = 0; i < PAYLOADS.length; ++i) {
+        (function (p, idx) {
+            var a = document.createElement("a");
+            a.className = "tile";
+            a.href = "#";
+            a.tabIndex = idx + 1;
+            if (ART) {
+                /* The PNG is the whole button - title, description and attribution are
+                   baked into it by tools/make_payload_buttons.py. */
+                var im = document.createElement("img");
+                im.width = 626; im.height = 104; im.alt = p.title;
+                im.src = art(p.key, "default");
+                a.appendChild(im);
+                p._img = im;
+            } else {
+                var b = document.createElement("b");
+                b.textContent = p.title;
+                var sp = document.createElement("span");
+                sp.textContent = p.description;
+                a.appendChild(b);
+                a.appendChild(sp);
+            }
+            p._tile = a;
+            a.addEventListener("click", function (e) { e.preventDefault(); launch(p); });
+            grid.appendChild(a);
+            if (idx === 0) try { a.focus(); } catch (e) { }
+        })(PAYLOADS[i], i);
+    }
+    beacon("BOOT", SITE_NAME + "-tiles=" + PAYLOADS.length + "-proto=" + location.protocol);
+    checkElfldr();
+})();
+</script>
+</body>
+</html>
