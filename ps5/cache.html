@@ -81,6 +81,18 @@ h1{margin:0 0 12px;color:#5d9fe8}
         setProgress(100,"Using existing Portal cache","Offline / no update available");
         setTimeout(function(){ window.location.replace("index.html"); },700);
     },false);
+
+    /*
+     * When opened from UPDATE CACHE, force an AppCache check
+     * after all event listeners are ready.
+     */
+    if(window.location.search.indexOf("update=1") !== -1){
+        setTimeout(function(){
+            try {
+                app.update();
+            } catch(e) {}
+        },300);
+    }
 })();
 </script>
 </body>

@@ -396,23 +396,21 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 function update_portal_cache(){
-    var app = window.applicationCache;
-
-    if(!app){
+    if(!window.applicationCache){
         document.getElementById('msgs').innerHTML =
             "Application Cache is unavailable.";
         return false;
     }
 
     document.getElementById('msgs').innerHTML =
-        "Checking for Portal cache update...";
+        "Opening cache updater...";
 
-    try {
-        app.update();
-    } catch(e) {
-        document.getElementById('msgs').innerHTML =
-            "Cache update could not be started.";
-    }
+    /*
+     * The AppCache update events are handled by cache.html.
+     * Navigate there so the PS5 AppCache page can perform
+     * the update and show the progress correctly.
+     */
+    window.location.href = "cache.html?update=1";
 
     return false;
 }
