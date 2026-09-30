@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="portal.manifest">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -379,107 +379,124 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<style id="ps5-cache-ui">
-#ps5-cache-box{
- position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
- z-index:2147483647;width:min(440px,84vw);padding:20px;
- border-radius:14px;background:rgba(12,16,23,.98);color:#fff;
- font:14px/1.45 Arial,Helvetica,sans-serif;
- box-shadow:0 12px 40px rgba(0,0,0,.55);display:none
+<style id="ps5-portal-appcache-ui">
+#ps5-appcache-box{
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    z-index:2147483647;
+    width:min(440px,84vw);
+    padding:20px;
+    border-radius:14px;
+    background:rgba(12,16,23,.98);
+    color:#fff;
+    font:14px/1.45 Arial,Helvetica,sans-serif;
+    box-shadow:0 12px 40px rgba(0,0,0,.55);
+    display:none;
 }
-#ps5-cache-title{font-size:17px;font-weight:700;margin-bottom:12px}
-#ps5-cache-bar{height:9px;background:rgba(255,255,255,.18);border-radius:9px;overflow:hidden}
-#ps5-cache-fill{height:100%;width:0%;background:#4caf50;transition:width .12s linear}
-#ps5-cache-text{margin-top:9px;color:#dcecff}
-#ps5-cache-status{margin-top:7px;color:#8ea7c2;font-size:12px}
+#ps5-appcache-title{font-size:17px;font-weight:700;margin-bottom:12px}
+#ps5-appcache-bar{
+    height:10px;
+    background:rgba(255,255,255,.18);
+    border-radius:10px;
+    overflow:hidden;
+}
+#ps5-appcache-fill{
+    height:100%;
+    width:0%;
+    background:#4caf50;
+    transition:width .12s linear;
+}
+#ps5-appcache-text{margin-top:9px;color:#dcecff}
+#ps5-appcache-status{margin-top:7px;color:#8ea7c2;font-size:12px}
 </style>
 
-<div id="ps5-cache-box">
- <div id="ps5-cache-title">Preparing PS5 Portal cache…</div>
- <div id="ps5-cache-bar"><div id="ps5-cache-fill"></div></div>
- <div id="ps5-cache-text">Checking cache…</div>
- <div id="ps5-cache-status"></div>
+<div id="ps5-appcache-box">
+    <div id="ps5-appcache-title">Caching PS5 Web Portal…</div>
+    <div id="ps5-appcache-bar">
+        <div id="ps5-appcache-fill"></div>
+    </div>
+    <div id="ps5-appcache-text">Checking cache…</div>
+    <div id="ps5-appcache-status"></div>
 </div>
 
 <script>
 (function(){
- const CACHE="ps5-portal-v2";
- const files=[
-   "/ps5/",
-   "/ps5/index.html",
-   "/ps5/sw.js"
- ];
- const box=document.getElementById("ps5-cache-box");
- const fill=document.getElementById("ps5-cache-fill");
- const text=document.getElementById("ps5-cache-text");
- const status=document.getElementById("ps5-cache-status");
+    var app = window.applicationCache;
 
- function show(){ box.style.display="block"; }
- function setProgress(done,total,url){
-   const p=total ? Math.floor(done/total*100) : 100;
-   fill.style.width=p+"%";
-   text.textContent="Caching: "+p+"% ("+done+"/"+total+")";
-   status.textContent=url || "";
- }
- async function cachePortal(){
-   if(!("caches" in window)) {
-     status.textContent="Cache API not available.";
-     return;
-   }
+    if (!app) return;
 
-   const cache=await caches.open(CACHE);
-   let done=0;
-   const total=files.length;
+    var box = document.getElementById("ps5-appcache-box");
+    var fill = document.getElementById("ps5-appcache-fill");
+    var text = document.getElementById("ps5-appcache-text");
+    var status = document.getElementById("ps5-appcache-status");
 
-   // If already fully cached, don't show a fake download.
-   let missing=[];
-   for(const url of files){
-     const hit=await cache.match(url);
-     if(!hit) missing.push(url);
-   }
+    function show(){
+        box.style.display = "block";
+    }
 
-   if(!missing.length){
-     show();
-     fill.style.width="100%";
-     text.textContent="Portal cache ready — 100%";
-     status.textContent="All portal files are already cached.";
-     setTimeout(()=>box.style.display="none",1600);
-     return;
-   }
+    function progress(percent, message, detail){
+        show();
+        percent = Math.max(0, Math.min(100, percent));
+        fill.style.width = percent + "%";
+        text.textContent = message;
+        status.textContent = detail || "";
+    }
 
-   show();
-   setProgress(0,missing.length,"Starting…");
+    app.addEventListener("checking", function(){
+        progress(0, "Checking Portal cache…", "Checking portal.manifest");
+    }, false);
 
-   for(const url of missing){
-     try{
-       const response=await fetch(url,{cache:"no-store"});
-       if(!response.ok) throw new Error(response.status);
-       await cache.put(url,response.clone());
-     }catch(e){
-       console.log("[PS5 Cache] failed:",url,e);
-     }
-     done++;
-     setProgress(done,missing.length,url);
-   }
+    app.addEventListener("downloading", function(){
+        progress(0, "Caching PS5 Web Portal…", "Starting download");
+    }, false);
 
-   fill.style.width="100%";
-   text.textContent="Cache complete — 100%";
-   status.textContent="Portal shell cached.";
-   setTimeout(()=>box.style.display="none",1800);
- }
+    app.addEventListener("progress", function(e){
+        var total = e.total || 0;
+        var loaded = e.loaded || 0;
+        var percent = total ? Math.floor((loaded / total) * 100) : 0;
 
- window.addEventListener("load",async function(){
-   // Register SW first. The page-side cache progress is independent of SW messaging.
-   if("serviceWorker" in navigator){
-     try{
-       await navigator.serviceWorker.register("/ps5/sw.js",{scope:"/ps5/"});
-       console.log("[PS5 Cache] Service Worker registered.");
-     }catch(e){
-       console.log("[PS5 Cache] Service Worker registration failed:",e);
-     }
-   }
-   cachePortal().catch(e=>console.log("[PS5 Cache] error:",e));
- });
+        progress(
+            percent,
+            "Caching: " + percent + "%",
+            loaded + " / " + total + " resources"
+        );
+    }, false);
+
+    app.addEventListener("cached", function(){
+        progress(100, "Cache complete — 100%", "Web Portal is cached.");
+        setTimeout(function(){
+            box.style.display = "none";
+        }, 1800);
+    }, false);
+
+    app.addEventListener("updateready", function(){
+        progress(100, "Cache update complete — 100%", "Web Portal cache updated.");
+        setTimeout(function(){
+            box.style.display = "none";
+        }, 1800);
+    }, false);
+
+    app.addEventListener("noupdate", function(){
+        progress(100, "Portal cache ready — 100%", "Web Portal is already cached.");
+        setTimeout(function(){
+            box.style.display = "none";
+        }, 1400);
+    }, false);
+
+    app.addEventListener("error", function(){
+        progress(0, "Portal cache error", "Application Cache could not update.");
+    }, false);
+
+    try {
+        if (app.status === app.CACHED || app.status === app.UPDATEREADY) {
+            progress(100, "Portal cache ready — 100%", "Web Portal is already cached.");
+            setTimeout(function(){
+                box.style.display = "none";
+            }, 1400);
+        }
+    } catch(e) {}
 })();
 </script>
 

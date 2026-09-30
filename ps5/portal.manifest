@@ -1,0 +1,9 @@
+CACHE MANIFEST
+# PS5 Web Portal offline cache v1
+
+CACHE:
+index.html
+portal.manifest
+
+NETWORK:
+*
