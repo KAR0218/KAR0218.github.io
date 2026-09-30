@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html manifest="portal.manifest" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PS5 Web Portal Cache</title>
+<style>
+body{
+    margin:0;padding:30px;background:#080b10;color:#fff;
+    font-family:Arial,Helvetica,sans-serif;text-align:center
+}
+.box{
+    max-width:460px;margin:80px auto;padding:24px;
+    background:#111722;border:1px solid #26344a;border-radius:16px
+}
+h1{color:#5d9fe8;font-size:24px}
+#percent{font-size:30px;font-weight:700;margin-top:20px}
+#bar{
+    height:10px;background:#28313d;border-radius:10px;
+    overflow:hidden;margin:18px 0
+}
+#fill{height:100%;width:0%;background:#4caf50}
+#status{color:#b8c4d3;font-size:14px}
+#detail{color:#7f93aa;font-size:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>PS5 Web Portal</h1>
+<div id="percent">0%</div>
+<div id="bar"><div id="fill"></div></div>
+<div id="status">Preparing cache...</div>
+<div id="detail"></div>
+</div>
+
+<script>
+(function(){
+    var app=window.applicationCache;
+    var fill=document.getElementById("fill");
+    var percent=document.getElementById("percent");
+    var status=document.getElementById("status");
+    var detail=document.getElementById("detail");
+
+    function setProgress(p,msg,info){
+        p=Math.max(0,Math.min(100,p));
+        fill.style.width=p+"%";
+        percent.textContent=p+"%";
+        status.textContent=msg;
+        detail.textContent=info||"";
+    }
+
+    if(!app){
+        setProgress(0,"Application Cache unavailable","");
+        return;
+    }
+
+    app.addEventListener("checking",function(){
+        setProgress(0,"Checking Portal cache...","Looking for a new version");
+    },false);
+
+    app.addEventListener("downloading",function(){
+        setProgress(0,"Caching Web Portal...","Downloading Portal files");
+    },false);
+
+    app.addEventListener("progress",function(e){
+        var total=e.total||0;
+        var loaded=e.loaded||0;
+        var p=total ? Math.floor((loaded/total)*100) : 0;
+        setProgress(p,"Caching: "+p+"%",loaded+" / "+total+" resources");
+    },false);
+
+    app.addEventListener("cached",function(){
+        setProgress(100,"Cache complete — 100%","Opening Web Portal...");
+        setTimeout(function(){
+            window.location.replace("index.html");
+        },700);
+    },false);
+
+    app.addEventListener("updateready",function(){
+        setProgress(100,"Cache update complete — 100%","Opening Web Portal...");
+        try { app.swapCache(); } catch(e) {}
+        setTimeout(function(){
+            window.location.replace("index.html");
+        },700);
+    },false);
+
+    app.addEventListener("noupdate",function(){
+        setProgress(100,"Portal cache is up to date — 100%","Opening Web Portal...");
+        setTimeout(function(){
+            window.location.replace("index.html");
+        },700);
+    },false);
+
+    app.addEventListener("error",function(){
+        /*
+         * Do not redirect back to index here.
+         * If this is an offline AppCache check, the cached Portal
+         * may still be usable.
+         */
+        setProgress(100,"Using existing Portal cache","Offline / no update available");
+        setTimeout(function(){
+            window.location.replace("index.html");
+        },700);
+    },false);
+})();
+</script>
+</body>
+</html>

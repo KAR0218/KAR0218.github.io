@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" manifest="portal.manifest">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -379,85 +379,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<style id="ps5-portal-appcache-ui">
-#ps5-appcache-box{
- position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
- z-index:2147483647;width:min(440px,84vw);padding:20px;
- border-radius:14px;background:rgba(12,16,23,.98);color:#fff;
- font:14px/1.45 Arial,Helvetica,sans-serif;
- box-shadow:0 12px 40px rgba(0,0,0,.55);display:none
-}
-#ps5-appcache-title{font-size:17px;font-weight:700;margin-bottom:12px}
-#ps5-appcache-bar{height:10px;background:rgba(255,255,255,.18);border-radius:10px;overflow:hidden}
-#ps5-appcache-fill{height:100%;width:0%;background:#4caf50;transition:width .12s linear}
-#ps5-appcache-text{margin-top:9px;color:#dcecff}
-#ps5-appcache-status{margin-top:7px;color:#8ea7c2;font-size:12px}
-</style>
-<div id="ps5-appcache-box">
- <div id="ps5-appcache-title">PS5 Web Portal</div>
- <div id="ps5-appcache-bar"><div id="ps5-appcache-fill"></div></div>
- <div id="ps5-appcache-text">Checking cache…</div>
- <div id="ps5-appcache-status"></div>
-</div>
 <script>
 (function(){
- var app=window.applicationCache;
- if(!app)return;
-
- var box=document.getElementById("ps5-appcache-box");
- var fill=document.getElementById("ps5-appcache-fill");
- var text=document.getElementById("ps5-appcache-text");
- var status=document.getElementById("ps5-appcache-status");
-
- function show(){box.style.display="block";}
- function set(p,msg,detail){
-   show();
-   p=Math.max(0,Math.min(100,p));
-   fill.style.width=p+"%";
-   text.textContent=msg;
-   status.textContent=detail||"";
- }
- function hide(){
-   setTimeout(function(){box.style.display="none";},1600);
- }
-
- app.addEventListener("checking",function(){
-   set(0,"Checking Portal cache…","Checking for updates");
- },false);
-
- app.addEventListener("downloading",function(){
-   set(0,"Updating Portal cache…","New Portal version found");
- },false);
-
- app.addEventListener("progress",function(e){
-   var total=e.total||0, loaded=e.loaded||0;
-   var p=total?Math.floor(loaded/total*100):0;
-   set(p,"Caching: "+p+"%",loaded+" / "+total+" resources");
- },false);
-
- app.addEventListener("cached",function(){
-   set(100,"Cache complete — 100%","Portal cached for offline use.");
-   hide();
- },false);
-
- app.addEventListener("updateready",function(){
-   set(100,"Cache update complete — 100%","New Portal version is ready.");
-   try{app.swapCache();}catch(e){}
-   hide();
- },false);
-
- app.addEventListener("noupdate",function(){
-   set(100,"Portal cache is up to date — 100%","No changes detected.");
-   hide();
- },false);
-
- app.addEventListener("error",function(){
-   set(0,"Cache update error","The existing cache will remain available.");
- },false);
-
- app.addEventListener("obsolete",function(){
-   set(0,"Portal cache obsolete","");
- },false);
+    try {
+        if (window.applicationCache && window.applicationCache.status == 0) {
+            window.location.replace("cache.html");
+        }
+    } catch(e) {}
 })();
 </script>
 
