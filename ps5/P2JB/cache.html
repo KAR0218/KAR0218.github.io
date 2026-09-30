@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P2JB Cache</title>
+<style>
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:#111;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    overflow:hidden;
+}
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+#cache-box{
+    width:min(760px,88vw);
+    text-align:center;
+}
+h1{
+    margin:0 0 8px;
+    font-size:clamp(30px,5vw,52px);
+    font-weight:800;
+}
+#subtitle{
+    margin:0 0 28px;
+    color:#8f9198;
+    font-weight:700;
+}
+#status{
+    font-size:1.15rem;
+    font-weight:800;
+    margin-bottom:10px;
+}
+#detail{
+    min-height:20px;
+    color:#6f7076;
+    font-size:.9rem;
+}
+.bar{
+    width:100%;
+    height:18px;
+    margin-top:22px;
+    background:#242529;
+    border:1px solid #3b3c42;
+    border-radius:999px;
+    overflow:hidden;
+}
+#fill{
+    width:0%;
+    height:100%;
+    background:#2f78c4;
+    transition:width .15s linear;
+}
+#percent{
+    margin-top:10px;
+    color:#9bbfe3;
+    font-weight:800;
+}
+#back{
+    margin-top:28px;
+    display:inline-block;
+    padding:12px 22px;
+    border-radius:10px;
+    border:1px solid #3c78ad;
+    background:#1c3852;
+    color:#fff;
+    font-weight:800;
+    text-decoration:none;
+}
+</style>
+</head>
+<body>
+<div id="cache-box">
+    <h1>P2JB (12.00-12.70)</h1>
+    <p id="subtitle">Cache</p>
+    <div id="status">Preparing cache...</div>
+    <div id="detail"></div>
+    <div class="bar"><div id="fill"></div></div>
+    <div id="percent">0%</div>
+    <a id="back" href="index.html">Back to P2JB</a>
+</div>
+
+<script>
+(function(){
+    var app = window.applicationCache;
+    var fill = document.getElementById("fill");
+    var percent = document.getElementById("percent");
+    var status = document.getElementById("status");
+    var detail = document.getElementById("detail");
+
+    function setProgress(p,msg,info){
+        p=Math.max(0,Math.min(100,p));
+        fill.style.width=p+"%";
+        percent.textContent=p+"%";
+        status.textContent=msg;
+        detail.textContent=info||"";
+    }
+
+    if(!app){
+        setProgress(0,"Application Cache unavailable","");
+        return;
+    }
+
+    app.addEventListener("checking",function(){
+        setProgress(0,"Checking P2JB cache...","Looking for a new version");
+    },false);
+
+    app.addEventListener("downloading",function(){
+        setProgress(0,"Caching P2JB...","Downloading P2JB files");
+    },false);
+
+    app.addEventListener("progress",function(e){
+        var total=e.total||0;
+        var loaded=e.loaded||0;
+        var p=total ? Math.floor((loaded/total)*100) : 0;
+        setProgress(p,"Caching: "+p+"%",loaded+" / "+total+" resources");
+    },false);
+
+    app.addEventListener("cached",function(){
+        setProgress(100,"Cache complete — 100%","Opening P2JB...");
+        setTimeout(function(){ window.location.replace("index.html"); },700);
+    },false);
+
+    app.addEventListener("updateready",function(){
+        setProgress(100,"Cache update complete — 100%","Opening P2JB...");
+        try { app.swapCache(); } catch(e) {}
+        setTimeout(function(){ window.location.replace("index.html"); },700);
+    },false);
+
+    app.addEventListener("noupdate",function(){
+        setProgress(100,"P2JB cache is up to date — 100%","Opening P2JB...");
+        setTimeout(function(){ window.location.replace("index.html"); },700);
+    },false);
+
+    app.addEventListener("error",function(){
+        setProgress(100,"Using existing P2JB cache","Offline / no update available");
+        setTimeout(function(){ window.location.replace("index.html"); },700);
+    },false);
+
+    if(window.location.search.indexOf("update=1") !== -1){
+        setTimeout(function(){
+            try { app.update(); } catch(e) {}
+        },300);
+    }
+})();
+</script>
+</body>
+</html>
