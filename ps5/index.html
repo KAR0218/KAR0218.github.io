@@ -1,4 +1,4 @@
-<html lang="en" manifest="portal.manifest">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -168,15 +168,6 @@ p{
     }
 }
 </style>
-<script>
-(function(){
-    try {
-        if (window.applicationCache && window.applicationCache.status == 0) {
-            window.location.replace("cache.html");
-        }
-    } catch(e) {}
-})();
-</script>
 </head>
 
 <body>
@@ -222,13 +213,6 @@ p{
                 onmouseout="msgs.innerHTML='PS5 Web Portal'"
                 onclick="load_save(); return false;">
                 SAVE
-            </button>
-
-            <button
-                class="btn"
-                type="button"
-                onclick="update_portal_cache(); return false;">
-                UPDATE CACHE
             </button>
 
         </div>
