@@ -31,6 +31,15 @@
   .LOG-ERROR { color: #ff6b6b; }
   .LOG-SUCCESS { color: #7dff9e; }
 </style>
+<script>
+(function(){
+    try {
+        if (window.applicationCache && window.applicationCache.status == 0) {
+            window.location.replace("cache.html");
+        }
+    } catch(e) {}
+})();
+</script>
 </head>
 <body>
 
