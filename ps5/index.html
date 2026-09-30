@@ -377,37 +377,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
-<script>
-(function(){
-    try {
-        if (window.applicationCache && window.applicationCache.status == 0) {
-            window.location.replace("cache.html");
-        }
-    } catch(e) {}
-})();
-
-function update_portal_cache(){
-    if(!window.applicationCache){
-        document.getElementById('msgs').innerHTML =
-            "Application Cache is unavailable.";
-        return false;
-    }
-
-    document.getElementById('msgs').innerHTML =
-        "Opening cache updater...";
-
-    /*
-     * The AppCache update events are handled by cache.html.
-     * Navigate there so the PS5 AppCache page can perform
-     * the update and show the progress correctly.
-     */
-    window.location.href = "cache.html?update=1";
-
-    return false;
-}
-
-</script>
-
 </body>
 </html>
