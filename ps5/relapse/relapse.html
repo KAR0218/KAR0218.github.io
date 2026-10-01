@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps5</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #0c0c0f; }
+
+  /* The log is shown by default so the console screen is readable (you cannot
+     add a query flag when the User Guide redirects straight in). Pass ?log=0 to
+     hide it. */
+  #console { display: none; }
+  body.verbose #console {
+      display: block;
+      box-sizing: border-box;
+      min-height: 100vh;
+      padding: 10px 12px;
+      color: #dfe3ee;
+      font: 12px/1.45 ui-monospace, Consolas, monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-y: auto;
+  }
+  #console div { padding: 1px 0; }
+  .LOG-DEBUG { color: #6f7480; }
+  .LOG-INFO { color: #b9c2ff; }
+  .LOG-LOG { color: #dfe3ee; }
+  .LOG-WARN { color: #ffd27d; }
+  .LOG-ERROR { color: #ff6b6b; }
+  .LOG-SUCCESS { color: #7dff9e; }
+</style>
+</head>
+<body>
+
+<div id="console"></div>
+
+<script src="rop.js"></script>
+<script src="payloads.js?v=1"></script>
+<script src="firmware.js?v=4"></script>
+<script src="main.js?v=6"></script>
+
+<script>
+// main.js appends the offsets script for the detected firmware as its last act.
+// Everything downstream needs those globals, so publish a promise for them.
+window.offsetsReady = new Promise(function (resolve, reject) {
+    var script = document.querySelector('script[src^="offsets/"]');
+    if (!script) return reject(new Error("main.js never injected an offsets script"));
+    if (typeof OFFSET_wk_vtable_first_element !== "undefined") return resolve(script.src);
+    script.addEventListener("load", function () { resolve(script.src); });
+    script.addEventListener("error", function () {
+        reject(new Error("offsets script failed to load: " + script.src));
+    });
+});
+</script>
+
+<script src="syscalls.js"></script>
+
+<script>
+// Optional overrides, all off by default:
+//   ?kexp=<file>     use a different kernel shellcode blob
+//   ?elfldr=<file>   use a different ELF loader payload
+//   ?log=0           hide the on-screen progress log (shown by default)
+(function () {
+    var query = new URLSearchParams(location.search);
+    window.AIO_CFG = {};
+    if (query.get("kexp")) AIO_CFG.kexp = query.get("kexp");
+    if (query.get("elfldr")) AIO_CFG.elfldr = query.get("elfldr");
+    if (query.get("log") !== "0") document.body.classList.add("verbose");
+})();
+</script>
+
+<script type="module">
+// core.js's ?v= here and in mem.js MUST be identical. In ES modules the URL is
+// the module identity, so a mismatch loads two separate core.js instances: this
+// file would establish the primitive on one while mem.js promotes the other.
+import { establishPrimitive, fakeCellReleased, CORE_INSTANCE } from "./core.js?v=132";
+import { installWindowP, pairStatus, memCoreInstance } from "./mem.js?v=131";
+
+if (CORE_INSTANCE !== memCoreInstance)
+    throw new Error("core.js module skew: index.html and mem.js imported different ?v= URLs");
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+var __bseq=0;function __bcn(m){try{new Image().src="log/LT-s"+(++__bseq)+"-"+encodeURIComponent(String(m)).slice(0,400)+"?t="+Date.now();}catch(e){}}
+function print(message, level) {
+    __bcn(message);   // forward every log line to the beacon logger (sync XHR)
+    const line = document.createElement("div");
+    line.className = level || "LOG-LOG";
+    line.textContent = String(message);
+    const view = document.getElementById("console");
+    if (view) { view.appendChild(line); view.scrollTop = view.scrollHeight; }
+}
+
+function reportFailure(error) {
+    const message = String((error && error.message) || error)
+        + ((error && error.stack) ? " @" + error.stack : "");
+    print("FAILED: " + message, "LOG-ERROR");
+    try { window.__rep("PAGE-FAIL", message.slice(0, 400)); } catch (e) { /* best effort */ }
+
+    // Some PS5 WebKit/ROP runs fail transiently after the primitive is already
+    // established. The existing ROP worker explicitly tells us to reload in
+    // that case. Do one automatic recovery instead of making the user refresh
+    // the browser manually. Never loop: after one recovery, leave the failure
+    // visible so a genuine/non-transient error is not hidden.
+    const transient = /ROP worker never answered|rop thread ran away|ROP-TIMEOUT|core: gave up after .*attempts|Reload\./i.test(message);
+    if (!transient) return;
+
+    let retries = 0;
+    try { retries = parseInt(sessionStorage.getItem("relapse.auto-retry") || "0", 10) || 0; } catch (e) {}
+    if (retries >= 1) {
+        print("automatic retry already used; leaving the failure visible", "LOG-WARN");
+        return;
+    }
+
+    retries++;
+    try { sessionStorage.setItem("relapse.auto-retry", String(retries)); } catch (e) {}
+    print("transient exploit failure detected - automatic browser recovery 1/1...", "LOG-WARN");
+    setTimeout(() => {
+        try { history.replaceState(null, ""); } catch (e) {}
+        location.reload();
+    }, 900);
+}
+
+// main.js logs progress through window.jb when it is present.
+window.jb = { mark: (tag, detail) => print(detail ? tag + " " + detail : tag, "LOG-INFO") };
+
+window.addEventListener("error", (e) => print("error: " + (e && e.message), "LOG-ERROR"));
+window.addEventListener("unhandledrejection", (e) =>
+    print("rejected: " + String((e && e.reason && e.reason.message) || (e && e.reason)), "LOG-ERROR"));
+
+/** Run the WebKit bug until it yields a working userland read/write primitive. */
+async function establishUserlandPrimitive() {
+    if (globalThis.p && typeof globalThis.p.read8 === "function") {
+        print("reusing the existing primitive", "LOG-INFO");
+        return globalThis.p;
+    }
+
+    print("running the WebKit bug (placement retries itself)", "LOG-INFO");
+    try { history.replaceState(null, ""); } catch (e) { /* not fatal */ }
+    if (typeof globalThis.gc === "function") { try { globalThis.gc(); } catch (e) { /* ditto */ } }
+    await sleep(750);
+
+    const carrier = await establishPrimitive({
+        maxAttempts: 24,
+        onEvent(tag, detail, attempt) {
+            print((typeof attempt === "number" ? "[" + attempt + "] " : "") + tag
+                + (detail ? " " + detail : ""), "LOG-DEBUG");
+        },
+        beforeCriticalLoad() {
+            try { document.getElementById("console").offsetWidth; } catch (e) { /* layout poke */ }
+        },
+    });
+
+    installWindowP(carrier, {
+        onEvent(tag, detail) {
+            print(tag + " " + detail, "LOG-DEBUG");
+            try { window.__rep(tag, String(detail ?? "").slice(0, 400)); } catch (e) { /* ditto */ }
+        },
+    });
+    if (!pairStatus.promoted)
+        throw new Error("the primitive pair was not promoted: " + pairStatus.error);
+
+    if (typeof globalThis.gc === "function") { try { globalThis.gc(); } catch (e) { /* ditto */ } }
+    await sleep(1000);
+
+    const p = globalThis.p;
+    if (!p || typeof p.read8 !== "function") throw new Error("window.p was never published");
+    print("primitive up (fakeCellReleased=" + fakeCellReleased() + ")", "LOG-INFO");
+    return p;
+}
+
+async function run() {
+    const rejection = window.firmware.rejection();
+    if (rejection) throw new Error(rejection);
+
+    await offsetsReady;
+    print("firmware " + window.fw_str, "LOG-INFO");
+
+    const p = await establishUserlandPrimitive();
+
+    // Imported here rather than at the top of the file on purpose: a module's
+    // source text is on the heap before the groom runs, and the placement the
+    // WebKit bug depends on is sensitive to what is sitting there.
+    await import("./exploit.js");
+
+    // main() prepares the ROP worker and then drives the kernel chain.
+    await main(p);
+
+    // The payload DOM was built before the exploit. Only reveal it after elfldr is ready.
+    if (!window.__elfldrUp || typeof window.__sendPayload !== "function") return;
+}
+
+/** Text-only payload menu: same two-column geometry as the reference menu,
+ *  but keeps the original Relapse dark colour palette and uses real HTML text. */
+function buildPayloadMenu() {
+    const existing = document.getElementById("relapse-payload-menu");
+    if (existing) return existing;
+    const tiles = window.PAYLOAD_TILES || [];
+    if (!tiles.length) return print("no payload list (payloads.js missing)", "LOG-ERROR");
+
+    const style = document.createElement("style");
+    style.textContent = `
+      #relapse-payload-menu {
+        box-sizing:border-box;
+        width:100%;
+        min-height:100vh;
+        padding:18px 16px 28px;
+        background:#0c0c0f;
+        color:#fff;
+        font:16px/1.45 Arial,sans-serif;
+        overflow-y:auto;
+        overflow-x:hidden;
+      }
+      #relapse-payload-menu .payload-header {
+        position:relative;
+        text-align:center;
+        max-width:1100px;
+        margin:0 auto 14px;
+      }
+      #relapse-payload-menu h2 {
+        margin:0 0 3px;
+        font-size:22px;
+        line-height:1.25;
+        color:#fff !important;
+        -webkit-text-fill-color:#fff !important;
+      }
+      #relapse-payload-menu .payload-status {
+        margin:0;
+        color:#ccc !important;
+        -webkit-text-fill-color:#ccc !important;
+        font-size:13px;
+      }
+      #relapse-payload-menu .payload-help {
+        margin:3px 0 0;
+        color:#999 !important;
+        -webkit-text-fill-color:#999 !important;
+        font-size:12px;
+      }
+      #relapse-payload-menu .payload-grid {
+        display:grid !important;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:1rem 2.5rem;
+        width:100%;
+        max-width:1100px;
+        margin:0 auto;
+        padding:0 2rem 2rem;
+        box-sizing:border-box;
+        align-content:start;
+      }
+      #relapse-payload-menu .payload-tile {
+        display:block !important;
+        box-sizing:border-box;
+        width:100%;
+        min-height:104px;
+        padding:1rem 2rem;
+        border:0;
+        border-radius:1.25rem;
+        background:#202125 !important;
+        color:#fff !important;
+        -webkit-text-fill-color:#fff !important;
+        text-decoration:none;
+        text-align:center;
+        cursor:pointer;
+        line-height:1.3;
+        transition:background-color .25s ease;
+      }
+      #relapse-payload-menu .payload-tile:focus,
+      #relapse-payload-menu .payload-tile:hover {
+        outline:0;
+        border:0;
+        background:#a2a2a6 !important;
+        color:#202020 !important;
+        -webkit-text-fill-color:#202020 !important;
+      }
+      #relapse-payload-menu .payload-tile.sending { opacity:.55; }
+      #relapse-payload-menu .payload-tile.sent {
+        background:#202125 !important;
+      }
+      #relapse-payload-menu .payload-tile.failed {
+        background:#202125 !important;
+      }
+      #relapse-payload-menu .payload-tile {
+        display:flex !important;
+        flex-direction:column !important;
+        justify-content:center !important;
+        align-items:stretch !important;
+        min-height:118px !important;
+        overflow:visible !important;
+      }
+
+      #relapse-payload-menu .payload-line {
+        display:block !important;
+        visibility:visible !important;
+        opacity:1 !important;
+        position:relative !important;
+        width:100% !important;
+        height:auto !important;
+        max-height:none !important;
+        min-height:0 !important;
+        margin:0 !important;
+        padding:0 !important;
+        overflow:visible !important;
+        box-sizing:border-box !important;
+        text-align:center !important;
+        white-space:normal !important;
+        text-overflow:clip !important;
+        text-decoration:none !important;
+      }
+
+      #relapse-payload-menu .payload-title {
+        color:#fff !important;
+        -webkit-text-fill-color:#fff !important;
+        font-size:1.3rem !important;
+        line-height:1.55rem !important;
+        font-weight:800 !important;
+      }
+
+      #relapse-payload-menu .payload-description {
+        color:#ccc !important;
+        -webkit-text-fill-color:#ccc !important;
+        font-size:1rem !important;
+        line-height:1.45rem !important;
+        font-weight:400 !important;
+      }
+
+      #relapse-payload-menu .payload-info {
+        color:#999 !important;
+        -webkit-text-fill-color:#999 !important;
+        font-size:.9rem !important;
+        line-height:1.35rem !important;
+        font-weight:400 !important;
+      }
+
+      #relapse-payload-menu .payload-tile:hover .payload-title,
+      #relapse-payload-menu .payload-tile:focus .payload-title,
+      #relapse-payload-menu .payload-tile:active .payload-title {
+        color:#202020 !important;
+        -webkit-text-fill-color:#202020 !important;
+      }
+
+      #relapse-payload-menu .payload-tile:hover .payload-description,
+      #relapse-payload-menu .payload-tile:focus .payload-description,
+      #relapse-payload-menu .payload-tile:active .payload-description {
+        color:#444 !important;
+        -webkit-text-fill-color:#444 !important;
+      }
+
+      #relapse-payload-menu .payload-tile:hover .payload-info,
+      #relapse-payload-menu .payload-tile:focus .payload-info,
+      #relapse-payload-menu .payload-tile:active .payload-info {
+        color:#555 !important;
+        -webkit-text-fill-color:#555 !important;
+      }
+
+      @media (max-width:700px) {
+        #relapse-payload-menu .payload-grid { grid-template-columns:1fr; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    const menu = document.createElement("section");
+    menu.id = "relapse-payload-menu";
+    // Build the complete payload DOM before the WebKit exploit runs. Fresh-jailbreak
+    // rendering can invalidate dynamically-created text rows; revealing a prebuilt
+    // tree avoids that state while keeping the same page and primitives.
+    menu.style.setProperty("visibility", "hidden", "important");
+    menu.style.setProperty("opacity", "0", "important");
+    menu.style.setProperty("pointer-events", "none", "important");
+
+    const header = document.createElement("div");
+    header.className = "payload-header";
+    const title = document.createElement("h2");
+    title.textContent = "Relapse Payloads (7.00-13.60)";
+    const status = document.createElement("p");
+    status.className = "payload-status";
+    status.textContent = "Listening on console port 9021";
+    const help = document.createElement("p");
+    help.className = "payload-help";
+    help.textContent = "Select a payload to send it to the ELF loader.";
+    header.append(title, status, help);
+
+    const grid = document.createElement("div");
+    grid.className = "payload-grid";
+
+    for (const t of tiles) {
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "payload-tile";
+        a.tabIndex = 0;
+        a.style.setProperty("background-color", "#202125", "important");
+        a.style.setProperty("color", "#fff", "important");
+        a.style.setProperty("-webkit-text-fill-color", "#fff", "important");
+
+        const name = document.createElement("div");
+        name.className = "payload-line payload-title";
+        name.textContent = t.title;
+
+        const description = document.createElement("div");
+        description.className = "payload-line payload-description";
+        description.textContent = t.description;
+
+        const info = document.createElement("div");
+        info.className = "payload-line payload-info";
+        info.textContent = t.info || t.name;
+
+        // Keep all three text rows explicit at runtime. This avoids any inherited
+        // WebView/host rule collapsing or recolouring individual rows.
+        for (const line of [name, description, info]) {
+            line.style.setProperty("display", "block", "important");
+            line.style.setProperty("visibility", "visible", "important");
+            line.style.setProperty("opacity", "1", "important");
+            line.style.setProperty("height", "auto", "important");
+            line.style.setProperty("max-height", "none", "important");
+            line.style.setProperty("overflow", "visible", "important");
+            line.style.setProperty("white-space", "normal", "important");
+            line.style.setProperty("width", "100%", "important");
+        }
+        name.style.setProperty("color", "#fff", "important");
+        name.style.setProperty("-webkit-text-fill-color", "#fff", "important");
+        description.style.setProperty("color", "#ccc", "important");
+        description.style.setProperty("-webkit-text-fill-color", "#ccc", "important");
+        info.style.setProperty("color", "#999", "important");
+        info.style.setProperty("-webkit-text-fill-color", "#999", "important");
+
+        a.addEventListener("focus", () => {
+            a.style.setProperty("background-color", "#a2a2a6", "important");
+            a.style.setProperty("color", "#202020", "important");
+            a.style.setProperty("-webkit-text-fill-color", "#202020", "important");
+            name.style.setProperty("color", "#202020", "important");
+            name.style.setProperty("-webkit-text-fill-color", "#202020", "important");
+            description.style.setProperty("color", "#444", "important");
+            description.style.setProperty("-webkit-text-fill-color", "#444", "important");
+            info.style.setProperty("color", "#555", "important");
+            info.style.setProperty("-webkit-text-fill-color", "#555", "important");
+        });
+        a.addEventListener("blur", () => {
+            a.style.setProperty("background-color", "#202125", "important");
+            a.style.setProperty("color", "#fff", "important");
+            a.style.setProperty("-webkit-text-fill-color", "#fff", "important");
+            name.style.setProperty("color", "#fff", "important");
+            name.style.setProperty("-webkit-text-fill-color", "#fff", "important");
+            description.style.setProperty("color", "#ccc", "important");
+            description.style.setProperty("-webkit-text-fill-color", "#ccc", "important");
+            info.style.setProperty("color", "#999", "important");
+            info.style.setProperty("-webkit-text-fill-color", "#999", "important");
+        });
+
+        a.append(name, description, info);
+
+        a.addEventListener("click", async (e) => {
+            e.preventDefault();
+            a.classList.remove("sent", "failed");
+            a.classList.add("sending");
+            print(t.title + ": sending ...", "LOG-INFO");
+            try {
+                const n = await window.__sendPayload(t.name);
+                a.classList.remove("sending", "failed");
+                a.classList.add("sent");
+                print(t.title + ": sent " + n + " bytes to 127.0.0.1:9021", "LOG-SUCCESS");
+            } catch (err) {
+                a.classList.remove("sending", "sent");
+                a.classList.add("failed");
+                print(t.title + ": " + ((err && err.message) || err), "LOG-ERROR");
+            }
+        });
+        grid.appendChild(a);
+    }
+
+    menu.append(header, grid);
+
+    // Keep the payload UI completely outside the verbose exploit console.
+    document.body.appendChild(menu);
+    // Force the browser to construct/layout the full three-line menu now, before
+    // the jailbreak changes WebKit state.
+    void menu.offsetHeight;
+    for (const el of menu.querySelectorAll(".payload-line")) void el.offsetHeight;
+    return menu;
+}
+
+function showPayloadMenu() {
+    const consoleEl = document.getElementById("console");
+    if (consoleEl) consoleEl.style.display = "none";
+    const menu = buildPayloadMenu();
+    if (!menu) return;
+    menu.style.setProperty("visibility", "visible", "important");
+    menu.style.setProperty("opacity", "1", "important");
+    menu.style.setProperty("pointer-events", "auto", "important");
+    void menu.offsetHeight;
+    requestAnimationFrame(() => { void menu.offsetHeight; });
+    print("elfldr is up - pick a payload", "LOG-SUCCESS");
+}
+
+// Prebuild the complete payload DOM before the exploit starts.
+buildPayloadMenu();
+run().then(() => {
+    // A successful run clears the one-shot recovery guard.
+    try { sessionStorage.removeItem("relapse.auto-retry"); } catch (e) {}
+    if (window.__elfldrUp && typeof window.__sendPayload === "function")
+        showPayloadMenu();
+}).catch(reportFailure);
+</script>
+
+</body>
+</html>
