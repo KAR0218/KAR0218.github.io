@@ -405,13 +405,22 @@ function failed() {
   emit("AUTO-RETRY-AFTER-FAILURE", `attempt=${attemptNumber}`);
   stopped = false;
   retryScheduled = false;
+
+  // Memory-safe fallback retry: the generic failure path used to jump to the
+  // next attempt after only 50 ms without dropping the previous attempt's
+  // large carrier/SSV graphs. Match the cleanup discipline of the safe-retry
+  // path so a transient failure cannot stack another ~100+ MB attempt on top
+  // of allocations that are still awaiting reclamation.
+  releaseAttemptAllocations();
+  const retryDelay = Math.max(AUTO_RETRY_DELAY_MS, 750);
+  emit("AUTO-RETRY-CLEANUP", `attempt=${attemptNumber}-delay=${retryDelay}`);
   setTimeout(() => {
     try {
       history.replaceState(null, "");
     } catch {}
     attemptNumber++;
     startAttempt();
-  }, AUTO_RETRY_DELAY_MS);
+  }, retryDelay);
 }
 
 function releaseAttemptAllocations() {
