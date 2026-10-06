@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>PS5-Relapse</title>
+<style>
+  html, body { margin: 0; padding: 0; min-height:100%;
+    background: radial-gradient(circle at 50% 28%, #18233a 0, #0c111b 44%, #07090e 100%);
+    color: #d8dee9; }
+  body { box-sizing:border-box; min-height:100vh;
+    font: 22px/1.35 "Consolas", "DejaVu Sans Mono", monospace;
+    padding: 24px 20px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; }
+  h1 { font-size: 30px; margin: 0 0 2px; color: #eceff4; font-weight: 600; }
+  .sub { font-size: 18px; color: #7c8795; margin: 0 0 12px; }
+  #stage { font-size: 24px; padding: 9px 13px; border-radius: 6px;
+           margin-bottom: 12px; background: #1b2430; border-left: 8px solid #5e81ac; }
+  #stage.ok  { background: #16281c; border-left-color: #47c76a; color: #b8f0c6; }
+  #stage.bad { background: #1b2430; border-left-color: #5e81ac; color: #d8dee9; }
+  #danger, #reboot, #verdict { display:none !important; }
+
+  #reboot { display: none; font-size: 34px; font-weight: 800; padding: 20px 18px;
+            margin-bottom: 14px; border-radius: 8px; background: #4a0d10;
+            border: 5px solid #ff5566; color: #ffe3e6; white-space: pre-wrap;
+            line-height: 1.25; }
+  #reboot.on { display:none; }
+  #reboot.fine { display:none; }
+
+  #verdict { display: none; font-size: 26px; font-weight: 700; padding: 16px 18px;
+             margin-bottom: 14px; border-radius: 8px; background: #101a26;
+             border: 4px solid #6d7788; color: #dfe7f0; white-space: pre-wrap;
+             line-height: 1.3; }
+  #verdict.on   { display:none; }
+  #verdict.good { background: #0f2c17; border-color: #47c76a; color: #d4f7de; }
+  #verdict.bad  { background: #101a26; border-color: #6d7788; color: #dfe7f0; }
+  #verdict.warn { background: #2e2413; border-color: #ebcb8b; color: #f6e6bd; }
+  #vitals { display: none; font-size: 24px; padding: 10px 14px; margin-bottom: 12px;
+            border-radius: 6px; background: #17212e; border-left: 8px solid #ebcb8b;
+            color: #e8dcb6; white-space: pre-wrap; }
+  #vitals.on { display: block; }
+  #cfg { font-size: 22px; color: #9fb1c3; background: #131922; padding: 10px 13px;
+         border-radius: 6px; margin-bottom: 12px; white-space: pre-wrap; }
+  #scr, #early { font-size: 15px; color: #6d7788; margin: 0 0 10px;
+                 white-space: pre; overflow: hidden; min-height: 1.3em; }
+  #nav { display:none !important; margin: 0 0 14px; }
+  #nav a { display: inline-block; margin: 0 12px 8px 0; padding: 10px 18px;
+           background: #1b2430; border: 2px solid #3b4756; border-radius: 6px;
+           color: #d8dee9; text-decoration: none; font-size: 20px; }
+  #nav a.primary { border-color: #5e81ac; background: #223146; color: #cfe3ff; }
+  #nav a.hot { border-color: #52647c; background: #202d40; color: #dce8f7; }
+
+  #nav a.one { display: block; font-size: 30px; font-weight: 700;
+               padding: 20px 26px; margin: 0 0 12px;
+               border-color: #5e81ac; background: #223146; color: #cfe3ff; }
+  #nav a.one.hot { border-color: #52647c; background: #202d40; color: #dce8f7; }
+
+  body.quiet #nav a.extra { display: none; }
+  #nav a:focus { outline: 3px solid #ebcb8b; }
+  #arm { font-size: 26px; padding: 24px 6px; color: #ebcb8b; }
+  #wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  thead th { position: sticky; top: 0; background: #131922; color: #8fa1b3;
+             text-align: left; font-size: 17px; padding: 8px 10px;
+             border-bottom: 2px solid #2a3340; z-index: 2; }
+  td { padding: 9px 10px; vertical-align: top; border-bottom: 1px solid #1d232c; }
+  td.n  { width: 2.6em; color: #55606e; font-size: 17px; }
+  td.k  { width: 12em; color: #cfd8e3; font-weight: 700; }
+  td.k .cls { display: block; color: #61708a; font-weight: 400; font-size: 15px; }
+  td.st { width: 4.6em; font-weight: 700; font-size: 25px; }
+  td.st.PASS { color: #47c76a; }
+  td.st.FAIL { color: #cfd8e3; }
+  td.st.SKIP { color: #8f7a3f; }
+  td.st.RUN  { color: #ebcb8b; }
+  td.d { color: #aeb8c6; font-size: 19px; word-break: break-word;
+         white-space: pre-wrap; }
+  td.d .why  { color: #aeb8c6; }
+  td.d .note { color: #7fb7d4; display: block; font-size: 17px; }
+  td.d .pu   { color: #6b7a8c; display: block; font-size: 15px; margin-top: 3px; }
+  td.d .ev   { color: #5a6472; display: block; font-size: 15px; margin-top: 3px; }
+  #tally { margin-top: 18px; font-size: 30px; font-weight: 700; }
+  #summary { margin-top: 10px; font-size: 20px; color: #9fb1c3;
+             white-space: pre-wrap; }
+
+  #dt { position: fixed; top: 10px; right: 12px; z-index: 9;
+        font: 700 18px ui-monospace, Menlo, Consolas, monospace;
+        padding: 10px 16px; border-radius: 6px; cursor: pointer;
+        background: #1b2430; border: 2px solid #3b4756; color: #9fb1c3; }
+  #dt:focus { outline: 3px solid #ebcb8b; }
+  body.quiet #dt { color: #61708a; }
+
+  body.quiet h1,
+  body.quiet .sub,
+  body.quiet #cfg,
+  body.quiet #summary,
+  body.quiet #tally,
+  body.quiet #wrap,
+  body.quiet #early,
+  body.quiet #vitals,
+  body.quiet #verdict,
+  body.quiet #danger,
+  body.quiet #stage,
+  body.quiet td.d .pu,
+  body.quiet td.d .ev                     { display: none; }
+
+  body.quiet #reboot { font-size: 26px; }
+
+  body.quiet #scr {
+        box-sizing: border-box; width:88vw; max-width:680px; height:150px;
+        overflow: auto; font-size: 14px; line-height: 1.3; color: #b8c4d2;
+        background: rgba(12,18,28,.88); border: 1px solid #344258;
+        box-shadow: 0 18px 42px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.04);
+        border-radius: 14px; padding: 13px 15px; margin: 10px auto 0; }
+
+  body.quiet tr:not(.r-FAIL) td.d .note   { display: none; }
+
+  body.quiet tr:not(.r-FAIL) td.d > span:first-child {
+        display: -webkit-box; display: box; overflow: hidden;
+        -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+
+  body.quiet #stage { font-size: 34px; }
+
+  #cat { box-sizing:border-box; display:block; margin:0 auto 12px;
+         width:150px; height:150px; max-width:34vw; max-height:34vw;
+         border:4px solid #343c49; border-radius:18px;
+         box-shadow:0 24px 70px rgba(0,0,0,.5); overflow:hidden; }
+  #cat img { display:block; width:100%; height:100%; object-fit:cover; }
+  #cat.ok  { border-color:#16c60c; }
+  #cat.bad { border-color:#e74856; }
+  #failureMessage { display:none; margin:0 auto 12px; color:#ff6473;
+    font-size:25px; font-weight:800; text-align:center; letter-spacing:.02em; }
+  #failureMessage.on { display:block; }
+
+  #main-content {
+    position:relative; min-width:0; min-height:0; width:100%; height:100%;
+    overflow:hidden; box-sizing:border-box;
+  }
+  #main-content > .app-view {
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    box-sizing:border-box; opacity:0; pointer-events:none;
+    transition:opacity .3s ease-in-out;
+  }
+  #main-content > .app-view.selected {
+    opacity:1 !important; pointer-events:auto !important;
+  }
+  #console-view {
+    display:flex; flex-direction:column; align-items:stretch; overflow:hidden;
+  }
+  #payloads-view {
+    display:grid !important; grid-template-rows:auto 1fr;
+    overflow:hidden; background:#0c0c0f; color:#fff;
+  }
+  .payloadHeader {
+    position:relative; box-sizing:border-box; min-height:112px;
+    padding:.5rem; text-align:center;
+  }
+  .payloadHeader h2 {
+    margin:.35rem 0; color:#fff; font-size:2rem; line-height:1.2;
+  }
+  .payloadEyebrow { color:#ccc; font-size:1rem; }
+  .payloadHeader p { margin:0; color:#ccc; font-size:.9rem; }
+  .homeLink {
+    position:absolute; top:.75rem; right:1rem; padding:.5rem 1rem;
+    border-radius:1rem; color:#fff; background:#202125;
+    text-decoration:none; font-size:1rem;
+  }
+  .homeLink:hover, .homeLink:focus {
+    outline:0; background:#a2a2a6; color:#202020;
+  }
+
+  #payloads-view .payloadGrid {
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-auto-rows:auto;
+    column-gap:2.5rem;
+    row-gap:1rem;
+    width:100%;
+    height:auto; min-height:0;
+    padding:0 2rem 2rem 2rem;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    box-sizing:border-box;
+    align-content:start;
+  }
+  #payloads-view .btn {
+    display:inline-block;
+    box-sizing:border-box;
+    width:100%;
+    min-width:5rem;
+    margin:.2rem;
+    padding:1rem 2rem;
+    border:0;
+    border-radius:1.25rem;
+    background:#202125;
+    color:#fff;
+    cursor:pointer;
+    line-height:2.5rem;
+    text-align:center;
+    text-decoration:none;
+    font-size:1.3rem;
+    transition:background-color .25s ease;
+  }
+  #payloads-view .btn:hover, #payloads-view .btn:focus {
+    outline:0;
+    background:#a2a2a6;
+    color:#202020;
+  }
+  .payload-btn-title {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    margin:0;
+    padding:0;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff;
+    line-height:2.5rem;
+    font-size:1.3rem;
+    font-weight:bolder;
+  }
+  .payload-btn-description {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    max-width:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    color:#ccc;
+    -webkit-text-fill-color:#ccc;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:2rem;
+    font-size:1rem;
+  }
+  .btn:hover .payload-btn-description,
+  .btn:focus .payload-btn-description {
+    color:#444 !important; -webkit-text-fill-color:#444;
+  }
+  .payload-btn-info {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    color:#999;
+    -webkit-text-fill-color:#999;
+    text-overflow:ellipsis;
+    line-height:1.5rem;
+    font-size:.9rem;
+    font-weight:normal;
+  }
+  .btn:hover .payload-btn-info,
+  .btn:focus .payload-btn-info {
+    color:#555 !important; -webkit-text-fill-color:#555;
+  }
+  #payloads-view .btn:hover .payload-btn-title,
+  #payloads-view .btn:focus .payload-btn-title {
+    color:#202020 !important; -webkit-text-fill-color:#202020;
+  }
+  #payloads-view .btn.busy { opacity:.45; pointer-events:none; }
+
+  #payloadToastContainer { position:fixed; top:20px; right:20px; z-index:9999; }
+  .payloadToast {
+    width:300px; margin-top:10px; padding:20px 25px; border-radius:1rem;
+    background:#15161a; color:#fff; box-shadow:0 0 10px rgba(0,0,0,.2);
+    opacity:1; transition:opacity .4s; pointer-events:none;
+    font:16px/1.35 Arial,sans-serif;
+  }
+  .payloadToast.hide { opacity:0; }
+
+  #slopkitHeader, #slopkitFooter { display:block; }
+  body.quiet { display:grid;
+    grid-template-rows:auto 1fr auto; width:100%; height:100vh; padding:0; margin:0;
+    overflow:hidden; align-items:stretch; justify-content:stretch;
+    background:#0c0c0f; color:#fff; font-family:Arial,sans-serif; }
+  body.quiet.payload-view-active { grid-template-rows:1fr auto; }
+  body.quiet.payload-view-active #slopkitHeader { display:none; }
+  body.quiet #slopkitHeader {
+    display:block; padding:.5rem; text-align:center; }
+  body.quiet #slopkitHeader h1 {
+    display:block; margin:.5rem 0; color:#fff; font-size:2rem; font-weight:bold; }
+  body.quiet #slopkitHeader p {
+    margin:.25rem 0; color:#ccc; font-size:1rem; }
+  body.quiet #cat { display:none; }
+  body.quiet #scr { display:block;
+    box-sizing:border-box; width:auto; max-width:none; height:auto; min-height:0; flex:1;
+    margin:8px; padding:8px; overflow-y:auto; overflow-x:hidden;
+    border:1px solid #202125; border-radius:5px; background:inherit;
+    box-shadow:none; color:#fff; font:16px/1.35 monospace; white-space:pre-wrap; }
+  body.quiet #slopkitFooter {
+    display:block; padding:.5rem; color:#ccc; text-align:center; font-size:.8rem; }
+
+  #wrap { display:none !important; }
+
+/* Relapse keeps its exploit console as a hidden logging target. */
+#console { display:none !important; }
+#payloads-view { display:grid !important; }
+</style>
+</head>
+<body class="quiet">
+<div id="slopkitHeader">
+  <h1>PS5 Relapse (7.00-13.60)</h1>
+</div>
+<div id="main-content">
+  <div id="console-view" class="app-view selected">
+    <div id="failureMessage">UNLUCKY &mdash; YOU NEED TO REBOOT</div>
+    <div id="cat"><img id="catImage" src="mmhmm-cats-ps5.gif" alt=""></div>
+    <h1>relapse</h1>
+    <div id="reboot"></div>
+    <div id="verdict"></div>
+    <div id="danger"></div>
+    <div id="stage">idle</div>
+    <div id="vitals"></div>
+    <div id="cfg"></div>
+    <pre id="early"></pre>
+    <pre id="scr"></pre>
+    <div id="nav"></div>
+    <div hidden id="arm">Open this page with <b>?go=1</b> to arm it. Nothing runs otherwise.</div>
+    <div id="wrap">
+      <table><thead><tr><th>#</th><th>test</th><th>st</th><th>result</th></tr></thead><tbody id="rows"></tbody></table>
+    </div>
+    <div id="tally"></div>
+    <div id="summary"></div>
+  </div>
+  <div id="payloads-view" class="app-view">
+    <div class="payloadHeader">
+      <h2>PS5 Relapse Payloads (7.00-13.60)</h2>
+      <div class="payloadEyebrow" id="payloadNetworkStatus">Listening on console port 9021</div>
+      <p id="payloadProgress">Select a payload to send it to the ELF loader.</p>
+      <a class="homeLink" href="../index.html">Home</a>
+    </div>
+    <div class="payloadGrid"></div>
+  </div>
+</div>
+<div id="payloadToastContainer"></div>
+<div id="slopkitFooter">Karo</div>
+<div id="console" hidden></div>
+<script src="./src/firmware.js"></script>
+<script src="../payloads.js?v=1"></script>
+<script src="./src/main.js"></script>
+<script src="./src/rop.js"></script>
+<script src="./src/utils/syscalls.js"></script>
+<script type="module" src="./src/site.js"></script>
+</body>
+</html>
