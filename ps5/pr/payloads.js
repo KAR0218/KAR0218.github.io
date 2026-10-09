@@ -7,6 +7,7 @@ window.PAYLOAD_TILES = [
     {"title": "ShadowMountPlus 1.7Beta3", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta3", "name": "ShadowMountPlus_1.7beta3.elf", "info": "ShadowMountPlus_1.7beta3.elf - drakmor", "key": "shadowmountplus"},
     {"title": "WebKit Autoloader Installer", "description": "Installs WebKit Autoloader on the PS5 homescreen. Version v0.5.2", "name": "WebKit-Autoloader-Installer_v0.5.2.elf", "info": "WebKit-Autoloader-Installer_v0.5.2.elf - itsPLK", "key": "webkit-autoloader-installer"},
     {"title": "ps5debug-NG", "description": "PS5 debugger payload with a userland TCP wire-protocol server. Version 1.3.2", "name": "ps5debug-NG_1.3.2.elf", "info": "ps5debug-NG_1.3.2.elf - Pharaoh2k", "key": "ps5debug-ng"},
+    {"title": "PS5Browser", "description": "PS5 Browser. Version v1.0.0", "name": "browser_launcher_v1.0.0.elf", "info": "browser_launcher_v1.0.0.elf - Karo", "key": "PS5Browser"},
     {"title": "zftpd", "description": "Zero-copy FTP/HTTP server. Version v1.6.0", "name": "zftpd_v1.6.0.elf", "info": "zftpd_v1.6.0.elf - seregonwar", "key": "zftpd"},
     {"title": "CheatRunner", "description": "Web-based game cheat trainer. Version v0.17.2", "name": "CheatRunner_v0.17.2.elf", "info": "CheatRunner_v0.17.2.elf - notmaj0r", "key": "cheatrunner"},
     {"title": "ftpsrv-drakmor", "description": "drakmor's fork of ftpsrv. Version 1.16-ng-stable", "name": "ftpsrv-drakmor_1.16-ng-stable.elf", "info": "ftpsrv-drakmor_1.16-ng-stable.elf - drakmor", "key": "ftpsrv-drakmor"},
