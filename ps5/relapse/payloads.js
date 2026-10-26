@@ -1,7 +1,8 @@
 /* generated for Relapse - payload menu */
 window.PAYLOAD_TILES = [
     {"title": "etaHEN", "description": "AIO Homebrew enabler with etaHEN Toolbox, plugins, Kstuff, FTP and payload support. Beta 2.6", "name": "etaHEN.elf", "info": "etaHEN.elf - LightningMods", "key": "etahen"},
-    {"title": "onionHEN", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9.0", "name": "OnionHEN.elf", "info": "OnionHEN.elf - aydencharles", "key": "onionhen"},
+    {"title": "onionHEN", "description": "Homebrew enabler with kstuff-fpkg-1.13-test6and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9.0", "name": "OnionHEN.elf", "info": "OnionHEN.elf - aydencharles", "key": "onionhen"},
+    {"title": "onionHEN", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9.0", "name": "OnionHENk1.11.elf", "info": "OnionHENk1.11.elf - aydencharles", "key": "onionhen"},
     {"title": "ShadowMountPlus", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta3", "name": "ShadowMountPlus_1.7beta3.elf", "info": "ShadowMountPlus_1.7beta3.elf - drakmor", "key": "shadowmountplus"},
     {"title": "ps5upload", "description": "Fast, reliable transfers from your computer to your PS5 (requires PC app). Version v5.41.0", "name": "ps5upload_v5.41.0.elf", "info": "ps5upload_v5.41.0.elf - phantomptr", "key": "ps5upload"},
     {"title": "WebKit Autoloader Installer", "description": "Installs WebKit Autoloader on the PS5 homescreen. Version v0.5.2", "name": "WebKit-Autoloader-Installer_v0.5.2.elf", "info": "WebKit-Autoloader-Installer_v0.5.2.elf - itsPLK", "key": "webkit-autoloader-installer"},
