@@ -1033,10 +1033,12 @@ let consoleNetworkInfo = { ip: "", name: "" };
 // console sees the same ELFs whichever site it came in through. Every name here
 // is checked against payloads\ by tools\site_check.py.
 const PAYLOADS = Object.freeze([
-    { title: "OnionHEN", description: "Homebrew enabler and payload host.",
+    { title: "OnionHEN", description: "Homebrew enabler with kstuff-fpkg-1.13-test6 and payload host.",
         name: "OnionHEN.elf", info: "OnionHEN.elf" },
     { title: "etaHEN", description: "Homebrew enabler and payload host.",
         name: "etaHEN.elf", info: "etaHEN.elf" },
+    { title: "OnionHEN", description: "Homebrew enabler and payload host.",
+        name: "OnionHENk1.11.elf", info: "OnionHEN.elf" },
     { title: "browser", description: "Homebrew PS5 Browser.",
         name: "browser_launcher.elf", info: "browser_launcher_v1.0.0.elf" },
     { title: "Webkit autoloader", description: "Homebrew Webkit autoloader Installer.",
