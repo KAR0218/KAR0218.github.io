@@ -64,8 +64,18 @@ const payload_map = [
     },
     {
         displayTitle: "OnionHEN",
-        description: "AIO HEN. Requires the elfldr on port 9021 to be running.",
+        description: "AIO HEN with kstuff-fpkg-1.13-test6. Requires the elfldr on port 9021 to be running.",
         fileName: "OnionHEN.elf",
+        author: "aydencharles",
+        projectSource: "",
+        binarySource: "",
+        version: "0.0.10",
+        toPort: 9021
+    },
+    {
+        displayTitle: "OnionHEN",
+        description: "AIO HEN. Requires the elfldr on port 9021 to be running.",
+        fileName: "OnionHENk1.11.elf",
         author: "aydencharles",
         projectSource: "",
         binarySource: "",
