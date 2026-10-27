@@ -2,7 +2,7 @@
 window.PAYLOAD_TILES = [
     {"title": "etaHEN 2.6B", "description": "AIO Homebrew enabler with etaHEN Toolbox, plugins, Kstuff, FTP and payload support. Beta 2.6", "name": "etaHEN.elf", "info": "etaHEN.elf - LightningMods", "key": "etahen"},
     {"title": "OnionHEN 0.9 | kstuff 1.13", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9 with kstuff-fpkg-1.13-test6", "name": "OnionHEN.elf", "info": "OnionHEN.elf - aydencharles", "key": "onionhen"},
-    {"title": "OnionHEN v0.9.0 | kstuff 1.11", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9.0 with kstuff-lite Version v1.11", "name": "OnionHENk1.11.elf", "info": "OnionHEN.elf - aydencharles", "key": "onionhen"},
+    {"title": "OnionHEN v0.9.0 | kstuff 1.11", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9.0 with kstuff-lite Version v1.11", "name": "OnionHENk1.11.elf", "info": "OnionHENk1.11.elf - aydencharles", "key": "onionhen1.11"},
     {"title": "Lapy-JB-Daemon", "description": "Standalone homebrew jailbreak daemon for PS5. Version v1.2", "name": "Lapy-JB-Daemon_v1.2.elf", "info": "Lapy-JB-Daemon_v1.2.elf - Lapy", "key": "lapy-jb-daemon"},
     {"title": "ps5upload", "description": "Fast, reliable transfers from your computer to your PS5 (requires PC app). Version v7.0.22", "name": "ps5upload_v7.0.22.elf", "info": "ps5upload_v7.0.22.elf - phantomptr", "key": "ps5upload"},
     {"title": "ShadowMountPlus 1.7Beta8", "description": "Fully automated background Auto-Mounter for jailbroken PS5 consoles. Version 1.7beta8", "name": "shadowmountplus.elf", "info": "ShadowMountPlus_1.7-beta8.elf - drakmor", "key": "shadowmountplus"},
