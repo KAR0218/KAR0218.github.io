@@ -114,43 +114,56 @@ function buildMenu() {
 }
 
 
-async function checkElfLoader() {
+function checkElfLoader() {
     statusEl.className = "";
     statusEl.textContent = "Checking ELF Loader...";
 
-    try {
-        const response = await fetch(ELFLDR_HTTP, {
-            method: "GET",
-            mode: "no-cors",
-            cache: "no-store"
-        });
+    return new Promise((resolve) => {
+        const img = new Image();
+        let finished = false;
 
-        // An opaque response means the browser received a response,
-        // but does not expose its HTTP status or body.
-        if (response.type === "opaque") {
-            statusEl.className = "online";
-            statusEl.textContent = "ELF Loader ONLINE — Port 9021";
-            return true;
+        function finish(state, message, result) {
+            if (finished) return;
+
+            finished = true;
+            clearTimeout(timer);
+
+            img.onload = null;
+            img.onerror = null;
+            img.src = "";
+
+            statusEl.className = state;
+            statusEl.textContent = message;
+
+            resolve(result);
         }
 
-        statusEl.className = response.ok ? "online" : "offline";
-        statusEl.textContent = response.ok
-            ? "ELF Loader ONLINE — Port 9021"
-            : "ELF Loader OFFLINE — Port 9021";
+        const timer = setTimeout(() => {
+            finish(
+                "unknown",
+                "ELF Loader UNKNOWN — Health check timed out",
+                null
+            );
+        }, 5000);
 
-        return response.ok;
+        img.onload = () => {
+            finish(
+                "online",
+                "ELF Loader ONLINE — Port 9021",
+                true
+            );
+        };
 
-    } catch (error) {
-        if (location.protocol === "https:") {
-            statusEl.className = "unknown";
-            statusEl.textContent = "ELF Loader UNKNOWN — Connection restricted";
-            return null;
-        }
+        img.onerror = () => {
+            finish(
+                "unknown",
+                "ELF Loader UNKNOWN — Connection restricted",
+                null
+            );
+        };
 
-        statusEl.className = "offline";
-        statusEl.textContent = "ELF Loader OFFLINE — Port 9021";
-        return false;
-    }
+        img.src = ELFLDR_HTTP + "/health?ts=" + Date.now();
+    });
 }
 
 buildMenu();
