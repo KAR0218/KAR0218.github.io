@@ -101,7 +101,30 @@ function buildMenu() {
     gridEl.appendChild(button);
   }
 }
+async function checkElfLoader() {
+    statusEl.textContent = "Checking ELF Loader...";
+
+    try {
+        const response = await fetch(ELFLDR_HTTP, {
+            method: "GET",
+            cache: "no-store"
+        });
+
+        statusEl.textContent = response.ok
+            ? "ELF Loader is ONLINE (Port 9021)"
+            : "ELF Loader responded: HTTP " + response.status;
+
+        return response.ok;
+
+    } catch (error) {
+        statusEl.textContent =
+            "ELF Loader status unknown (Port 9021)";
+
+        return false;
+    }
+}
 buildMenu();
+checkElfLoader();
 </script>
 </body>
 </html>
