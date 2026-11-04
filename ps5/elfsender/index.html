@@ -113,6 +113,7 @@ function buildMenu() {
   }
 }
 
+
 async function checkElfLoader() {
     statusEl.className = "";
     statusEl.textContent = "Checking ELF Loader...";
@@ -120,29 +121,34 @@ async function checkElfLoader() {
     try {
         const response = await fetch(ELFLDR_HTTP, {
             method: "GET",
+            mode: "no-cors",
             cache: "no-store"
         });
 
-        if (response.ok) {
+        // An opaque response means the browser received a response,
+        // but does not expose its HTTP status or body.
+        if (response.type === "opaque") {
             statusEl.className = "online";
-            statusEl.textContent = "ELF Loader is ONLINE (Port 9021)";
+            statusEl.textContent = "ELF Loader ONLINE — Port 9021";
             return true;
         }
 
-        statusEl.className = "offline";
-        statusEl.textContent = "ELF Loader responded: HTTP " + response.status;
-        return false;
+        statusEl.className = response.ok ? "online" : "offline";
+        statusEl.textContent = response.ok
+            ? "ELF Loader ONLINE — Port 9021"
+            : "ELF Loader OFFLINE — Port 9021";
+
+        return response.ok;
 
     } catch (error) {
         if (location.protocol === "https:") {
             statusEl.className = "unknown";
-            statusEl.textContent =
-                "ELF Loader UNKNOWN — HTTPS/CORS restriction";
+            statusEl.textContent = "ELF Loader UNKNOWN — Connection restricted";
             return null;
         }
 
         statusEl.className = "offline";
-        statusEl.textContent = "ELF Loader OFFLINE (Port 9021)";
+        statusEl.textContent = "ELF Loader OFFLINE — Port 9021";
         return false;
     }
 }
