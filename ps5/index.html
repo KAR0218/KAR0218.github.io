@@ -29,8 +29,8 @@ body{
     border:1px solid #26344a;
     border-radius:16px;
     padding:14px;
-    box-shadow:0 0 24px rgba(0,70,160,.12)
-	align-items:center;
+    box-shadow:0 0 24px rgba(0,70,160,.12);
+    align-items:center;
 }
 
 #url_form{
@@ -305,17 +305,28 @@ function load_save(){
 }
 
 
-function load_link(){
-
+function load_link() {
     var url = localStorage.getItem("url");
 
-    if(!url){
-        document.getElementById('msgs').innerHTML =
+    if (!url) {
+        document.getElementById("msgs").textContent =
             "No saved URL.";
         return;
     }
 
-    window.location.href = "http://" + url + "/";
+    url = url.trim();
+
+    // Add HTTP only when no protocol is specified
+    if (!/^https?:\/\//i.test(url)) {
+        url = "http://" + url;
+    }
+
+    // Add trailing slash only when needed
+    if (!url.endsWith("/")) {
+        url += "/";
+    }
+
+    window.location.href = url;
 }
 
 
@@ -359,19 +370,10 @@ function load_full(){
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
-
     document.getElementById("url_form").addEventListener("submit", function(e) {
-
         e.preventDefault();
-
-        const url = document.getElementById("url_input").value;
-
-        if (url) {
-            window.location.href = url;
-        }
-
+        load_full();
     });
-
 });
 </script>
 
