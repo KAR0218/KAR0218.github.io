@@ -1,173 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PS5 URL ELF Sender</title>
-<style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#0c0c0f;color:#fff;font:16px/1.45 Arial,sans-serif}
-body{min-height:100vh;display:flex;flex-direction:column}
-header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:#0c0c0f;
-    text-align:center;
-    padding:22px 16px 12px;
-}
-h1{margin:0 0 6px;font-size:30px;color:#fff;text-shadow:0 2px 5px #000}
-#status{min-height:22px;margin:0;color:#ccc;font-size:14px;overflow-wrap:anywhere}
-#help{margin:5px 0 0;color:#92929b;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:2.5rem;row-gap:1rem;width:100%;max-width:1600px;margin:0 auto;padding:12px 2rem 85px;align-content:start}
-.tile{display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:0;min-width:0;min-height:118px;margin:.2rem;padding:1rem 2rem;border:0;border-radius:1.25rem;background:#202125;color:#fff;text-align:center;cursor:pointer;font:inherit;line-height:2.5rem;overflow:hidden;overflow-wrap:anywhere}
-.tile:hover,.tile:focus-visible{outline:0;background:#a2a2a6;color:#202020}
-.tile:focus-visible{box-shadow:0 0 0 3px #ebcb8b}
-.tile:disabled{cursor:wait;opacity:.65}
-.tile-title{display:block;width:100%;margin:0;padding:0;color:#fff;font-size:1.3rem;font-weight:bolder;line-height:2.5rem;text-align:center}
-.tile-description{display:block;width:100%;max-width:100%;margin:0;padding:0;overflow:hidden;color:#ccc;text-overflow:ellipsis;white-space:nowrap;line-height:2rem;font-size:1rem;text-align:center}
-.tile-info{display:block;width:100%;margin:0;padding:0;overflow:hidden;color:#999;text-overflow:ellipsis;white-space:nowrap;line-height:1.5rem;font-size:.9rem;font-weight:normal;text-align:center}
-.tile:hover .tile-title,.tile:focus-visible .tile-title{color:#202020}
-.tile:hover .tile-description,.tile:focus-visible .tile-description{color:#444}
-.tile:hover .tile-info,.tile:focus-visible .tile-info{color:#555}
-footer{position:fixed;bottom:0;left:0;right:0;padding:13px 8px;text-align:center;background:rgba(12,12,15,.94);color:#d6d6d6;font-size:13px}
-#status.online {
-    color: #4ade80;
-}
-
-#status.offline {
-    color: #f87171;
-}
-
-#status.unknown {
-    color: #facc15;
-}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px 18px 80px;column-gap:1.25rem;row-gap:14px}}
-@media(max-width:560px){h1{font-size:24px}.grid{grid-template-columns:1fr;padding:12px 14px 80px}.tile{min-height:100px;padding:1rem 1.25rem}}
-</style>
-</head>
-<body>
-<header>
-<h1>PS5 URL ELF Sender</h1>
-<p id="status" role="status" aria-live="polite">Ready — select a payload</p>
-<p id="help">Select a tile to send its ELF URL to the local ELF Loader on port 9021.</p>
-</header>
-<main id="payloadGrid" class="grid" aria-label="Payload list"></main>
-<footer>Designed by Karo Sharifi</footer>
-<script src="payloads.js"></script>
-<script>
-"use strict";
-const ELFLDR_HTTP = "http://127.0.0.1:9021";
-const PAYLOAD_BASE = "payloads/";
-const statusEl = document.getElementById("status");
-const gridEl = document.getElementById("payloadGrid");
-
-function launchPayloadViaImage(requestUrl) {
-  const img = new Image();
-  img.style.display = "none";
-  img.onload = img.onerror = () => img.remove();
-  document.body.appendChild(img);
-  img.src = requestUrl;
-}
-async function sendElfViaUrl(name) {
-  const uri = new URL(PAYLOAD_BASE + encodeURIComponent(name), location.href).href + "?args=";
-  const requestUrl = ELFLDR_HTTP + "?" + new URLSearchParams({uri}).toString();
-  try {
-    const response = await fetch(requestUrl, {cache:"no-store"});
-    if (!response.ok) throw new Error("ELF Loader replied HTTP " + response.status);
-    return "Request accepted for " + name + ".";
-  } catch (error) {
-    if (location.protocol === "https:") {
-      launchPayloadViaImage(requestUrl);
-      return "Request triggered for " + name + "; Check PS5 for execution.";
-    }
-    throw error;
-  }
-}
-function buildMenu() {
-  const tiles = window.PAYLOAD_TILES || [];
-  if (!tiles.length) { statusEl.textContent = "Error: payloads.js missing or empty."; return; }
-  for (const payload of tiles) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "tile";
-    for (const [cls, value] of [
-      ["tile-title", payload.title || payload.name],
-      ["tile-description", payload.description || ""],
-      ["tile-info", payload.info || payload.name]
-    ]) {
-      const span = document.createElement("span");
-      span.className = cls;
-      span.textContent = value;
-      button.appendChild(span);
-    }
-    button.addEventListener("click", async () => {
-      if (button.disabled) return;
-      button.disabled = true;
-      statusEl.textContent = "Sending request: " + payload.name + " …";
-      try { statusEl.textContent = await sendElfViaUrl(payload.name); }
-      catch (error) { statusEl.textContent = "Failed to contact ELF Loader: " + (error.message || error); }
-      finally { button.disabled = false; }
-    });
-    gridEl.appendChild(button);
-  }
-}
-
-
-function checkElfLoader() {
+async function checkElfLoader() {
     statusEl.className = "";
     statusEl.textContent = "Checking ELF Loader...";
 
+    // HTTP: Check through fetch
+    if (location.protocol === "http:") {
+        try {
+            const response = await fetch(ELFLDR_HTTP + "/health?ts=" + Date.now(), {
+                method: "GET",
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status);
+            }
+
+            statusEl.className = "online";
+            statusEl.textContent = "ELF Loader ONLINE — Port 9021";
+            return true;
+
+        } catch (error) {
+            statusEl.className = "offline";
+            statusEl.textContent = "ELF Loader OFFLINE — Port 9021";
+            return false;
+        }
+    }
+
+    // HTTPS: Check through Image (avoid CORS restrictions)
     return new Promise((resolve) => {
         const img = new Image();
         let finished = false;
 
         function finish(state, message, result) {
             if (finished) return;
-
             finished = true;
             clearTimeout(timer);
-
             img.onload = null;
             img.onerror = null;
             img.src = "";
 
             statusEl.className = state;
             statusEl.textContent = message;
-
             resolve(result);
         }
 
         const timer = setTimeout(() => {
-            finish(
-                "unknown",
-                "ELF Loader UNKNOWN — Health check timed out",
-                null
-            );
+            finish("unknown", "ELF Loader UNKNOWN — Health check timed out", null);
         }, 5000);
 
         img.onload = () => {
-            finish(
-                "online",
-                "ELF Loader ONLINE — Port 9021",
-                true
-            );
+            finish("online", "ELF Loader ONLINE — Port 9021", true);
         };
 
         img.onerror = () => {
-            finish(
-                "unknown",
-                "ELF Loader UNKNOWN — Connection restricted",
-                null
-            );
+            finish("unknown", "ELF Loader UNKNOWN — Connection restricted", null);
         };
 
         img.src = ELFLDR_HTTP + "/health?ts=" + Date.now();
     });
 }
-
-buildMenu();
-checkElfLoader();
-</script>
-</body>
-</html>
