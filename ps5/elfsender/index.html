@@ -31,6 +31,17 @@ h1{margin:0 0 6px;font-size:30px;color:#fff;text-shadow:0 2px 5px #000}
 .tile:hover .tile-description,.tile:focus-visible .tile-description{color:#444}
 .tile:hover .tile-info,.tile:focus-visible .tile-info{color:#555}
 footer{position:fixed;bottom:0;left:0;right:0;padding:13px 8px;text-align:center;background:rgba(12,12,15,.94);color:#d6d6d6;font-size:13px}
+#status.online {
+    color: #4ade80;
+}
+
+#status.offline {
+    color: #f87171;
+}
+
+#status.unknown {
+    color: #facc15;
+}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px 18px 80px;column-gap:1.25rem;row-gap:14px}}
 @media(max-width:560px){h1{font-size:24px}.grid{grid-template-columns:1fr;padding:12px 14px 80px}.tile{min-height:100px;padding:1rem 1.25rem}}
 </style>
@@ -101,7 +112,9 @@ function buildMenu() {
     gridEl.appendChild(button);
   }
 }
+
 async function checkElfLoader() {
+    statusEl.className = "";
     statusEl.textContent = "Checking ELF Loader...";
 
     try {
@@ -110,25 +123,30 @@ async function checkElfLoader() {
             cache: "no-store"
         });
 
-        statusEl.textContent = response.ok
-            ? "ELF Loader is ONLINE (Port 9021)"
-            : "ELF Loader responded: HTTP " + response.status;
+        if (response.ok) {
+            statusEl.className = "online";
+            statusEl.textContent = "ELF Loader is ONLINE (Port 9021)";
+            return true;
+        }
 
-        return response.ok;
+        statusEl.className = "offline";
+        statusEl.textContent = "ELF Loader responded: HTTP " + response.status;
+        return false;
 
     } catch (error) {
-    if (location.protocol === "https:") {
-        statusEl.textContent =
-            "ELF Loader status unknown — HTTPS/CORS restriction";
-        return null;
+        if (location.protocol === "https:") {
+            statusEl.className = "unknown";
+            statusEl.textContent =
+                "ELF Loader UNKNOWN — HTTPS/CORS restriction";
+            return null;
+        }
+
+        statusEl.className = "offline";
+        statusEl.textContent = "ELF Loader OFFLINE (Port 9021)";
+        return false;
     }
-
-    statusEl.textContent =
-        "ELF Loader OFFLINE (Port 9021)";
-
-    return false;
 }
-}
+
 buildMenu();
 checkElfLoader();
 </script>
