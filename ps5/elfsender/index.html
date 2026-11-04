@@ -117,11 +117,17 @@ async function checkElfLoader() {
         return response.ok;
 
     } catch (error) {
+    if (location.protocol === "https:") {
         statusEl.textContent =
-            "ELF Loader status unknown (Port 9021)";
-
-        return false;
+            "ELF Loader status unknown — HTTPS/CORS restriction";
+        return null;
     }
+
+    statusEl.textContent =
+        "ELF Loader OFFLINE (Port 9021)";
+
+    return false;
+}
 }
 buildMenu();
 checkElfLoader();
