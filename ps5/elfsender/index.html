@@ -68,7 +68,7 @@ async function sendElfViaUrl(name) {
   } catch (error) {
     if (location.protocol === "https:") {
       launchPayloadViaImage(requestUrl);
-      return "Request triggered for " + name + "; execution is not confirmed.";
+      return "Request triggered for " + name + "; Check PS5 for execution.";
     }
     throw error;
   }
