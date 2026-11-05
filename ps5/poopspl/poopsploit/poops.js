@@ -7925,7 +7925,7 @@ async function stage5Body(opts) {
     await kexpMaybeKeepKitId(binBytes);
 
     try {
-      const name = o.elfName || "elfldr-ps5-1360.elf";
+      const name = o.elfName || "elfldr-ps5.elf";
       flushMark("STAGE5-ELF-FETCH-PRE", "url=../payloads/" + name);
       const response = await fetch("../payloads/" + name, {
         cache: "no-store",
