@@ -73,7 +73,7 @@ function buildApiTable(p) {
    and ../payloads/ for the autoload payload (both climb out of this page's
    directory, so the vendored copy stays relocatable). */
 async function fetchBinary(name, baseDir) {
-  const response = await fetch((baseDir || "../payloads/") + name);
+  const response = await fetch((baseDir || "./payloads/") + name);
   if (!response.ok) throw new Error("kexp: " + name + " returned HTTP " + response.status);
   return new Uint8Array(await response.arrayBuffer());
 }
