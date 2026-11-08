@@ -215,14 +215,14 @@ transform: scale(1.1)
 
     </style>
 <meta charset="utf-8">
-<title>Karo Host Auto Exploit GoldHen PS4 5.05 & 7.XX - 14.00 FW</title>
+<title>Karo Host Auto Exploit GoldHen PS4 5.05 & 6.72 & 7.XX - 14.00 FW</title>
 <script>
       if (window.applicationCache.status === 0) {window.location.replace("cache.html");}
 </script>
 </head>
 <body style='background-color:#1A1920'>
 <br>
-<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host Auto Exploit GoldHen PS4 5.05 & 7.XX - 14.00 FW</h1>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host Auto Exploit GoldHen PS4 5.05 & 6.72 & 7.XX - 14.00 FW</h1>
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking....</h1><br>
 
 <div id=all class="content" >
@@ -273,7 +273,7 @@ function onScriptError() {
 
 if (!isPS4) {
     document.addEventListener("DOMContentLoaded", () => {
-        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 14.00";
+        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 6.72 and 7.00 to 14.00";
     });
 } else {
         if (fwNum == 5.05 || fwNum == 5.07) {
@@ -282,6 +282,25 @@ if (!isPS4) {
             script.onerror = onScriptError;
             document.head.appendChild(script);
         }
+		else if (fwNum === 6.72) {
+		progress.innerHTML = "Loading GoldHEN v2.4b18.13 ...";
+		LoadedMSG = "GoldHEN v2.4b18.13 Loaded ✔";
+		PLfile = "payload.bin";
+	
+		var script = document.createElement('script');
+		script.src = "exploit6.js";
+	
+		script.onload = function () {
+			try {
+				jailbreak672();
+			} catch (error) {
+				window.log("Exploit error: " + error, "red");
+			}
+		};
+	
+		script.onerror = onScriptError;
+		document.head.appendChild(script);
+		}
         else if (fwNum >= 7.00 && fwNum <= 9.60) {
             var script = document.createElement('script');
             script.src = "exploit7_9.js";

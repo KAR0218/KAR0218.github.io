@@ -7,6 +7,7 @@ CACHE:
 1400.js
 exploit10.js
 exploit7_9.js
+exploit6.js
 exploit5.js
 index.html
 payload.bin
@@ -19,4 +20,4 @@ NETWORK:
 SETTINGS:  
 prefer-online:  
 
-# 2026-11-07 12:00:00
+# 2026-11-08 12:00:00
