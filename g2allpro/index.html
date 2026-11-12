@@ -302,23 +302,20 @@ if (!isPS4) {
 		document.head.appendChild(script);
 		}
         else if (fwNum >= 7.00 && fwNum <= 9.60) {
-   		 var script = document.createElement('script');
-    		script.src = "exploit7_9.js";
-
-   		 script.onload = function () {
-       		 setTimeout(function () {
-        	   window.log("Reloading...");
-            try {
-                doJailBreak();
-            } catch (error) {
-                window.log("An error occured during exploit: " + error, "red");
-            }
-        }, 500);
-  	  };
-
-  		  script.onerror = onScriptError;
- 	      document.head.appendChild(script);
-		}
+            progress.innerHTML = "Loading GoldHEN v2.4b18.13 ...";
+            var script = document.createElement('script');
+            script.src = "exploit7_9.js";
+            script.onload = function () {
+			try {
+				doJailBreak();
+			} catch (error) {
+				window.log("Exploit error: " + error, "red");
+			}
+		};
+            script.onerror = onScriptError;
+            document.head.appendChild(script);
+            
+        }
         else if (fwNum >= 10.00 && fwNum <= 11.02) {
             var script = document.createElement('script');script.src = "exploit10.js";script.onerror = onScriptError;
             script.onload = function () {
