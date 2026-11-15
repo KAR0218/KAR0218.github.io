@@ -2,14 +2,14 @@
 <head>
 <link rel="stylesheet" href="style.css">
 <meta charset="utf-8">
-<title>Karo Host Auto Exploit GoldHen PS4 5.05 & 6.72 & 7.XX - 14.00 FW</title>
+<title>Karo Host Auto Exploit GoldHen PS4 5.05 & 6.72 & (7.XX - 14.02) FW</title>
 <script>
       if (window.applicationCache.status === 0) {window.location.replace("cache.html");}
 </script>
 </head>
 <body>
 <br>
-<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host Auto Exploit GoldHen PS4 5.05 & 6.72 & 7.XX - 14.00 FW</h1>
+<h1 style='text-shadow: 4px 4px 4px black;font-size:30px;text-align:center;text-shadow: 4px 4px 4px black;color:yellow;'>Karo Host Auto Exploit GoldHen PS4 5.05 & 6.72 & (7.XX - 14.02) FW</h1>
 <h1 id=progress style='font-size:25px;text-align:center;text-shadow: 4px 4px 4px black;color:white;'>Jailbreaking....</h1><br>
 
 <div id=all class="content" >
@@ -19,9 +19,6 @@
 	    </div>
 </div>
 <script>
-if (window.applicationCache.status == '0') {
-            window.location.replace("cache.html");
-}
 var outputConsole = document.getElementById("progress");
 window.log = function (msg, color) {
       if (color === undefined) color = "#cccccc";
@@ -68,6 +65,13 @@ if (!isPS4) {
         if (fwNum == 5.05 || fwNum == 5.07) {
             var script = document.createElement('script');
             script.src = "exploit5.js";
+            script.onload = function () {
+			try {
+				exploit();
+			} catch (error) {
+				window.log("Exploit error: " + error, "red");
+			}
+		};
             script.onerror = onScriptError;
             document.head.appendChild(script);
         }
@@ -135,6 +139,12 @@ if (!isPS4) {
        else if (fwNum === 14.00) {
            var script = document.createElement('script');
            script.src = "1400.js";
+           script.onerror = onScriptError;
+           document.head.appendChild(script);
+       }
+       else if (fwNum === 14.02) {
+           var script = document.createElement('script');
+           script.src = "1402.js";
            script.onerror = onScriptError;
            document.head.appendChild(script);
        }
