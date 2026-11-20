@@ -111,6 +111,29 @@ body{
     border-color:#3777bd
 }
 
+/* Dedicated Wobkot entry */
+.nav button.wobkot{
+    grid-column:1 / -1;
+    height:76px;
+    background:#174d36;
+    border:1px solid #35a66f;
+    color:#e5fff1;
+    font-size:18px;
+    font-weight:700;
+    line-height:1.35;
+}
+.nav button.wobkot small{
+    display:block;
+    margin-top:3px;
+    color:#b9e8cf;
+    font-size:12px;
+    font-weight:500;
+}
+.nav button.wobkot:hover{
+    background:#206b49;
+    border-color:#58ce91;
+}
+
 .card{
     background:#0d121b;
     border:1px solid #1e2c40;
@@ -139,15 +162,15 @@ p{
     color:#a9d1ff;
     font-size:13px
 }
-.nav > button:nth-of-type(3){
+.nav > button:nth-of-type(4){
     background:#283833;
     border-color:#3777bd;
 }
-.nav > button:nth-of-type(3):hover{
+.nav > button:nth-of-type(5):hover{
     background:#3007bd;
     border-color:#4d8fd3;
 }
-.nav > button:nth-of-type(4){
+.nav > button:nth-of-type(5){
     background:#2B3B36;
     border-color:#3777bd;
 }
@@ -231,6 +254,13 @@ p{
 
 
     <div class="nav">
+        <button
+            type="button"
+            class="wobkot"
+            onclick="window.location.href='https://kar0218.github.io/ps5//wobkot/';">
+            Wobkot Host — PS4 + PS5
+            <small>PS4: 9.00–12.02 &nbsp;|&nbsp; PS5: Offset table 6.00–13.00*</small>
+        </button>
 		<button
             type="button"
             onclick="window.location.href='https://kar0218.github.io/ps5/UMTX/';">
@@ -273,6 +303,9 @@ p{
             PS5 ELF Sender <br> (Sender to Port:9021)
         </button>
 
+    </div>
+    <div style="margin:-12px 0 18px;color:#8293a8;font-size:11px;text-align:center;">
+        *PS5 range indicates firmware versions represented in the offset table; the exact upper supported firmware is not yet confirmed.
     </div>
 
 
