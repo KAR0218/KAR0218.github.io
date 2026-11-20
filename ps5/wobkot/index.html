@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Wobkot Karo Host</title>
+<style>
+
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#0c0c0f;color:#fff;font:16px/1.45 Arial,sans-serif}
+body{min-height:100vh;display:flex;flex-direction:column}
+h1{font-size:30px;margin:0 0 2px;color:#eceff4;font-weight:600}
+#stage{font-size:24px;padding:9px 13px;border-radius:6px;margin-bottom:12px;background:#1b2430;border-left:8px solid #5e81ac}
+#stage.ok{background:#16281c;border-left-color:#47c76a;color:#b8f0c6}
+#stage.bad{background:#1b2430;border-left-color:#5e81ac;color:#d8dee9}
+#scr{font-size:15px;color:#6d7788;margin:0 0 10px;white-space:pre;overflow:hidden;min-height:1.3em}
+#nav{display:none !important;margin:0 0 14px}
+#nav a{display:inline-block;margin:0 12px 8px 0;padding:10px 18px;background:#1b2430;border:2px solid #3b4756;border-radius:6px;color:#d8dee9;text-decoration:none;font-size:20px}
+#nav a.primary{border-color:#5e81ac;background:#223146;color:#cfe3ff}
+#nav a.hot{border-color:#52647c;background:#202d40;color:#dce8f7}
+#nav a.one{display:block;font-size:30px;font-weight:700;padding:20px 26px;margin:0 0 12px;border-color:#5e81ac;background:#223146;color:#cfe3ff}
+#nav a.one.hot{border-color:#52647c;background:#202d40;color:#dce8f7}
+body.quiet #nav a.extra{display:none}
+#nav a:focus{outline:3px solid #ebcb8b}
+#arm{font-size:26px;padding:24px 6px;color:#ebcb8b}
+#wrap{overflow-x:auto;display:none !important}
+table{border-collapse:collapse;width:100%;min-width:640px}
+thead th{position:sticky;top:0;background:#131922;color:#8fa1b3;text-align:left;font-size:17px;padding:8px 10px;border-bottom:2px solid #2a3340;z-index:2}
+td{padding:9px 10px;vertical-align:top;border-bottom:1px solid #1d232c}
+td.n{width:2.6em;color:#55606e;font-size:17px}
+td.k{width:12em;color:#cfd8e3;font-weight:700}
+td.k .cls{display:block;color:#61708a;font-weight:400;font-size:15px}
+td.st{width:4.6em;font-weight:700;font-size:25px}
+td.st.PASS{color:#47c76a}
+td.st.FAIL{color:#cfd8e3}
+td.st.SKIP{color:#8f7a3f}
+td.st.RUN{color:#ebcb8b}
+td.d{color:#aeb8c6;font-size:19px;word-break:break-word;white-space:pre-wrap}
+td.d .why{color:#aeb8c6}
+td.d .note{color:#7fb7d4;display:block;font-size:17px}
+td.d .pu{color:#6b7a8c;display:block;font-size:15px;margin-top:3px}
+td.d .ev{color:#5a6472;display:block;font-size:15px;margin-top:3px}
+body.quiet h1,body.quiet #wrap,body.quiet #stage,body.quiet td.d .pu,body.quiet td.d .ev{display:none}
+body.quiet #scr{box-sizing:border-box;width:auto;max-width:none;height:auto;overflow:auto;font-size:14px;line-height:1.3;color:#fff;background:inherit;border:1px solid #202125;box-shadow:none;border-radius:5px;padding:8px;margin:8px;display:block;min-height:0;flex:1;overflow-y:auto;overflow-x:hidden;font:16px/1.35 monospace;white-space:pre-wrap}
+body.quiet tr:not(.r-FAIL) td.d .note{display:none}
+body.quiet tr:not(.r-FAIL) td.d > span:first-child{display:box;overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+body.quiet #stage{font-size:34px}
+#cat{box-sizing:border-box;display:block;margin:0 auto 12px;width:150px;height:150px;max-width:34vw;max-height:34vw;border:4px solid #343c49;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.5);overflow:hidden}
+#cat img{display:block;width:100%;height:100%;object-fit:cover}
+#cat.ok{border-color:#16c60c}
+#cat.bad{border-color:#e74856}
+#main-content{position:relative;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden;box-sizing:border-box}
+#main-content > .app-view{position:absolute;top:0;left:0;width:100%;height:100%;box-sizing:border-box;opacity:0;pointer-events:none;transition:opacity .3s ease-in-out}
+#main-content > .app-view.selected{opacity:1 !important;pointer-events:auto !important}
+#console-view{display:flex;flex-direction:column;align-items:stretch;overflow:hidden}
+#payloads-view{display:grid !important;grid-template-rows:auto 1fr;overflow:hidden;background:#0c0c0f;color:#fff}
+.payloadHeader{position:relative;box-sizing:border-box;min-height:112px;padding:.5rem;text-align:center}
+.payloadHeader h2{margin:.35rem 0;color:#fff;font-size:2rem;line-height:1.2}
+.payloadEyebrow{color:#ccc;font-size:1rem}
+.payloadHeader p{margin:0;color:#ccc;font-size:.9rem}
+.homeLink{position:absolute;top:.75rem;right:1rem;padding:.5rem 1rem;border-radius:1rem;color:#fff;background:#202125;text-decoration:none;font-size:1rem}
+.homeLink:hover,.homeLink:focus{outline:0;background:#a2a2a6;color:#202020}
+#payloads-view .payloadGrid{display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:auto;column-gap:2.5rem;row-gap:1rem;width:100%;max-width:1600px;margin:0 auto;padding:12px 2rem 85px;overflow-y:scroll;overflow-x:hidden;box-sizing:border-box;align-content:start}
+#payloads-view .btn.payloadTile{display:inline-block !important;vertical-align:top;box-sizing:border-box !important;width:100%;min-width:0;min-height:130px;height:auto !important;margin:.2rem 0;padding:14px 12px !important;border:0;border-radius:1.25rem;background:#202125;color:#fff;cursor:pointer;line-height:normal;text-align:center;text-decoration:none;font-size:1.3rem;transition:background-color .25s ease}
+#payloads-view .btn:hover,#payloads-view .btn:focus{outline:0;background:#a2a2a6;color:#202020}
+
+/* Title */
+.payload-btn-title{display:block !important;visibility:visible !important;opacity:1 !important;margin:0 !important;padding:0 0 8px 0 !important;overflow:hidden;color:#fff !important;-webkit-text-fill-color:#fff;text-overflow:ellipsis;line-height:1.35;font-size:1.0rem;-webkit-text-stroke:0.7px currentColor;font-weight:normal}
+.btn:hover .payload-btn-title,.btn:focus .payload-btn-title{color:#202020 !important;-webkit-text-fill-color:#202020 !important}
+
+/* Description */
+.payload-btn-description{display:block !important;visibility:visible !important;opacity:1 !important;margin:0 !important;padding:0 0 7px 0 !important;overflow:hidden;color:#ccc;-webkit-text-fill-color:#ccc;text-overflow:ellipsis;line-height:1.35;font-size:.9rem;font-weight:normal}
+.btn:hover .payload-btn-description,.btn:focus .payload-btn-description{color:#444 !important;-webkit-text-fill-color:#444}
+
+/* Info */
+.payload-btn-info{display:block !important;visibility:visible !important;opacity:1 !important;margin:0 !important;padding:0 !important;overflow:hidden;color:#999;-webkit-text-fill-color:#999;text-overflow:ellipsis;line-height:1.35;font-size:.9rem;-webkit-text-stroke:0.5px currentColor;font-weight:normal}
+.btn:hover .payload-btn-info,.btn:focus .payload-btn-info{color:#555 !important;-webkit-text-fill-color:#555}
+
+#payloads-view .btn.busy{opacity:.45;pointer-events:none}
+#Header,#footer{display:block}
+body.quiet{display:grid;grid-template-rows:auto 1fr auto;width:100%;height:100vh;padding:0;margin:0;overflow:hidden;align-items:stretch;justify-content:stretch;background:#0c0c0f;color:#fff;font-family:Arial,sans-serif}
+body.quiet.payload-view-active{grid-template-rows:1fr auto}
+body.quiet.payload-view-active #Header{display:none}
+body.quiet #Header{display:block;padding:.5rem;text-align:center}
+body.quiet #Header h1{display:block;margin:.5rem 0;color:#fff;font-size:2rem;font-weight:bold}
+body.quiet #Header p{margin:.25rem 0;color:#ccc;font-size:1rem}
+body.quiet #cat{display:none}
+body.quiet #footer{display:block;padding:.5rem;color:#ccc;text-align:center;font-size:.8rem}
+#scr,#console{display:none !important}
+#liveLog{position:absolute;z-index:1000;top:76px;left:2rem;right:2rem;box-sizing:border-box;height:1.45em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:center;padding:0 .5rem;color:#fff;font:700 14px/1.45 monospace;text-shadow:0 1px 3px rgba(0,0,0,.9);pointer-events:none}
+#payloadNetworkStatus{display:none !important}
+footer{position:fixed;bottom:0;left:0;right:0;padding:13px 8px;text-align:center;background:rgba(12,12,15,.94);color:#d6d6d6;font-size:13px}
+</style>
+</head>
+
+<body class="quiet">
+<div id="Header">
+  <h1>Wobkot Karo Host</h1>
+  <p>PS5 WebKit &amp; Kernel Exploit Host</p>
+</div>
+<div id="main-content">
+  <div id="console-view" class="app-view selected">
+    <div id="cat"><img id="catImage" src="mmhmm-cats-ps5.gif" alt=""></div>
+    <h1>Wobkot</h1>
+    <div id="reboot"></div>
+    <div id="verdict"></div>
+    <div id="danger"></div>
+    <div id="stage">Starting WebKit...</div>
+    <div id="vitals"></div>
+    <div id="cfg"></div>
+    <pre id="early"></pre>
+    <div id="nav"></div>
+    <div hidden id="arm"></div>
+    <div id="wrap">
+      <table><thead><tr><th>#</th><th>test</th><th>st</th><th>result</th></tr></thead><tbody id="rows"></tbody></table>
+    </div>
+    <div id="tally"></div>
+    <div id="summary"></div>
+  </div>
+  <div id="payloads-view" class="app-view">
+    <div class="payloadHeader">
+      <h2>Wobkot Payloads</h2>
+      <div class="payloadEyebrow" id="payloadNetworkStatus">ELF Loader target 路 127.0.0.1:9021</div>
+      <p id="payloadProgress">Select a payload to send it to the ELF loader.</p>
+    </div>
+    <div class="payloadGrid"></div>
+  </div>
+  <div id="liveLog" role="status" aria-live="polite">Starting WebKit...</div>
+</div>
+<pre id="scr" aria-label="Host log" hidden></pre>
+<div id="payloadToastContainer"></div>
+<div id="console" hidden></div>
+<footer>Designed by Karo Sharifi</footer>
+<script src="./payloads.js"></script>
+<script src="src/main.js" defer></script>
+</body>
+
+</html>
