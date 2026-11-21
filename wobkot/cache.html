@@ -1,0 +1,173 @@
+<html lang="en" manifest="Cache.manifest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wobkot PS4 Host Cache</title>
+<style>
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:#111;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    overflow:hidden;
+}
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+#cache-box{
+    width:min(760px,88vw);
+    text-align:center;
+}
+h1{
+    margin:0 0 8px;
+    font-size:clamp(20px,5vw,30px);
+    font-weight:800;
+}
+#subtitle{
+    margin:0 0 28px;
+    color:#8f9198;
+    font-weight:700;
+}
+#status{
+    font-size:1.15rem;
+    font-weight:800;
+    margin-bottom:10px;
+}
+#detail{
+    min-height:20px;
+    color:#6f7076;
+    font-size:.9rem;
+}
+.bar{
+    width:100%;
+    height:18px;
+    margin-top:22px;
+    background:#242529;
+    border:1px solid #3b3c42;
+    border-radius:999px;
+    overflow:hidden;
+}
+#fill{
+    width:0%;
+    height:100%;
+    background:#2f78c4;
+    transition:width .15s linear;
+}
+#percent{
+    margin-top:10px;
+    color:#9bbfe3;
+    font-weight:800;
+}
+#back{
+    margin-top:28px;
+    display:inline-block;
+    padding:12px 22px;
+    border-radius:10px;
+    border:1px solid #3c78ad;
+    background:#1c3852;
+    color:#fff;
+    font-weight:800;
+    text-decoration:none;
+}
+</style>
+</head>
+<body>
+<div id="cache-box">
+    <h1>Wobkot PS4 Host</h1>
+    <p id="subtitle">Cache</p>
+    <div id="status">Preparing cache...</div>
+    <div id="detail"></div>
+    <div class="bar"><div id="fill"></div></div>
+    <div id="percent">0%</div>
+    <a id="back" href="index.html">Back to Wobkot</a>
+</div>
+
+<script>
+(function(){
+    var app = window.applicationCache;
+    var fill = document.getElementById("fill");
+    var percent = document.getElementById("percent");
+    var status = document.getElementById("status");
+    var detail = document.getElementById("detail");
+    var finished = false;
+
+    function setProgress(p, msg, info) {
+        p = Math.max(0, Math.min(100, p));
+        fill.style.width = p + "%";
+        percent.textContent = p + "%";
+        status.textContent = msg;
+        detail.textContent = info || "";
+    }
+
+    function finish(msg, info) {
+        if (finished) return;
+        finished = true;
+        setProgress(100, msg, info || "Opening Wobkot PS4...");
+        window.setTimeout(function(){ window.location.replace("index.html"); }, 650);
+    }
+
+    if (!app) {
+        setProgress(0, "Application Cache unavailable", "This browser does not support the host cache.");
+        return;
+    }
+
+    app.addEventListener("checking", function(){
+        setProgress(0, "Checking Wobkot PS4 cache...", "Checking the manifest version");
+    }, false);
+
+    app.addEventListener("downloading", function(){
+        setProgress(0, "Caching Wobkot PS4 files...", "Downloading required host files");
+    }, false);
+
+    app.addEventListener("progress", function(e){
+        var total = e.total || 0;
+        var loaded = e.loaded || 0;
+        var p = total ? Math.floor((loaded / total) * 100) : 0;
+        setProgress(p, "Caching: " + p + "%", loaded + " / " + total + " resources");
+    }, false);
+
+    app.addEventListener("cached", function(){
+        finish("Cache complete — 100%", "All Wobkot PS4 files are cached");
+    }, false);
+
+    app.addEventListener("updateready", function(){
+        try { app.swapCache(); } catch (e) {}
+        finish("Cache update complete — 100%", "The new host version is ready");
+    }, false);
+
+    app.addEventListener("noupdate", function(){
+        finish("Wobkot PS4 cache is up to date — 100%", "No new version is available");
+    }, false);
+
+    app.addEventListener("error", function(){
+        if (app.status !== app.UNCACHED) {
+            finish("Using existing Wobkot PS4 cache", "Update unavailable; continuing with the saved version");
+        } else {
+            setProgress(0, "Cache download failed", "Check the host connection and reload this page");
+        }
+    }, false);
+
+    app.addEventListener("obsolete", function(){
+        setProgress(0, "Cache is obsolete", "Reload the host to create a fresh cache");
+    }, false);
+
+    if (window.location.search.indexOf("update=1") !== -1) {
+        setProgress(0, "Updating Wobkot PS4 cache...", "Checking for updated files");
+        window.setTimeout(function(){
+            try { app.update(); }
+            catch (e) { setProgress(0, "Cache update failed", String(e)); }
+        }, 300);
+    } else if (app.status === app.IDLE) {
+        finish("Wobkot PS4 cache is ready — 100%", "Using the saved host files");
+    } else if (app.status === app.UPDATEREADY) {
+        try { app.swapCache(); } catch (e) {}
+        finish("Cache update complete — 100%", "The new host version is ready");
+    }
+})();
+</script>
+</body>
+</html>
