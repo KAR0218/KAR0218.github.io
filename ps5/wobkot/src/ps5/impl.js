@@ -151,7 +151,7 @@ async function post_jailbreak() {
 }
 
 const impl_map = {
-	5: {
+  5: {
     0: {
       k_sysctl___kern_smp_cpus: 0x273c6e0,
       k_route_output_rtmsg2_ret: 0xa7884f,
@@ -363,7 +363,6 @@ const impl_map = {
       k_sysctl___kern_smp_cpus: 0x277e4c0,
       k_route_output_rtmsg2_ret: 0xa9e7a0,
       k_ntpadj_lock: 0x1a7f478,
-      k_dynlib_status: 0x118,
       k_allproc: 0x34c9d20,
       k_aio_table: 0xc28,
 
@@ -378,8 +377,6 @@ const impl_map = {
       wk___imp_strerror: 0x3e48a10,
 
       wk_TypedArray_m_mode: 0x20,
-      wk_JSFunction_m_function: 0x28,
-      wk_ArrayBuffer_m_contents_m_data: 0x10,
       wk_ArrayBuffer_m_contents_m_sizeInBytes: 0x28,
       wk_JSGlobalObject_m_vm_topEntryFrame: 0x9a70,
 
@@ -423,10 +420,10 @@ const impl_map = {
         return webkit_base.add(0x165e5a);
       },
       get wk_POP_RDI_RET() {
-        return webkit_base.add(0x9a572d);
+        return webkit_base.add(0x360e3a7);
       },
       get wk_POP_RSI_RET() {
-        return webkit_base.add(0x369d4ca);
+        return webkit_base.add(0x31a735a);
       },
       get wk_POP_RBP_RET() {
         return webkit_base.add(0x1b6cf3);
@@ -516,15 +513,15 @@ const impl_map = {
       get wk_POP_RDX_RET() {
         return webkit_base.add(0x3521db7);
       },
-      get wk_POP_RDI_RET() {
-        return webkit_base.add(0x9a576d);
-      },
       get wk_POP_RBP_RET() {
         return webkit_base.add(0x1b5993);
       },
       get wk_POP_RSP_RET() {
         return webkit_base.add(0x36318b0);
       },
+    },
+    0x50: {
+      k_route_output_rtmsg2_ret: 0xa9eef0,
     },
   },
   7: {
@@ -1550,12 +1547,6 @@ const impl_map = {
       k_route_output_rtmsg2_ret: 0xad8aa0,
       k_ntpadj_lock: 0x1a8bab8,
       k_allproc: 0x3579e80,
-    },
-    0x60: {
-      k_sysctl___kern_smp_cpus: 0x28cef60,
-      k_route_output_rtmsg2_ret: 0xae2da0,
-      k_ntpadj_lock: 0x1a9bab8,
-      k_allproc: 0x3589e80,
 
       wk_pthread_create: 0x2ad7fa0,
       wk_pthread_join: 0x2ad7fe0,
@@ -1619,6 +1610,12 @@ const impl_map = {
       get wk_PUSH_QWORD_PTR_RBX_JMP_QWORD_PTR_RAX() {
         return webkit_base.add(0x66d82);
       },
+    },
+    0x60: {
+      k_sysctl___kern_smp_cpus: 0x28cef60,
+      k_route_output_rtmsg2_ret: 0xae2da0,
+      k_ntpadj_lock: 0x1a9bab8,
+      k_allproc: 0x3589e80,
     },
   },
 };
