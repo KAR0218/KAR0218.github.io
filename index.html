@@ -1,213 +1,194 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Karo Host For PS4 505 & 672 & 7XX - 13.52</title>
-<style type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karo Host For PS4 505 &amp; 672 &amp; 7.XX - 14.02</title>
+<style>
 body {
-  background-color: #1A1920;  
-  background-repeat:no-repeat;
-  height:95%;
- }
- button {
-            background:rgba(0,0,0,0.5);
-		    box-shadow: 0 5px 20px 0 white;
-            border: 2px solid black;
-            border-radius: 10px;
-            width: 170px;
-            height: 43px;            
-            text-align: center;
-            padding: 6px;
-            margin: 6px;
+  margin:0; min-height:100vh; padding:0 12px 18px;
+  background-color:#1A1920; color:#FFFFFF;
+  font-family:"Times New Roman", Times, serif;
+}
+button {
+  border:2px solid black; border-radius:10px; width:200px; min-height:43px;
+  text-align:center; padding:6px; margin:6px;
+  box-shadow:0 5px 20px 0 white; background:rgba(0,0,0,0.5);
+  font-family:inherit; font-size:22px; cursor:pointer;
 }
 button:hover {
-            box-shadow: 0 5px 50px 0 white;
-            background-color: #0F0F53;
-            color: white;
-            border-radius: 10px;
+  box-shadow:0 5px 50px 0 white; color:white !important;
+  border-radius:10px; background-color:#0F0F53;
 }
-#clock{
- float:right;
- margin-right:2.25%;
- margin-top: 18px;
- font-weight:bold;
- font-size:28px;
-  color: white;
+#clock { float:right; margin-right:2.25%; margin-top:18px; font-weight:bold; font-size:28px; color:white; }
+#date { float:left; margin-left:1.25%; margin-top:18px; font-weight:bold; font-size:28px; color:white; }
+#msgs2 {
+  display:block; width:100%; box-sizing:border-box;
+  margin:8px auto 12px; padding:0;
+  font-size:25px; text-align:center; color:white;
+  text-shadow:4px 4px 4px black; min-height:30px;
 }
-#date {
- float:left;
- margin-left:1.25%;
- font-weight:bold;
- margin-top: 18px;
- font-size:28px;
- color: white;
-}
- .content {
-  width:80%;
-  margin-left:7.5%;
-  background:rgba(0,0,0,0.5);
-  color:white;
-  margin-top:1%;
-  font-size:25px;
-  text-align:center;
-  border-radius:30px;
-  padding:20px;
+.page-title { font-size:25px; text-align:center; color:yellow; text-shadow:4px 4px 4px black; margin:8px 0 12px; }
+.host-menu { text-align:center; max-width:1250px; margin:0 auto; }
+.quick-tools,.firmware-groups,.other-tools,.wobkot-row { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:2px; margin:8px auto 14px; }
+.wobkot-row { justify-content:center; align-items:center; width:100%; margin:8px auto 10px; }
+.other-tools { width:100%; max-width:1100px; margin-left:auto; margin-right:auto; }
+.other-tools .flex-break { flex-basis:100%; height:0; }
+.group-page { text-align:center; max-width:1250px; margin:0 auto; }
+.group-title { color:yellow; font-size:28px; text-shadow:4px 4px 4px black; margin:10px 0 14px; }
+.group-items { display:flex; flex-wrap:wrap; justify-content:center; max-width:1050px; margin:0 auto; }
+.back-button { color:white; background-color:#333; }
+.section-title { color:yellow; font-size:20px; text-align:center; margin:16px 0 6px; text-shadow:3px 3px 3px black; }
+.content {
+  width:80%; margin:24px auto 0; background:rgba(0,0,0,0.5); color:white;
+  font-size:25px; text-align:center; border-radius:30px; padding:28px 20px;
   line-height:40px;
- }
- .title {
-  font-size:40px;
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-weight:bolder;
-  margin-bottom:10px;
- }
- .yellow {
-  color:yellow;
- }
- .hue {
-  color:yellow;
-  padding:10px;
-  border-radius:10px;
-  animation:hue 5s linear infinite;
-  -webkit-animation: hue 5s linear infinite;
-  box-shadow: 0px 0px 50px yellow;
-  color:white;
+}
+.yellow { color:yellow; }
+.hue {
+  color:white; padding:10px; border-radius:10px; animation:hue 5s linear infinite;
+  -webkit-animation:hue 5s linear infinite; box-shadow:0 0 50px yellow;
   background:rgba(255,255,0,0.4);
- }
- .hue:hover{
-  color:yellow;
-  background:transparent;
- }
- @keyframes hue{
- 0%{
- filter:hue-rotate(0deg);
- -webkit-filter:hue-rotate(0deg);
- }
- 10%{
- box-shadow: 0px 1px 50px yellow;
- }
- 20%{
- box-shadow: 1px 1px 50px yellow;
- }
- 30%{
- box-shadow: 1px 0px 50px yellow;
- }
- 40%{
-  box-shadow: 1px -1px 50px yellow;
- }
- 50%{
- box-shadow: 0px -1px 50px yellow;
- }
- 60%{
- box-shadow: -1px -1px 50px yellow;
- }
- 70%{
- box-shadow: -1px 0px 50px yellow;
- }
- 80%{
- box-shadow: -1px 1px 50px yellow;
- }
- 90%{
- box-shadow: 0px 1px 50px yellow;
- }
- 100%{
- filter:hue-rotate(360deg);
- -webkit-filter:hue-rotate(360deg);
- }
- }
- .text {
-  padding-bottom:50px;
- }
-  .back {
-   font-size:25px;
-   margin-top:10px;
-   display:block;
-   line-height:55px;
-   width:20%;
-   text-decoration:none;
-   height:50px;
-   background:white;
-   color:black;
-   border-radius:15px;
-  }
-  .back:hover{
-   border:2px solid white;
-   background:transparent;
-   box-sizing:border-box;
-   color:white;
-  }
-  .pointer {cursor: pointer;}
+}
+@keyframes hue {
+  0%{filter:hue-rotate(0deg);} 50%{box-shadow:0 -1px 50px yellow;}
+  100%{filter:hue-rotate(360deg);}
+}
+[hidden] { display:none !important; }
+@media(max-width:650px) {
+  #date,#clock { font-size:18px; }
+  button { width: min(42vw,200px); font-size:17px; }
+  .content { width:90%; font-size:18px; }
+}
+.group-button {
+    color: white;
+}
+.flex-break {
+    flex-basis: 100%;
+    height: 0;
+}
+#msgs2 {
+    clear: both;
+}
 </style>
 <script>
-    function showdate() {
-  var dt = new Date();
-    Hour= dt.getHours();
-  Minute= dt.getMinutes();
-     Day=dt.getDate();
-   Month=dt.getMonth()+1;
-   Year=dt.getFullYear();
-if (Minute < 10) { Minute = "0" + Minute; };
-if (Hour < 10) { Hour = "0" + Hour; };
-document.getElementById("date").innerHTML = (Day+"/"+Month+"/"+Year);
-document.getElementById("clock").innerHTML = (Hour+":"+Minute);
-  }
-  
-  setInterval(showdate,0);
+function showDate() {
+  const d = new Date(), p = n => String(n).padStart(2,'0');
+  document.getElementById('date').textContent = p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear();
+  document.getElementById('clock').textContent = p(d.getHours())+':'+p(d.getMinutes());
+}
+function showGroup(id) {
+  document.getElementById('main-menu').hidden = true;
+  document.querySelectorAll('.group-page').forEach(el => el.hidden = true);
+  document.getElementById(id).hidden = false;
+  document.getElementById('msgs2').textContent = id.replace('fw-','')+' Group';
+}
+function showMain() {
+  document.querySelectorAll('.group-page').forEach(el => el.hidden = true);
+  document.getElementById('main-menu').hidden = false;
+  document.getElementById('msgs2').textContent = 'Status';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  showDate();
+  setInterval(showDate, 1000);
+
+  // Show the hovered item's description in the existing Status line.
+  // Event delegation also covers links inside firmware groups.
+  document.addEventListener('mouseover', (event) => {
+    const item = event.target.closest('[data-description]');
+    if (item) {
+      document.getElementById('msgs2').textContent = item.dataset.description;
+    }
+  });
+
+  document.addEventListener('mouseout', (event) => {
+    const item = event.target.closest('[data-description]');
+    if (item && !item.contains(event.relatedTarget)) {
+      document.getElementById('msgs2').textContent = 'Status';
+    }
+  });
+});
 </script>
 </head>
-<body class="bg-darker">
-<div id="container"  style="">
-<span id="date" ></span><span id="clock" ></span><h1 style='font-size:25px;text-align:center;color:yellow;'>Karo Host For PS4 505 & 672 & 7.XX - 13.52</h1>
-<h1 id=msgs2 style='font-size:25px;text-align:center;color:white;'>Status</h1>
-<div style="text-align:center"  id="MyItems">
-<a href="copych/index.html"><button style='width: 200px;height: 40px;font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Copy Cheat For 505 & 672 & 702 & 755 & 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Copy Cheat </B></button></a>
-<a href="https://karo218.ir/espweb/index.html"><button style='width: 200px;height: 40px;font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo WEB ESP For 505 & 672 & 702 & 755 & 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>WEB ESP </B></button></a>
-<a href="binloader/index.html"><button style='width: 200px;height: 40px;font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Binloader For 505 & 672 & 702 & 755 & 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Binloader </B></button></a><br>
-<!--<a href="505N/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='New Karo Host For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>5.05N</B></button></a>-->
-<a href="505/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>5.05 old</B></button></a>
-<a href="505Gold/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Gold For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>5.05 Gold</B></button></a>
-<a href="Goldhen505/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Goldhen V2.4b18.2 For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Goldhen505</B></button></a>
-<a href="http://karo218.ir/esp505tr/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ESP host (ps4trainer + goldhen + webrte + binloader) Host For 505'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>ESP505tr</B></button></a><br>
-<a href="672/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Manual Exploit Full Cache and Compressed version For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72 </B></button></a>
-<a href="672A/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit Full Cache and Compressed version For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72A </B></button></a>
-<a href="672L/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Light For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72L </B></button></a>
-<a href="Goldhen672/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Goldhen V2.4b18.9 For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Goldhen672</B></button></a>
-<a href="http://karo218.ir/esp672tr/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ESP host (ps4trainer + goldhen + webrte + binloader) Host For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>ESP672tr</B></button></a>
-<!--<a href="672N/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host New Exploit and Loader For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72N </B></button></a>
-<a href="672NA/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host New Exploit and Loader with All Payloads For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72NA </B></button></a>
-<a href="672Mix/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host very stable For 672'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>6.72 Mix </B></button></a>-->
-<br>
-<a href="702/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo New Host Auto Exploit and Compressed New Webkit PSFree version For 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02</B></button></a>
-<a href="702L/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 702 New Webkit PSFree Light version'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02L</B></button></a>
-<a href="http://karo218.ir/702Gold/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Gold New Webkit PSFree with payload sender For 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.02 Gold</B></button></a>
-<a href="G702/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Goldhen V2.3 with New Webkit PSFree For 700 - 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Goldhen702</B></button></a>
-<a href="http://karo218.ir/esp702tr/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ESP host (ps4trainer + goldhen + webrte + binloader) Host For 702'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>ESP702tr</B></button></a><br>
-<a href="755/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit and Compressed New Webkit PSFree version For 75X'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55</B></button></a>
-<a href="755L/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host For 75X New Webkit PSFree Light version'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55L</B></button></a>
-<a href="http://karo218.ir/755Gold/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Gold New Webkit PSFree with payload sender For 75X'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>7.55 Gold</B></button></a>
-<a href="G755/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Goldhen 2.3 For 755 New Webkit PSFree'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Goldhen755</B></button></a>
-<a href="http://karo218.ir/esp755tr/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ESP host (ps4trainer + goldhen + webrte + binloader) Host For 755'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>ESP755tr</B></button></a><br>
-<!--<a href="http://karo218.ir/900/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Gold with payload sender For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00 Gold</B></button></a>
-<a href="900N/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Manual Explot For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00N</B></button></a>
-<a href="900NA/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Explot For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00NA</B></button></a>
-<a href="900CM/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Manual Exploit Full Cache and Compressed version For 900 (hippie68 Method)'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00CM</B></button></a>
-<a href="900C/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit Full Cache and Compressed version For 900 (hippie68 Method)'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00CA</B></button></a>-->
-<a href="900L/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Explot Light + New Webkit PSFree For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00L</B></button></a>
-<a href="900NM/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Manual Exploit Full Cache and New Webkit PSFree + Compressed version For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00NM</B></button></a>
-<a href="900New/index.html"><button style='font-size:22px;text-align:center;color:green' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit Compressed + New Webkit PSFree Version 9.00 fw'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>9.00 New</B></button></a>
-<a href="G900/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host auto Exploit + Goldhen V2.4b18.9 + New Webkit PSFree For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Goldhen900</B></button></a>
-<a href="http://karo218.ir/esp900tr/index.html"><button style='font-size:22px;text-align:center;color:white' class="pointer" onMouseOver="msgs2.innerHTML='ESP host (ps4trainer + goldhen + webrte + binloader) Host For 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>ESP900tr</B></button></a><br>
-<a href="g2allpro/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host Auto Exploit GoldHen 2.4b18.13 PS4 5.05 & 6.72 & 7.XX - 14.00 FW Pro'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>G2AllPro</B></button></a>
-<a href="http://karo218.ir/PS4TRAINER/index.html"><button style='width: 470px;height: 50px;font-size:22px;text-align:center;background-color:#0B0B61;color:white' class="pointer" onMouseOver="msgs2.innerHTML='PS4Trainer Offline'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>PS4Trainer Offline (27.01.2024)</B></button></a>
-<a href="g2all/index.html"><button style='font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Karo Host auto Exploit + Goldhen 2.4b18.9 + New Webkit PSFree + Lapse For 7.02-9.60 Orginal'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>G2All</B></button></a><br>
-<a href="restore/index.html"><button style='width: 300px;height: 50px;font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Restore Hosts to Users Guide by Karo For 505 & 672 & 702 & 755 & 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Restore Host</B></button></a>
-<a href="restore2/index.html"><button style='width: 300px;height: 50px;font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Restore PS4Trainer Offline to Users Guide by Karo For 505 & 672 & 702 & 755 & 900'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Restore PS4Trainer Offline</B></button></a>
-<a href="http://karo218.ir/esp/index.html"><button style='width: 300px;height: 50px;font-size:22px;text-align:center;color:yellow' class="pointer" onMouseOver="msgs2.innerHTML='Restore ESP hosts (ps4trainer+goldhen+webrte+binloader) to Users Guide by Karo For All FW'"; onmouseout="msgs2.innerHTML='Status'"  type="button"><B>Restore ESP Hosts</B></button></a> 
-<div class="content" >
- 	<div class="text" >
- 	 <br><span class="yellow" >Designed, Ported and Compiled by :</span >&nbsp;&nbsp; <span class="hue" >Karo Sharifi</span>
- 	</div>
- </div>
+<body>
+<span id="date"></span><span id="clock"></span>
+<h1 class="page-title">Karo Host For PS4 505 &amp; 672 &amp; 7.XX - 14.02</h1>
+<h1 id="msgs2">Status</h1>
+
+<div id="main-menu" class="host-menu">
+  <div class="section-title">Quick Tools</div>
+  <div class="quick-tools"><a href="copych/index.html" class="host-link" data-description="Copy Cheat For 505 &amp; 672 &amp; 702 &amp; 755 &amp; 900"><button class="host-button" style="color:yellow"><b>Copy Cheat</b></button></a>
+<a href="https://karo218.ir/espweb/index.html" class="host-link" data-description="Karo WEB ESP For 505 &amp; 672 &amp; 702 &amp; 755 &amp; 900"><button class="host-button" style="color:green"><b>WEB ESP</b></button></a>
+<a href="binloader/index.html" class="host-link" data-description="Binloader For 505 &amp; 672 &amp; 702 &amp; 755 &amp; 900"><button class="host-button" style="color:yellow"><b>Binloader</b></button></a></div>
+  <div class="section-title">Firmware Groups</div>
+  <div class="firmware-groups"><button class="host-button group-button" data-description="Open 5.05 firmware group" onclick="showGroup('fw-5.05')"><b>5.05 Group</b></button>
+<button class="host-button group-button" data-description="Open 6.72 firmware group" onclick="showGroup('fw-6.72')"><b>6.72 Group</b></button>
+<button class="host-button group-button" data-description="Open 7.02 firmware group" onclick="showGroup('fw-7.02')"><b>7.02 Group</b></button>
+<button class="host-button group-button" data-description="Open 7.55 firmware group" onclick="showGroup('fw-7.55')"><b>7.55 Group</b></button>
+<button class="host-button group-button" data-description="Open 9.00 firmware group" onclick="showGroup('fw-9.00')"><b>9.00 Group</b></button></div>
+  <div class="section-title">Multi-Firmware &amp; Other Tools</div>
+<div class="wobkot-row"><a href="wobkot/index.html" class="host-link" data-description="Wobkot PS4 Host for 9.00 - 12.02 firmware"><button class="host-button" style="width: 300px; font-size:30px;text-align:center;color:#72AD76"><b>Wobkot</b>
+<br><small style="font-size:20px;text-align:center;color:#A8F0AE">PS4: 9.00–12.02</small></button></a>
+</div>
+
+  <div class="other-tools"><a href="g2allpro/index.html" class="host-link" data-description="Karo Host Auto Exploit GoldHen 2.4b18.13 PS4 5.05 &amp; 6.72 &amp; 7.XX - 14.02 FW Pro"><button class="host-button" style="color:yellow"><b>G2AllPro</b></button></a>
+<a href="http://karo218.ir/PS4TRAINER/index.html" class="host-link" data-description="PS4Trainer Offline"><button class="host-button" style='width: 470px;height: 50px;font-size:22px;text-align:center;background-color:#0B0B61;color:white'><b>PS4Trainer Offline (27.01.2024)</b></button></a>
+<a href="g2all/index.html" class="host-link" data-description="Karo Host auto Exploit + Goldhen 2.4b18.9 + New Webkit PSFree + Lapse For 7.02-9.60 Orginal"><button class="host-button" style="color:yellow"><b>G2All</b></button></a>
+<div class="flex-break"></div>
+<a href="restore/index.html" class="host-link" data-description="Restore Hosts to Users Guide by Karo For 505 &amp; 672 &amp; 702 &amp; 755 &amp; 900"><button class="host-button" style="width:300px;height:50px;font-size:22px;text-align:center;color:yellow"><b>Restore Host</b></button></a>
+<a href="restore2/index.html" class="host-link" data-description="Restore PS4Trainer Offline to Users Guide by Karo For 505 &amp; 672 &amp; 702 &amp; 755 &amp; 900"><button class="host-button" style="width:300px;height:50px;font-size:22px;text-align:center;color:yellow"><b>Restore PS4Trainer Offline</b></button></a>
+<a href="http://karo218.ir/esp/index.html" class="host-link" data-description="Restore ESP hosts (ps4trainer+goldhen+webrte+binloader) to Users Guide by Karo For All FW"><button class="host-button" style="width:300px;height:50px;font-size:22px;text-align:center;color:yellow"><b>Restore ESP Hosts</b></button></a></div>
+</div>
+
+
+<section id="fw-5.05" class="group-page" hidden>
+  <button class="host-button back-button" onclick="showMain()"><b>Back to Menu</b></button>
+  <h2 class="group-title">5.05</h2>
+  <div class="group-items"><a href="505/index.html" class="host-link" data-description="Karo Host For 505"><button class="host-button" style="color:white"><b>5.05 old</b></button></a>
+<a href="505Gold/index.html" class="host-link" data-description="Karo Host Gold For 505"><button class="host-button" style="color:yellow"><b>5.05 Gold</b></button></a>
+<a href="Goldhen505/index.html" class="host-link" data-description="Karo Host Goldhen V2.4b18.2 For 505"><button class="host-button" style="color:yellow"><b>Goldhen505</b></button></a>
+<a href="http://karo218.ir/esp505tr/index.html" class="host-link" data-description="ESP host (ps4trainer + goldhen + webrte + binloader) Host For 505"><button class="host-button" style="color:white"><b>ESP505tr</b></button></a></div>
+</section>
+<section id="fw-6.72" class="group-page" hidden>
+  <button class="host-button back-button" onclick="showMain()"><b>Back to Menu</b></button>
+  <h2 class="group-title">6.72</h2>
+  <div class="group-items"><a href="672/index.html" class="host-link" data-description="Karo Host Manual Exploit Full Cache and Compressed version For 672"><button class="host-button" style="color:green"><b>6.72</b></button></a>
+<a href="672A/index.html" class="host-link" data-description="Karo Host Auto Exploit Full Cache and Compressed version For 672"><button class="host-button" style="color:green"><b>6.72A</b></button></a>
+<a href="672L/index.html" class="host-link" data-description="Karo Host Light For 672"><button class="host-button" style="color:white"><b>6.72L</b></button></a>
+<a href="Goldhen672/index.html" class="host-link" data-description="Karo Host Goldhen V2.4b18.9 For 672"><button class="host-button" style="color:yellow"><b>Goldhen672</b></button></a>
+<a href="http://karo218.ir/esp672tr/index.html" class="host-link" data-description="ESP host (ps4trainer + goldhen + webrte + binloader) Host For 672"><button class="host-button" style="color:white"><b>ESP672tr</b></button></a></div>
+</section>
+<section id="fw-7.02" class="group-page" hidden>
+  <button class="host-button back-button" onclick="showMain()"><b>Back to Menu</b></button>
+  <h2 class="group-title">7.02</h2>
+  <div class="group-items"><a href="702/index.html" class="host-link" data-description="Karo New Host Auto Exploit and Compressed New Webkit PSFree version For 702"><button class="host-button" style="color:green"><b>7.02</b></button></a>
+<a href="702L/index.html" class="host-link" data-description="Karo Host For 702 New Webkit PSFree Light version"><button class="host-button" style="color:white"><b>7.02L</b></button></a>
+<a href="http://karo218.ir/702Gold/index.html" class="host-link" data-description="Karo Host Gold New Webkit PSFree with payload sender For 702"><button class="host-button" style="color:yellow"><b>7.02 Gold</b></button></a>
+<a href="G702/index.html" class="host-link" data-description="Karo Host Goldhen V2.3 with New Webkit PSFree For 700 - 702"><button class="host-button" style="color:yellow"><b>Goldhen702</b></button></a>
+<a href="http://karo218.ir/esp702tr/index.html" class="host-link" data-description="ESP host (ps4trainer + goldhen + webrte + binloader) Host For 702"><button class="host-button" style="color:white"><b>ESP702tr</b></button></a></div>
+</section>
+<section id="fw-7.55" class="group-page" hidden>
+  <button class="host-button back-button" onclick="showMain()"><b>Back to Menu</b></button>
+  <h2 class="group-title">7.55</h2>
+  <div class="group-items"><a href="755/index.html" class="host-link" data-description="Karo Host Auto Exploit and Compressed New Webkit PSFree version For 75X"><button class="host-button" style="color:green"><b>7.55</b></button></a>
+<a href="755L/index.html" class="host-link" data-description="Karo Host For 75X New Webkit PSFree Light version"><button class="host-button" style="color:white"><b>7.55L</b></button></a>
+<a href="http://karo218.ir/755Gold/index.html" class="host-link" data-description="Karo Host Gold New Webkit PSFree with payload sender For 75X"><button class="host-button" style="color:yellow"><b>7.55 Gold</b></button></a>
+<a href="G755/index.html" class="host-link" data-description="Karo Host Goldhen 2.3 For 755 New Webkit PSFree"><button class="host-button" style="color:yellow"><b>Goldhen755</b></button></a>
+<a href="http://karo218.ir/esp755tr/index.html" class="host-link" data-description="ESP host (ps4trainer + goldhen + webrte + binloader) Host For 755"><button class="host-button" style="color:white"><b>ESP755tr</b></button></a></div>
+</section>
+<section id="fw-9.00" class="group-page" hidden>
+  <button class="host-button back-button" onclick="showMain()"><b>Back to Menu</b></button>
+  <h2 class="group-title">9.00</h2>
+  <div class="group-items"><a href="900L/index.html" class="host-link" data-description="Karo Host Auto Explot Light + New Webkit PSFree For 900"><button class="host-button" style="color:yellow"><b>9.00L</b></button></a>
+<a href="900NM/index.html" class="host-link" data-description="Karo Host Manual Exploit Full Cache and New Webkit PSFree + Compressed version For 900"><button class="host-button" style="color:green"><b>9.00NM</b></button></a>
+<a href="900New/index.html" class="host-link" data-description="Karo Host Auto Exploit Compressed + New Webkit PSFree Version 9.00 fw"><button class="host-button" style="color:green"><b>9.00 New</b></button></a>
+<a href="G900/index.html" class="host-link" data-description="Karo Host auto Exploit + Goldhen V2.4b18.9 + New Webkit PSFree For 900"><button class="host-button" style="color:yellow"><b>Goldhen900</b></button></a>
+<a href="http://karo218.ir/esp900tr/index.html" class="host-link" data-description="ESP host (ps4trainer + goldhen + webrte + binloader) Host For 900"><button class="host-button" style="color:white"><b>ESP900tr</b></button></a></div>
+</section>
+
+<div class="content">
+  <span class="yellow">Designed, Ported and Compiled by :</span>&nbsp;&nbsp;
+  <span class="hue">Karo Sharifi</span>
 </div>
 </body>
 </html>
