@@ -119,7 +119,7 @@
   // out of the window in which fakeHost's layout has to hold still.
   const CARRIER_CAP = HX_MEM ? HX_MEM.slots : 12000000;
 
-  let CARRIER_SLOTS = Math.min(CARRIER_CAP, 400000);
+  let CARRIER_SLOTS = Math.min(CARRIER_CAP, 8700000);
   let CARRIER_BYTES = CARRIER_SLOTS * 8;
 
   // A rejection does not draw a new lottery ticket: within one page load
