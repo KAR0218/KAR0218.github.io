@@ -59,7 +59,7 @@ function onScriptError() {
 
 if (!isPS4) {
     document.addEventListener("DOMContentLoaded", () => {
-        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 6.72 and 7.00 to 14.00";
+        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 6.72 and 7.00 to 14.02";
     });
 } else {
         if (fwNum == 5.05 || fwNum == 5.07) {
@@ -76,8 +76,8 @@ if (!isPS4) {
             document.head.appendChild(script);
         }
 		else if (fwNum === 6.72) {
-		progress.innerHTML = "Loading GoldHEN v2.4b18.13 ...";
-		LoadedMSG = "GoldHEN v2.4b18.13 Loaded ✔";
+		progress.innerHTML = "Loading GoldHEN v2.4b18.14 ...";
+		LoadedMSG = "GoldHEN v2.4b18.14 Loaded ✔";
 		PLfile = "payload.bin";
 	
 		var script = document.createElement('script');
@@ -95,7 +95,7 @@ if (!isPS4) {
 		document.head.appendChild(script);
 		}
         else if (fwNum >= 7.00 && fwNum <= 9.60) {
-            progress.innerHTML = "Loading GoldHEN v2.4b18.13 ...";
+            progress.innerHTML = "Loading GoldHEN v2.4b18.14 ...";
             var script = document.createElement('script');
             script.src = "exploit7_9.js";
             script.onload = function () {
