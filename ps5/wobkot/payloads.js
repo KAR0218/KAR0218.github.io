@@ -1,7 +1,7 @@
 /* generated for Relapse - payload menu */
 window.PAYLOAD_TILES = [
     {"title": "etaHEN 2.6B", "description": "AIO Homebrew enabler with etaHEN Toolbox, plugins, Kstuff, FTP and payload support. Beta 2.6", "name": "etaHEN.elf", "info": "etaHEN.elf - LightningMods", "key": "etahen"},
-    {"title": "OnionHEN 0.9 | kstuff 1.13", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9 with kstuff-fpkg-1.13-test6", "name": "OnionHEN.elf", "info": "OnionHEN.elf - aydencharles", "key": "onionhen"},
+    {"title": "OnionHEN 0.9 | kstuff-1.15-dr-test3-stable", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9 with kstuff-1.15-dr-test3-stable", "name": "OnionHEN.elf", "info": "OnionHEN.elf - aydencharles", "key": "onionhen"},
     {"title": "OnionHEN v0.9.0 | kstuff 1.11", "description": "Homebrew enabler and Toolbox for jailbroken PS5 consoles, built on etaHEN. Version v0.9.0 with kstuff-lite Version v1.11", "name": "OnionHENk1.11.elf", "info": "OnionHENk1.11.elf - aydencharles", "key": "onionhen1.11"},
     {"title": "Lapy-JB-Daemon", "description": "Standalone homebrew jailbreak daemon for PS5. Version v1.2", "name": "Lapy-JB-Daemon_v1.2.elf", "info": "Lapy-JB-Daemon_v1.2.elf - Lapy", "key": "lapy-jb-daemon"},
 	{"title":"TITAN CORE v1.0","description":"PS5 Game Management Toolkit with FPKG Installation, USB Game Support, Mounting and System Diagnostics. Includes kstuff-lite and ShadowMountPlus.","name":"TITAN-CORE-v1.0.elf","info":"TITAN-CORE-v1.0.elf - devchmod","key":"titan-core"},
